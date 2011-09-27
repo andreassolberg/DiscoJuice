@@ -2,6 +2,26 @@
 
 
 
+
+## Version 2.0 beta (Autumn 2011)
+
+Not yet released as a stable release.
+
+Large changes under the hood. Few changes that affects the UI.
+
+* Hosted version available at discojuice.org
+* Added support for parallell processing of metadata retrieval, and IdP Discovery protocol requests. Control functions that does not refresh the UI more than neccessary.
+* Support for getting metadata from multiple sources
+* Support showing error messages from IdP Discovery Service for diagnostics
+* Added support for client-side caching of both DiscoJuice and the metadata feeds.
+* Dynamic country list (thanks for the patch)
+* Partial support for local authentication with username and password within DiscoJuice.
+* Enabled search on description (in addition to keywords and name)
+* Option to leave out part of the header (UI)
+* Support for hitting enter to go to first entry on the list
+* The SimpleSAMLphp module is making use of MDUI information in the DiscoJuice JSON feed
+
+
 ## Version 1.0 (May 17th 2011)
 
 Initial stable release, includes:
