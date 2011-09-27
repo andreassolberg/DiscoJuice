@@ -1,0 +1,50 @@
+# DiscoJuiceJSON Metadata
+
+The DiscoJuiceJSON Metadata format is a simple compact representation of Login providers.
+
+The Metadata document consists of an JSON array with entities. Each entity is an object with some predefined properties, as listed below.
+
+entityID
+: The EntityID of a SAML entity. If the login provider is not a SAML entity, fill in with an unique ID. This property is **REQUIRED**.
+
+title
+: A good name (in default language) of the Login Provider. Should be short and descriptive.
+
+displayNames
+: Compatibility mode for Shibboleth EDS. Allowing multiple displayNames (titles) to be listed. Will default to the first entry.
+
+descr
+: A description. Not more than one sentence.
+
+country
+: Two-letter code in captial letters for country of the login provider. The value `_all_` means that the entity is associated with all countries.
+
+geo
+: Geographic coordinates of the entity
+
+auth
+: A simple string representing the type of authentication. This propoerty is optional, and the default is '`saml`'. Other alternatives are: `twitter`, `facebook`, `google`.
+
+weight
+: Default weight of entity using [DiscoPoints](discopoints). If not set, default is 0. If below 0, entity will pop up. If below -50, entity will be hidden.
+
+## Example dataset
+
+	[
+		{
+			entityID: "https:\/\/idp.example.org\/saml",
+			title: "Disco University",
+			country: "NO",
+			geo: {
+				lat: 63.8333,
+				lon: 20.25
+			},
+			weight: -3
+		}
+	]
+
+
+
+
+
+

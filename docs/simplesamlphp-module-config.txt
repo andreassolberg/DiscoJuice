@@ -1,0 +1,158 @@
+# Configuration of DiscoJuice Module
+
+When installing the DiscoJuice module in simplesamlphp, you did get three configuration files:
+
+* `discojuicefeed.php`
+* `discojuicecentral.php`
+* `discojuiceembed.php`
+
+
+
+## `discojuicefeed.php`
+
+This configuration files allows you to tweak the metadata entries for improved UI presentation.
+
+After you adjust the configuration file, you would need to re-run the feed cache generation before the adjustments are used in the DiscoJuice module. The URL to refresh the cached metadata feed (based upon new configuration) is:
+
+	.../simplesaml/module.php/discojuice/feed.php?refresh=1
+
+
+### The IdPList API
+
+If your Service Provider managed a cached list of all Identity Providers where users have successfully managed to log in, you may feed that back into the DiscoJuice Metadata generation, to make that influence the [weighting algorithm for entities](discopoints).
+
+Example configuration:
+
+	'idplistapi' => 'https://foodl.org/api/idplist',
+
+If you configure a `idplistapi` endpoint in the configuration, this endpoint will be contacted during metadata generation, and DiscoJuice will expect the output to be a JSON encoded array of entityIDs wrapped in an envelope, like this:
+
+	{
+		status: ok
+		data: ['https:\/\/idp1.example.org', 'https:\/\/idp2.example.org']
+	}
+
+
+### Insert new entities
+
+You may use the configuration to add more entities, like this:
+
+	'insert' => array(
+		'https://twitter.com' => array(
+			'icon' => 'twitter.png',
+			'entityID' => 'https://twitter.com',
+		//	'descr' => 'Login with your Twitter account',
+			'title' => 'Twitter',
+			'weight' => -1,
+			'auth' => 'twitter',
+			'country' => '_all_',
+			'distance' => null,
+		// 	'keywords' => array(
+		// 		'Organizations' => array('Twitter'),
+		// 	),
+		),
+	),
+
+* [See the DiscoJuiceJSON Metadata Reference for information about what data you may add](discojuicejson)
+
+### Exclude entities
+
+You may list entities that are present in metadata, but should not be presented in the DiscoJuice UI. You may in example hide test IdPs.
+	
+	'exclude' => array(
+		'https://testidp.wayf.dk',
+		'https://betawayf.wayf.dk',
+	),
+
+### Override or add information about entities
+
+You may add or override information about entities that already exists in metadata. Example of use cases:
+
+* Overwrite the title of an entity
+* Add reference to an icon
+* Add a description of an entity
+* Associate an entity with a country
+* Add weight to an entity to lift it higher or lower on the list of choices.
+
+Example:
+
+	'overrides' => array(
+		'https://twitter.com' => array(
+			'icon' => 'twitter.png',
+			'weight' => -1,
+			'auth' => 'twitter',
+			'country' => '_all_',
+		),
+	),
+
+
+* [See the DiscoJuiceJSON Metadata Reference for information about what data you may add or override](discojuicejson)
+
+
+## `discojuicecentral.php`
+
+This configuration applies to the central IdP Discovery Service that is available at the following URL:
+
+	.../simplesaml/module.php/discojuice/central.php
+
+or any other URL by using the `sspmod_discojuice_CentralHelper` function.
+
+
+The configuration has these options:
+
+**`acl`** allows you to configure a list of host names that are allowed to read information about preferred IdPs:
+
+	'acl' => array(
+		'simplesamlphp.org', 'foodl.org', 'dev.andreas.feide.no',
+	),
+
+**`discojuice.options`** is the DiscoJuice configuration object:
+	
+	'discojuice.options' => array(
+		...
+	),
+
+* View the [DiscoJuice Configuration Object Reference](configuration-reference) for available options.
+
+
+
+## `discojuiceembed.php`
+
+This configuration applies to the embedded version of DiscoJuice that is loaded using the `sspmod_discojuice_EmbedHelper` function.
+
+**`target`** points to the login link that should load DiscoJuice. The target is referred to using JQuery syntax: `a.signin` would refer to an `<A>` link with `class="signin"`:
+
+	'target' => 'a.signin',
+
+
+**`discojuice.options`** is the DiscoJuice configuration object:
+	
+	'discojuice.options' => array(
+		...
+	),
+
+* View the [DiscoJuice Configuration Object Reference](configuration-reference) for available options.
+
+
+**`callback`** defines what to do when the user selects an provider.
+
+	"callback" => " function(e) {
+		var auth = e.auth || null;
+		var returnto = window.location.href || 'https://foodl.org';
+		switch(auth) {
+			
+			case 'twitter':
+				window.location = 'https://.../simplesaml/module.php/core/as_login.php?AuthId=twitter&ReturnTo=' + escape(returnto);
+			break;
+		
+		
+			case 'saml':
+			default:
+				window.location = 'https://.../simplesaml/module.php/core/as_login.php?AuthId=saml&ReturnTo=' + escape(returnto) + '&saml:idp=' + escape(e.entityID);
+			break;							
+				
+		}
+	}
+
+
+..

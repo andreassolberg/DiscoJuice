@@ -1,0 +1,44 @@
+# DicoJuice Getting Started
+
+DiscoJuice may be deployed *embedded* or *standalone*. When DiscoJuice is deployed embedded it is associated with a login button, and will popup as soon as the user clicks the button. This setup may only be used for pages that allow presenting a web page before the user logs in. When DiscoJuice is deployed *standalone* it is a separate web page, a web page that the user is redirected to (using the IdP Discovery Service Protocol - widely available already).
+
+DiscoJuice may be deployed at the service provider as a client, never accepting incomming requests from other service providers. Or it may be deployed *central* not representing any particular service provider, but is configured to accept requests from a wide range of service providers.
+
+
+![](/res/ArchFigure3.png)
+
+DiscoJuice is written entirely in JavaScript, which mean it will run with your Service regardless of what programming language or environment it runs in. But it also available as a module for SimpleSAMLphp for supersmooth integration.
+
+The only part that needs to run on the server side is the metadata feed. This may very well be a static file offered by some third party (a federation operator) or may be loaded on a central location using JSONP.
+
+
+## Guides
+
+* [Guide for SimpleSAMLphp as Service Provider](guide-sp-simplesamlphp)
+* [Guide for Shibboleth as Service Provider](guide-sp-shibboleth)
+* [Guide for Federations](guide-federations)
+
+
+
+
+## Installation 
+
+Installing DiscoJuice may be done in two ways;
+
+* [Installing *DiscoJuice*](install), or
+* [Intsall *DiscoJuice* packaged with SimpleSAMLphp](simplesamlphp-module) and then [configure the module](simplesamlphp-module-config)
+
+
+
+
+## Configuration and References
+
+* [Reference on DiscoJuice options object](configuration-reference)
+* [Reference on SimpleSAMLphp module configuration](simplesamlphp-module-config)
+* [Reference on DiscoJuiceJSON](discojuicejson)
+* [Specification on DiscoReadWrite protocol](discoreadwrite)
+* [DiscoPoints and Weighting Login Providers](discopoints)
+* [DiscoJuice Changelog](changelog)
+
+
+

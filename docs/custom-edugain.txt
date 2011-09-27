@@ -1,0 +1,7 @@
+Using DiscoJuice with eduGAIN
+===========================
+
+
+eduGAIN is supporting MDUI, which means it will be a good fit for DiscoJuice. More information to be added.
+
+TBD.

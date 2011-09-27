@@ -1,0 +1,19 @@
+# DiscoJuice Change log
+
+
+
+## Version 1.0 (May 17th 2011)
+
+Initial stable release, includes:
+
+* Local Memory (cookie)
+* Remote Memory (DiscoReadWrite protocol + IdP Discovery)
+* Javascript only, super simple to deploy
+* DiscoJuiceJSON compact UI-focused Metadata format (MDUI friendly)
+* Presents logos, searchable keywords, name, descr, country...
+* Automatically discovery of country
+* HTML5 Geo-location API
+* Gracefull non-javascript fallback
+* Inline incremental search
+* Flexible integration API using JS callbacks.
+* Protocol agnostics, demoed with alternative protocols.

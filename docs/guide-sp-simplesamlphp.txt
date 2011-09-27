@@ -1,0 +1,21 @@
+Guide for SimpleSAMLphp as Service Provider
+=======================
+
+
+If you are using SimpleSAMLphp as a Service Provider, and would like to use DiscoJuice for IdP Discovery, it should be prettu straight forward.
+
+Follow the documentation:
+
+* [Installing DiscoJuice as part of SimpleSAMLphp](simplesamlphp-module)
+* [Configure the SimpleSAMLphp DiscoJuice Module](simplesamlphp-module-config)
+* [Reference to DiscoJuice Configuration](configuration-reference)
+
+The quality of the DiscoJuice deployment will depend on the quality of the metadata you feed it with. If your federation does not offer DiscoJuice-friendly metadata, you may choose to override the metadata of some of the entries using the `'overrides'` option in `discojuicefeed.php`.
+
+
+See also:
+
+* [DiscoJuice Guide for Federations](guide-federations)
+
+
+
