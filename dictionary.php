@@ -6,5 +6,6 @@ $LANG=array(
     "loading" => "Loading list of providers",
     "orSearch" => "or search for a provider, such as Example University",
     "pageReturn" => "Return to list of providers",
+	"version" => "Version",
 );
 ?>
