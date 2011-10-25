@@ -7,5 +7,9 @@ $LANG=array(
     "orSearch" => "or search for a provider, such as Example University",
     "pageReturn" => "Return to list of providers",
 	"version" => "Version",
+	"nearby" => 'Nearby',
+	"moreLink" => 'Results limited to %d of total %d entries – show more',
+	'help' => 'Please help, I cannot find my provider',
+	'helpMore' => 'If your institusion is not connected to this service, you may create a new account using any of the guest login providers.'
 );
 ?>
