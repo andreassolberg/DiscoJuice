@@ -10,6 +10,8 @@ $LANG=array(
 	"nearby" => 'Nearby',
 	"moreLink" => 'Results limited to %d of total %d entries – show more',
 	'help' => 'Please help, I cannot find my provider',
-	'helpMore' => 'If your institusion is not connected to this service, you may create a new account using any of the guest login providers.'
+	'helpMore' => 'If your institusion is not connected to this service, you may create a new account using any of the guest login providers. You also may contact your instituion to request being connected with this service.',
+	'locateMe' => 'Locate me and show nearby providers',
+	'locating' => 'Getting your location',
 );
 ?>
