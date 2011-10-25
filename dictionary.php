@@ -13,5 +13,8 @@ $LANG=array(
 	'helpMore' => 'If your institusion is not connected to this service, you may create a new account using any of the guest login providers. You also may contact your instituion to request being connected with this service.',
 	'locateMe' => 'Locate me and show nearby providers',
 	'locating' => 'Getting your location',
+	'showIn' => 'Show providers in',
+	'allCountries' => 'all countries',
+	'showAllCountries' => 'show all countries',
 );
 ?>
