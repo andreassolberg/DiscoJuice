@@ -1,0 +1,123 @@
+# DicoJuice Getting Started
+
+DiscoJuice is an embedded IdP Discovery Service written in javascript, that allows users to select where they would like to login.
+
+The most common way to setup DiscoJuice would be to integrate DiscoJuice into the Service as a popup box that is activated when the user clicks on a login button. The use then selects which provider to login with. DiscoJuice is configured to run a callback function when the user selects a provider, which allows you to configure how to start the real login process, depending on how the authentication software works. The most common callback will be to redirect the user to a specific URL with the identifier of the provider as a parameter.
+
+
+**This Getting Started Guide helps you through setting up DiscoJuice making use of the `discojuice.org` hosted environment. This means you do not need to host DiscoJuice yourself, but can instead just point to hosted version. You may also host DiscoJuice locally, but it is reccomended that you start with getting things work with the hosted version first**
+
+
+To get started, you would need to add a login button (when the user is not already logged in). DiscoJuice does not care how the login button is, as long as it is a HTML element. Here is an example:
+
+	<a href="/traditional/discovery" class="signon">Login</a>
+
+The reccomended fallback mechanism when javascript is not supported in the client would be for the login button to link to a traditional IdP Discovery service.
+
+Next, we need a [JQuery selector](http://api.jquery.com/category/selectors/) to refer to the HTML element representing the login button. A JQuery selector that points to a A (Anchor) element with a class `signon` would be:
+
+	a.signon
+
+
+
+Now, we need to add some code in the HTML `<head>` section:
+
+	<!-- JQuery hosted by Google -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+
+	<!-- DiscoJuice hosted by UNINETT at discojuice.org -->
+	<script type="text/javascript" src="https://engine.discojuice.org/discojuice-stable.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://static.discojuice.org/css/discojuice.css" />
+	<script type="text/javascript">
+		DiscoJuice.Hosted.setup(
+			"a.signon", "Example Showcase service",
+			"https://service.org/saml2/entityid",
+			"http://service.org/response.html", ["edugain", "kalmar", "feide"], "http://service.org/login?idp="
+		);
+	</script>
+
+The `DiscoJuice.Hosted.setup()` function takes the following parameters:
+
+* The JQuery selector, pointing to the login button. In example `a.signon` as discussed above.
+* The name of the service. Using the header of the DiscoJuice popup.
+* The Service Provider EntityID, used in the IdP Discovery Protocol.
+* The *IdP Discovery Response URL*, point to a special HTML page that you need to host on your site; more on this below.
+* A list of metadata feeds that you would like to use. A metadata feed is basically a list of providers with additional metadata, like keywords and logos.
+* A URL prefix that the user will be redirected to after the user has selected a provider. The user will then be redirected to this URL but with the identifier of the provider added as a suffix.
+
+## Installing the IdP Discovery Response HTML page
+
+The *IdP Discovery Response page* is a simple HTML page that you should install on your service provider. You can [download this file here](http://simplesamlphp.googlecode.com/svn/trunk/modules/discojuice/www/discojuice/discojuiceDiscoveryResponse.html).
+
+The URL to this response page is required in the configuration above.
+
+DiscoJuice.org also hosts a central discovery service, and to get this to work, your hostname needs to be accepted by DiscoJuice. If your metadata cotains a DiscoveryResponse element, and is present in eduGAIN, InCommon, Kalmar or UK Access Federation, it should be trusted already. If you want to add additional hosts without joining these federations, ask on the [DiscoJuice mailinglist](/lists).
+
+
+## Choosing Metadata Feeds
+
+DiscoJuice.org is hosting a set of automatically generated metadata feeds from the metadata of various Identity Federations.
+
+Here you can see a list of the provided feeds here:
+
+* [DiscoJuice.org Data Feeds](https://static.discojuice.org/feeds/)
+
+You may also setup your own metadata feeds.
+
+
+
+## Configuring the redirect 
+
+If your Service Provider supports that you go to a specific URL with the entityID of the Identity PRovider as a parameter, you can make use of that.
+
+TODO: Document Shibboleth and SimpleSAMLphp.
+
+
+
+## Testing that it works
+
+Go to a page containing the login button, and click on it. The DiscoJuice popup should then appear, and you may choose a provider.
+
+
+
+
+
+
+
+
+
+
+## Old documentation, not yet updated:
+
+
+
+### Guides
+
+* [Guide for SimpleSAMLphp as Service Provider](guide-sp-simplesamlphp)
+* [Guide for Shibboleth as Service Provider](guide-sp-shibboleth)
+* [Guide for Federations](guide-federations)
+
+
+
+
+### Installation 
+
+Installing DiscoJuice may be done in two ways;
+
+* [Installing *DiscoJuice*](install), or
+* [Intsall *DiscoJuice* packaged with SimpleSAMLphp](simplesamlphp-module) and then [configure the module](simplesamlphp-module-config)
+
+
+
+
+### Configuration and References
+
+* [Reference on DiscoJuice options object](configuration-reference)
+* [Reference on SimpleSAMLphp module configuration](simplesamlphp-module-config)
+* [Reference on DiscoJuiceJSON](discojuicejson)
+* [Specification on DiscoReadWrite protocol](discoreadwrite)
+* [DiscoPoints and Weighting Login Providers](discopoints)
+* [DiscoJuice Changelog](changelog)
+
+
+

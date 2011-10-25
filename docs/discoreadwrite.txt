@@ -1,0 +1,40 @@
+# DiscoReadWrite Protocol
+
+The DiscoReadWrite protocol is a simple extension to *[Identity Provider Discovery Service Protocol and Profile](http://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-idp-discovery.pdf)*.
+
+The protocol is backward compatible with *Identity Provider Discovery Service Protocol and Profile*, meaning that it adds some functionality (which will be ignored by disovery services that supports this profile and not the DiscoReadWrite protocol).
+
+The extension includes two new elements:
+
+* allowing a provider to *write the result of preferred provider*, and
+* allowing a new parameter `auth` that may distinguish saml authentication from other authentication methods.
+
+## The Request
+
+entityID
+: REQUIRED. The unique identifier of the service provider the end user is (or will be) interacting with, following successful authentication by an identity provider.
+
+return
+: The URL in which to return the result.
+
+policy
+: Described in *Identity Provider Discovery Service Protocol and Profile*.
+
+returnIDParam
+: A parameter name used to return the unique identifier of the selected identity provider to the original requester. If this parameter is omitted, it defaults to a value of "`entityID`".
+
+isPassive
+: A boolean value of "`true`" or "`false`" that controls whether the discovery service is allowed to visibly interact with the user agent in the second step below. If a value is not provided, the default is "`false`". In DiscoJuice this value is always set to `true`.
+
+IdPentityID
+: **NEW**. If the client that sends the request already knows what provider the user has selected. The reason why the DiscoReadWrite protocol is used in this context is not to ask the server what is the preferred provider, but to tell what it is. Then the server may store that value in a central cookie, and other services may benefit from learning about this.
+
+## The Response
+
+entityID
+: The SAML entityID of the login provider. Or unique ID if authentication protocol is not SAML.
+
+auth
+: **NEW**. The authentication protocol supported by the login provider. Default is `saml`. May be `twitter`, `facebook` or other.
+
+
