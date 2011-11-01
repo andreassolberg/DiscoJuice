@@ -5,7 +5,7 @@
  */
 if (typeof DiscoJuice == "undefined") var DiscoJuice = {};
 
-function getConfig (target, title, spentityid, responseurl, feeds, redirectURL) {
+function getConfig (title, spentityid, responseurl, feeds, redirectURL) {
 	var options, i;
 	
 	options = {
@@ -39,7 +39,6 @@ function getConfig (target, title, spentityid, responseurl, feeds, redirectURL) 
 DiscoJuice.Hosted = {
 	
 	"getConfig": getConfig,
-		
 	"setup": function (target, title, spentityid, responseurl, feeds, redirectURL) {
 		var options;
 
@@ -47,10 +46,9 @@ DiscoJuice.Hosted = {
 		
 		$(document).ready(function() {
 			$(target).DiscoJuice(options);
-			console.log("SETUP completed");
-			console.log(options);
+			// console.log("SETUP completed");
+			// console.log(options);
 		});
 		
 	}
-	
 };

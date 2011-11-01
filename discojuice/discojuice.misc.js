@@ -540,6 +540,14 @@ DiscoJuice.Utils = {
 		}
 	}(),
 	
+	"addQueryParam": function (url, key, value) {
+		var delimiter = ((url.indexOf('?') != -1) ? '&' : '?');
+		if (url.charAt(url.length-1) === '?') {
+			delimiter = '';
+		}
+		return url + delimiter + key + '=' + value;
+	},
+	
 	/* Functions for setting, reading and erasing cookies */
 	"createCookie": function(value, type) {
 		var type = type || 'EntityID';

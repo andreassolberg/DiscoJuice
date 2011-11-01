@@ -283,6 +283,7 @@ DiscoJuice.Control = {
 			this.ui.error(error);
 		}
 	},
+
 	
 	"discoResponse": function(sender, entityID, subID, cid) {
 		this.parent.Utils.log('DiscoResponse Received from [' + sender  + '] entityID: ' + entityID + ' subID: ' + subID);
@@ -639,7 +640,8 @@ DiscoJuice.Control = {
 			waiter.runAction(function (notifyCompleted) {
 			
 				callbackid = that.registerCallback(notifyCompleted);
-				returnurlwithparams = returnurl + '?cid=' + callbackid;
+//				returnurlwithparams = returnurl + '?cid=' + callbackid;
+				returnurlwithparams = DiscoJuice.Utils.addQueryParam(returnurl, 'cid', callbackid);
 				
 				currentStore = stores[i];
 				that.parent.Utils.log('Setting up DisoJuice Read from Store [' + currentStore + ']');

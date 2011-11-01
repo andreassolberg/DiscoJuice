@@ -139,7 +139,6 @@ var IdPDiscovery = function() {
 			}
 			
 			console.log('Setting up DiscoJuice');
-// 			console.log(rurls);
 			returnURLs = rurls;
 
 			this.receive();
