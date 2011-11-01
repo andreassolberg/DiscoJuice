@@ -147,8 +147,7 @@ var IdPDiscovery = function() {
 			return function (e) {
 				that.returnTo(e);
 			};
-		},
-
+		}
 	};
 }();
 
