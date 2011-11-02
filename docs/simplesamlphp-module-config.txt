@@ -1,3 +1,0 @@
-# Configuration of DiscoJuice Module
-
-[Moved here...](guide-sp-simplesamlphp)

@@ -1,3 +1,0 @@
-# Installing DiscoJuice as part of SimpleSAMLphp
-
-[Moved here...](guide-sp-simplesamlphp)
