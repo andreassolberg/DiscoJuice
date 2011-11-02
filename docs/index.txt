@@ -130,6 +130,8 @@ If you would like to setup your own passive discovery storage, to store preferen
 
 
 
+
+
 ## Using simpleSAMLphp
 
 If you are using simpleSAMLphp, you can enable the `discojuice` module to get started very quickly. This module makes use of the hosted DiscoJuice script on `discojuice.org`.
@@ -153,7 +155,9 @@ DiscoJuice is completely independent from SimpleSAMLphp, and there is no need to
 
 
 
+## Support
 
+If you have questions about using DiscoJuice, please join the [mailinglist](/lists).
 
 
 
