@@ -1,59 +1,10 @@
-# Installing DiscoJuice
-
-First, you need to [download DiscoJuice](/download).
-
-Unpack the DiscoJuice in a directory accessible from web.
-
-As DiscoJuice depends on the [jQuery](http://jquery.com/) + UI library, you must include jQuery + UI, following the [jQuery documentation](http://docs.jquery.com/):
-
-	<!-- JQuery -->
-	<script type="text/javascript" src="js/jquery/jquery.js"></script>
-	<script type="text/javascript" src="js/jquery/jquery-ui.js"></script>
-	<script type="text/javascript" src="js/jquery/jquery-placeholder.js"></script>
-	<link rel="stylesheet" media="screen" type="text/css" href="js/jquery/uitheme/jquery-ui-themeroller.css" />
-
-Next, you may install DiscoJuice embedded popup version or a standalone page version or both.
-
-## Installing DiscoJuice embedded popup version
-
-In the `<head>` section of your web page, you need to include reference to the DiscoJuice script and stylesheet:
-
-	<!-- DiscoJuice -->
-	<script type="text/javascript" language="javascript" src="discojuice/discojuice.js"></script>
-	<link rel="stylesheet" type="text/css" href="discojuice/css/discojuice.css" />
-
-Then you would need load and configure DiscoJuice. Here is a basic example of how you can invoke DiscoJuice on a `<a id="signin">` login link.
-
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("a.signin").DiscoJuice({
-				"callback": function(e) {
-					var returnto = window.location.href;
-					window.location = 'https://example.org/simplesaml/module.php/core/as_login.php?AuthId=saml&ReturnTo=' + escape(returnto) + '&saml:idp=' + escape(e.entityid);
-				}
-			});
-		});
-	</script>
-
-DiscoJuice is very flexible and may be configured in a number of ways. The `DiscoJuice()` function takes an options object as a parameter, allowing for customizations. Review the [DiscoJuice Configuration reference](configuration-reference) for more documentation on the configuration options.
+# Installing DiscoJuice hosted locally
 
 
-## Installing DiscoJuice standalone page
+Currently DiscoJuice is focused towards being hosted on `discojuice.org`. That said, you can easily setup DiscoJuice on your own.
 
-In the `<head>` section of your web page, you need to include reference to the DiscoJuice script, stylesheet and also a separate IdP Discovery Service script:
+Setting up DiscoJuice from scratch is currently not yet documented, because the flexibility allows so many different ways to deploy it. 
 
-	<!-- DiscoJuice -->
-	<script type="text/javascript" language="javascript" src="discojuice/discojuice.js"></script>
-	<script type="text/javascript" language="javascript" src="discojuice/idpdiscovery.js"></script>
-	<link rel="stylesheet" type="text/css" href="discojuice/css/discojuice.css" />
+You should start by grabbing the source here:
 
-You initiate the IdP Discovery script like this:
-
-	<script type="text/javascript">
-		IdPDiscovery.setup(options);
-	</script>
-
-where `options` is the [DiscoJuice Configuration object](configuration-reference).
-
-
-
+* <https://github.com/andreassolberg/DiscoJuice>

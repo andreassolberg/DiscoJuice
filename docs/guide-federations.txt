@@ -60,21 +60,6 @@ Operating a central DiscoJuice instance, involves maintaining a ACL of return ad
 
 
 
-## Offering customized configuration instructions for DiscoJuice in your federation
-
-Depending on what infrastructure you offer for your DiscoJuice users, you may customize a short document describing the Federation specific configuration options in DiscoJuice, making it easier for users to deploy DiscoJuice in your federation.
-
-We may list examples of such targeted documents here. (Please contact me to get your document added)
-
-* [Using DiscoJuice with Feide](custom-feide)
-* [Using DiscoJuice with Kalmar Union](custom-kalmar)
-* [Using DiscoJuice with eduGAIN](custom-edugain)
-* Using DiscoJuice with InCommon
-* Using DiscoJuice with UK Access Federation
-
-
-
-
 
 
 
