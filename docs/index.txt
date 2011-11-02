@@ -8,6 +8,8 @@ The most common way to setup DiscoJuice would be to integrate DiscoJuice into th
 **This Getting Started Guide helps you through setting up DiscoJuice making use of the `discojuice.org` hosted environment. This means you do not need to host DiscoJuice yourself, but can instead just point to hosted version. You may also host DiscoJuice locally, but it is reccomended that you start with getting things work with the hosted version first**
 
 
+## Include the DiscoJuice code
+
 To get started, you would need to add a login button (when the user is not already logged in). DiscoJuice does not care how the login button is, as long as it is a HTML element. Here is an example:
 
 	<a href="/traditional/discovery" class="signon">Login</a>
@@ -79,6 +81,14 @@ TODO: Document in more detail on how this can be setup with Shibboleth and Simpl
 ## Testing that it works
 
 Go to a page containing the login button, and click on it. The DiscoJuice popup should then appear, and you may choose a provider.
+
+
+
+## Setting up a standalone IdP Discovery Service using DiscoJuice
+
+Instead of having an embedded version of DiscoJuice, you may setup a separate page implementing the IdP Discovery Protocol, and using DiscoJuice as a user interface.
+
+* [Setting up a standalone IdP Discovery Service](standalone)
 
 
 ## About using DiscoJuice hosted at discojuice.org

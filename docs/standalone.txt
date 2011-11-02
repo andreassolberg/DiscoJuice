@@ -1,0 +1,84 @@
+# Setting up a standalone IdP Discovery Service
+
+DiscoJuice includes an additional script `idpdiscovery.js` that includes a complete implementation of the IdP Discovery Service. It is in javascript only, meaning that you do not need to have any logic at the server.
+
+Here is a complete example of a standalone IdP Discovery Service, in a static HTML page.
+
+
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Select Your Login Provider</title>
+		
+		<link rel="shortcut icon" href="http://discojuice.bridge.uninett.no/simplesaml/module.php/discojuice/favicon.png" />
+		
+		<!-- JQuery hosted by Google -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+		
+		<!-- DiscoJuice hosted by UNINETT at discojuice.org -->
+		<script type="text/javascript" src="https://engine.discojuice.org/discojuice-stable.min.js"></script>
+		<script type="text/javascript" src="https://engine.discojuice.org/idpdiscovery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://static.discojuice.org/css/discojuice.css" />
+		
+		<style type="text/css">
+			body {
+				text-align: center;
+			}
+			div.discojuice {
+				text-align: left;
+				position: relative;
+				width: 600px;
+				margin-right: auto;
+				margin-left: auto;
+			}
+		</style>
+		
+		<script type="text/javascript">
+			
+			$("document").ready(function() {
+				var acl = ['bridge.uninett.no'];
+				var djc = DiscoJuice.Hosted.getConfig(
+			        "a.signin", "Teest Demooo",
+			        "https://example.org/saml2/entityid",
+			        "http://bridge.uninett.no/response.html", ["rediris", "uk", "haka", "surfnet2", "edugain", "kalmar", "feide", "rctsaai", "arnes"], "http://example.org/login?idp="
+			    );
+				djc.always = true;
+				djc.callback = IdPDiscovery.setup(djc, acl);
+				$("a.signin").DiscoJuice(djc);
+			});
+		
+		
+		</script>
+	
+	</head>
+	<body style="background: #ccc">
+		<p style="display: none" style="text-align: right"><a class="signin" href="/">signin</a></p>
+	</body>
+	</html>
+
+
+Notice the following:
+
+Inclusion of the `idpdiscovery.js` script:
+
+	<script type="text/javascript" src="https://engine.discojuice.org/idpdiscovery.min.js"></script>
+
+Definition of a list of valid hosts to grant access to read discovery preferences:
+
+		var acl = ['bridge.uninett.no'];
+		
+The login goes in the setup function, that creates a callback to define what to do when the user selects a provider. The setup script will also take immediate action if the request is passive:
+
+		djc.callback = IdPDiscovery.setup(djc, acl);
+
+Always show the DiscoJuice window, not require the user to click login first:
+
+		djc.always = true;
+
+Add CSS to hide the login button:
+
+	<p style="display: none" style="text-align: right"><a class="signin" href="/">signin</a></p>
+
+
+
