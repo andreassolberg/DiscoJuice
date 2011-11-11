@@ -2,20 +2,76 @@ Guide for SimpleSAMLphp as Service Provider
 =======================
 
 
-If you are using SimpleSAMLphp as a Service Provider, and would like to use DiscoJuice for IdP Discovery, it should be prettu straight forward.
-
-Follow the documentation:
-
-* [Installing DiscoJuice as part of SimpleSAMLphp](simplesamlphp-module)
-* [Configure the SimpleSAMLphp DiscoJuice Module](simplesamlphp-module-config)
-* [Reference to DiscoJuice Configuration](configuration-reference)
-
-The quality of the DiscoJuice deployment will depend on the quality of the metadata you feed it with. If your federation does not offer DiscoJuice-friendly metadata, you may choose to override the metadata of some of the entries using the `'overrides'` option in `discojuicefeed.php`.
+If you are using SimpleSAMLphp as a Service Provider, and would like to use DiscoJuice for IdP Discovery, follow this guide.
 
 
-See also:
 
-* [DiscoJuice Guide for Federations](guide-federations)
+## Installing SimpleSAMLphp
 
+Currently the discojuice module is [available only in SimpleSAMLphp trunk](http://simplesamlphp.org/docs/1.7/simplesamlphp-subversion). Make sure you run the latest version of [SimpleSAMLphp](http://simplesamlphp.org/).
+
+
+## Enabling DiscoJuice Module
+
+
+Enable the discojuice module, and the required dependency modules `sanitycheck`, `cron`:
+
+	touch modules/discojuice/enable
+
+Copy the configuration templates:
+
+	cp modules/discojuice/config-templates/*.php config/
+
+
+## Configure the module
+
+You'll be able to configure the module, using the `config/discojuice.php` configuration file:
+
+	$config = array(
+	
+		// A human readable name describing the Service Provider
+		'name' => 'Service',
+	
+		/* A set of prepared metadata feeds from discojuice.org
+		 * You may visit
+		 * 		https://static.discojuice.org/feeds/
+		 *
+		 * to review the available feed identifiers.
+		 * You may choose to not use any of the provider feed, by setting this to an 
+		 * empty array: array()
+		 */
+		'feeds' => array('edugain'),
+	
+		/*
+		 * You may provide additional feeds
+		 */
+		'additionalFeeds' => array(
+		),
+	
+		/*
+		 * If you set this value to true, the module will contact discojuice.org to read and write cookies.
+		 * If you enable this, you will also need to get your host accepted in the access control list of 
+		 * discojuice.org
+		 *
+		 * The response url of your service, similar to:
+		 *
+		 *		https://sp.example.org/simplesaml/module.php/discojuice/response.html	
+		 *
+		 * will need to be registered at discojuice.org. If your response url is already registered in the metadata
+		 * of one of the federation feeds at discojuice.org, you should already have access.
+		 */
+		'enableCentralStorage' => false,
+	
+	);
+
+If you would like to offer additional feeds, please check the specification of the DiscoJuiceJSON format:
+
+* [Reference on DiscoJuiceJSON](discojuicejson)
+
+
+
+## Verifying your installation
+
+On the *Authentication* tab on your installation, you'll see *Test configured authentication sources*. Select your SAML *authsource*, and you should be sent to a page using showing DiscoJuice.
 
 

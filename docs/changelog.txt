@@ -3,9 +3,9 @@
 
 
 
-## Version 2.0 beta (Autumn 2011)
+## Version 2.0 beta (November 2nd 2011)
 
-Not yet released as a stable release.
+*This release is considered a beta.*
 
 Large changes under the hood. Few changes that affects the UI.
 
@@ -19,7 +19,7 @@ Large changes under the hood. Few changes that affects the UI.
 * Enabled search on description (in addition to keywords and name)
 * Option to leave out part of the header (UI)
 * Support for hitting enter to go to first entry on the list
-* The SimpleSAMLphp module is making use of MDUI information in the DiscoJuice JSON feed
+* Supports MDUI information in the DiscoJuice JSON feed at `discojuice.org`
 
 
 ## Version 1.0 (May 17th 2011)

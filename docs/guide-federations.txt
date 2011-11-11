@@ -4,13 +4,26 @@ DiscoJuice Guide for Federations
 
 Some topics that affects you as a federation operator:
 
+* Generation of DiscoJuiceJSON at discojuice.org
 * Offering DiscoJuice friendly metadata
-* Offering a central discovery service (just storage or with UI)
-* Offering customized configuration instructions for DiscoJuice in your federation
+* Offering a central discovery service
+
+
+## Generation of DiscoJuiceJSON at discojuice.org
+
+If you operate an Identity Federation, you may contact <andreas.solberg@uninett.no> about offering an automatically generated feed at `discojuice.org`.
+
+Here is a list of feeds already available:
+
+* <https://static.discojuice.org/feeds/>
 
 
 
 ## Offering DiscoJuice friendly metadata
+
+
+If you already have your federation metadata generated here: <https://static.discojuice.org/feeds/> – what can you do to improve the data quality, and then also the DiscoJuice user experience?
+
 
 You probably already offer SAML 2.0 Metadata to your Federation members. This metadata probably contains technical details about the SAML entities and in addition a *Organization name*.
 
@@ -40,37 +53,17 @@ The following information will not be used:
 * PrivacyStatementURL
 
 
-
-DiscoJuice does not support SAML 2.0 Metadata, but instead interprets it's own more compact format, [DiscoJuiceJSON](discojuicejson). Somehow DiscoJuice needs to convert SAML 2.0 metadata to DiscoJuiceJSON. This can happen one of the following ways:
-
-1. Federation offering a central DiscoJuiceJSON feed complimenting the SAML 2.0 metadata feed. The feed may be used directly in DiscoJuice using JSONP, or it may be relayed by the Service Provider.
-2. Service Provider using SimpleSAMLphp to automatically convert and offer a DiscoJuiceJSON feed. SimpleSAMLphp does not yet support MDUI parsing, but it is scheduled to be supported very soon.
-3. Service Provider using Shibboleth to automatically convert and offer a DiscoJuiceJSON feed. The Shibboleth JSON feed is currently partly compatible with DiscoJuiceJSON.
-4. Service Provider is using some other tool to convert or generate the feed, or the feed is created manually. 
+DiscoJuice does not support SAML 2.0 Metadata, but instead interprets it's own more compact format, [DiscoJuiceJSON](discojuicejson). `discojuice.org` performs automated generated of DiscoJuiceJSON from SAML 2.0 Metadata.
 
 
 
-## Offering a central discovery service (just storage or with UI)
+## Offering a central discovery service
 
 If the Federation already has a decent DiscoJuiceJSON feed in place (see above), the next step may be to setup a central Discovery Service (or Storage) using DiscoJuice. It is off course not neccessary to operate a central Discovery Service in a Federation, but many Federations already does this, and would like to contiue doing so.
 
-The central DiscoJuice deployment may be installed and configured the same was as if it was installed on a Service Provider. It may be installed stand-alone (only JS) or through the simpleSAMLphp DiscoJuice module.
+To setup a standalone central discovery service using DiscoJuice:
 
-Operating a central DiscoJuice instance, involves maintaining a ACL of return addresses that are allowed to retreive user's preferred provider. If you are using the SimpleSAMLphp DiscoJuice module, this ACL [is configured in discojuicecentral.php](simplesamlphp-module-config).
-
-
-
-## Offering customized configuration instructions for DiscoJuice in your federation
-
-Depending on what infrastructure you offer for your DiscoJuice users, you may customize a short document describing the Federation specific configuration options in DiscoJuice, making it easier for users to deploy DiscoJuice in your federation.
-
-We may list examples of such targeted documents here. (Please contact me to get your document added)
-
-* [Using DiscoJuice with Feide](custom-feide)
-* [Using DiscoJuice with Kalmar Union](custom-kalmar)
-* [Using DiscoJuice with eduGAIN](custom-edugain)
-* Using DiscoJuice with InCommon
-* Using DiscoJuice with UK Access Federation
+* [Setting up a standalone IdP Discovery Service](standalone)
 
 
 
