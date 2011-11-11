@@ -42,7 +42,7 @@ DiscoJuice.Hosted = {
 	"setup": function (target, title, spentityid, responseurl, feeds, redirectURL) {
 		var options;
 
-		options = getConfig(target, title, spentityid, responseurl, feeds, redirectURL);
+		options = getConfig(title, spentityid, responseurl, feeds, redirectURL);
 		
 		$(document).ready(function() {
 			$(target).DiscoJuice(options);
