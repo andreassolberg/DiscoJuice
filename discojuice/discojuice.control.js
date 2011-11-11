@@ -707,12 +707,11 @@ DiscoJuice.Control = {
 			this.parent.Utils.log('DiscoJuice.Control discoWrite(...)');			
 			if (settings.subIDwritableStores && settings.subIDwritableStores[entityID]) {
 			
-				this.parent.Utils.log('DiscoJuice.Control discoWrite(...)');			
-				writableStore = settings.subIDwritableStores[entityID];
-				
 				this.parent.Utils.log('DiscoJuice.Control discoWrite(' + entityID + ') with SubID [' + subID + ']');
+				writableStore = settings.subIDwritableStores[entityID];
+				iframeurl = settings.subIDwritableStores[entityID] + escape(subID);
 					
-				iframeurl = writableStore + escape(subID);
+				// = writableStore + escape(subID);
 				this.parent.Utils.log('DiscoJuice.Control discoWrite iframeURL (' + iframeurl + ') ');
 					
 				html = '<iframe src="' + iframeurl + '" style="display: none"></iframe>';
@@ -730,12 +729,18 @@ DiscoJuice.Control = {
 			
 		// iframeurl = writableStore + '?entityID=' + escape(spentityid) + '&IdPentityID=' + 
 		// 	escape(entityID) + '&isPassive=true&returnIDParam=bogus&return=' + escape(returnurl);
-
-		iframeurl = writableStore + '&entityID=' + escape(spentityid) + '&origin=' + 
-			escape(entityID) + '&isPassive=true&returnIDParam=bogus&return=' + escape(returnurl);
+		
+		iframeurl = DiscoJuice.Utils.addQueryParam(writableStore, 'origin', spentityid);
+		iframeurl = DiscoJuice.Utils.addQueryParam(iframeurl, 'IdPentityID', entityID);
+		iframeurl = DiscoJuice.Utils.addQueryParam(iframeurl, 'isPassive', 'true');
+		iframeurl = DiscoJuice.Utils.addQueryParam(iframeurl, 'returnIDParam', 'bogus');
+		iframeurl = DiscoJuice.Utils.addQueryParam(iframeurl, 'return', returnurl);
+		
+		// iframeurl = writableStore + '&entityID=' + escape(spentityid) + '&origin=' + 
+		// 	escape(entityID) + '&isPassive=true&returnIDParam=bogus&return=' + escape(returnurl);
 
 			
-		this.parent.Utils.log('DiscoJuice.Control discoWrite iframeURL (' + iframeurl + ') ');
+		this.parent.Utils.log('DiscoJuice.Control discoWrite iframeURL (2)(' + iframeurl + ') ');
 			
 		html = '<iframe src="' + iframeurl + '" style="display: none"></iframe>';
 		this.ui.addContent(html);

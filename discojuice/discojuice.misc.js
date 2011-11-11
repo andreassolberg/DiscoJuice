@@ -545,7 +545,7 @@ DiscoJuice.Utils = {
 		if (url.charAt(url.length-1) === '?') {
 			delimiter = '';
 		}
-		return url + delimiter + key + '=' + value;
+		return url + delimiter + encodeURIComponent(key) + '=' + encodeURIComponent(value);
 	},
 	
 	/* Functions for setting, reading and erasing cookies */
