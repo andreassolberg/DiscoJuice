@@ -394,10 +394,11 @@ DiscoJuice.UI = {
 		'</div>';
 		var that = this;
 		
-		console.log('Overlay=?');
-		console.log(this.parent.Utils.options.get('overlay', true));
+		//console.log('Overlay=?');
+		//console.log(this.parent.Utils.options.get('overlay', true));
 		
 		if (this.parent.Utils.options.get('overlay', true) === true) {
+			console.log('DiscoJuice Enable: adding overlay');
 			var overlay = '<div id="discojuice_overlay" style="display: none"></div>';
 			$(overlay).appendTo($("body"));
 		}

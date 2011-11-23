@@ -288,18 +288,22 @@ DiscoJuice.Control = {
 	"discoResponse": function(sender, entityID, subID, cid) {
 		this.parent.Utils.log('DiscoResponse Received from [' + sender  + '] entityID: ' + entityID + ' subID: ' + subID);
 		
+		var includessubid = true;
 		var settings = this.parent.Utils.options.get('disco');
 		if (settings) {
 			var stores = settings.subIDstores;
 			if (stores) {
 				if (stores[entityID] && !subID) {
 					this.parent.Utils.log('Ignoring discoResponse from entityID: ' + entityID + ' because subID was required and not provided');
-					return;
+					includessubid = false;
 				}
 			}
 		}
 		
-		this.setWeight(-100, entityID, subID);
+		if (includessubid) {
+			this.setWeight(-100, entityID, subID);			
+		}
+
 		
 		if (cid) {
 			this.runCallback(cid);			
@@ -477,7 +481,7 @@ DiscoJuice.Control = {
 			if (!current.weight) current.weight = 0;
 			
 			if (!current.title) {
-				console.log('No title for this entry [' + current.entityID + (current.relID) + '] skipping.');
+				this.parent.Utils.log('No title for this entry [' + current.entityID + (current.relID) + '] skipping.');
 				continue;
 			}
 			
@@ -555,7 +559,7 @@ DiscoJuice.Control = {
 	
 	
 	"hitEnter": function () {
-		console.log(this.quickEntry);
+		this.parent.Utils.log(this.quickEntry);
 		this.selectProvider(this.quickEntry.entityID, this.quickEntry.subID);
 	},
 	
@@ -579,7 +583,7 @@ DiscoJuice.Control = {
 		}
 		
 		if (entity.auth && entity.auth === 'local') {
-			console.log('local');
+			this.parent.Utils.log('local');
 			callback(entity, that);
 			return;
 		}
@@ -597,8 +601,8 @@ DiscoJuice.Control = {
 
 
 
-		console.log('Entity Selected');
-		console.log(entity);
+		this.parent.Utils.log('Entity Selected');
+		this.parent.Utils.log(entity);
 // 		return;
 
 
@@ -659,6 +663,9 @@ DiscoJuice.Control = {
 		var settings = this.parent.Utils.options.get('disco');
 		var that = this;
 		
+		this.parent.Utils.log('discoSubReadSetup()');
+
+		
 		if (!settings) return;
 	
 		var html = '';
@@ -669,9 +676,12 @@ DiscoJuice.Control = {
 		var currentStore;
 		var callbackid;
 		
+		
 		if (!stores) return;
 		
 		for(var idp in stores) {
+			
+			this.parent.Utils.log('discoSubReadSetup()');
 			
 			waiter.runAction(function (notifyCompleted) {
 			
@@ -767,7 +777,7 @@ DiscoJuice.Control = {
 			
 			// Ping
 			function ping (event) {
-				console.log('Search box detected a change. Executing refresh...')
+				//console.log('Search box detected a change. Executing refresh...')
 				my.counter++;
 				setTimeout(function() {
 					if (--my.counter === 0) {
@@ -783,8 +793,8 @@ DiscoJuice.Control = {
 		var performSearch = waiter(function(event) {
 			
 			term = that.ui.popup.find("input.discojuice_search").val();
-			console.log(that.ui.popup.find("input.discojuice_search"));
-			console.log('Term ' + term);
+			// console.log(that.ui.popup.find("input.discojuice_search"));
+			// console.log('Term ' + term);
 		
 //			if (term.length === 0) alert('Zero!');
 			
@@ -830,7 +840,7 @@ DiscoJuice.Control = {
 		var that = this;
 		var key;
 		
-		console.log('filterCountrySetup()');
+		this.parent.Utils.log('filterCountrySetup()');
 		
 		// Reduce country list to those in metadata
 		var validCountry = {};
@@ -839,7 +849,6 @@ DiscoJuice.Control = {
 				validCountry[this.data[key].country] = true;
 			}
 		}
-		console.log(validCountry);
 
 		var countries = 0;
 		for (key in validCountry) {
@@ -914,7 +923,7 @@ DiscoJuice.Control = {
 		var countryapi = this.parent.Utils.options.get('countryAPI', false);
 		var that = this;
 		
-		console.log('country api : ' + countryapi);
+		//console.log('country api : ' + countryapi);
 		
 		if (countryapi) {
 			
