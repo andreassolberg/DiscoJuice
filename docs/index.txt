@@ -57,6 +57,10 @@ The instructions above on setting up DiscoJuice includes the most basic required
 
 * [Advanced Configuration of DiscoJuice](advanced-configuration)
 
+There is a specific guide on how to setup a local authentication inside DiscoJuice:
+
+* [Combining DiscoJuice with local authentication](localauth)
+
 
 ## Choosing Metadata Feeds
 
