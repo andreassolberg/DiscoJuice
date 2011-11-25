@@ -88,6 +88,47 @@ to output the options object as provider to DiscoJuice.
 
 
 
+## Adding entities from other sources
+
+If you would like to combined the metadata feeds from <https://static.discojuice.org/feeds/> with some additional entries, such as in example Feide OpenIdP, you may do that in a few alternative ways.
+
+If you have only a few entries, the simplest approach is to include the metadata inline in the configuration of DiscoJuice. You may then use the **inlinemetadata** options from the [DiscoJuice Configuration Reference](configuration-reference).
+
+	var djc = DiscoJuice.Hosted.getConfig(
+	    "Example Showcase service",
+		"https://service.org/saml2/entityid",
+		"http://service.org/response.html", ["edugain", "kalmar", "feide"], "http://service.org/login?idp="
+	);
+	djc.inlinemetadata = [
+		{
+			'entityID': 'https://openidp.feide.no',
+			'title': 'OpenIdP',
+			'icon': 'openidp.png',
+			'descr':'If you do not have an institutional account, register here.',
+			'country':'_all_',
+			'geo':null,
+			'weight':-5,
+			'keywords': ['Guest', 'OpenIdP', 'Orphanage', 'Homeless', 'Create Account', 'Register']
+		}
+	];
+	$("a.signin").DiscoJuice(djc);
+
+
+You may also provide your own feed of metadata, and refer to that. Add the url of your own feed to the metadata array like this:
+
+	var djc = DiscoJuice.Hosted.getConfig(
+	    "Example Showcase service",
+		"https://service.org/saml2/entityid",
+		"http://service.org/response.html", ["edugain", "kalmar", "feide"], "http://service.org/login?idp="
+	);
+	djc.metadata.push('https://example.org/additional-metadata.js');
+	$("a.signin").DiscoJuice(djc);
+
+In the current version of DiscoJuice the feed URL MUST support the [JSONP protocol](http://json-p.org/), even if it is served on the same domain. (We'll remove this requirement, follow [issue 42](https://github.com/andreassolberg/DiscoJuice/issues/42)).
+
+
+
+
 
 
 

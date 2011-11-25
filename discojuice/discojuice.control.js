@@ -30,7 +30,6 @@ DiscoJuice.Control = {
 	"extensionResponse": null,
 	
 
-
 	// Waiter Notification Callback Registry
 	"wncr": [],
 	
@@ -73,6 +72,7 @@ DiscoJuice.Control = {
 		
 		this.subsetEnabled = this.parent.Utils.options.get('subsetEnabled', null);
 		
+		var inlinemetadata = this.parent.Utils.options.get('inlinemetadata');
 		var metadataurl = this.parent.Utils.options.get('metadata');
 		var metadataurls = [];
 		var parameters = {};
@@ -86,6 +86,9 @@ DiscoJuice.Control = {
 			metadataurls = metadataurl;
 		}
 		
+		if (typeof inlinemetadata === 'object' && inlinemetadata) {
+			this.data = inlinemetadata;
+		}
 
 		
 		this.parent.Utils.log('metadataurl is ' + metadataurl);

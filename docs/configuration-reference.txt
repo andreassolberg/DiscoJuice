@@ -35,7 +35,10 @@ location
 ## Metadata
 
 metadata
-: The URL of the JSON metadata feed
+: The URLs of the JSON metadata feeds. This could be a string of a single URL, or an array of multiple URLs.
+
+inlinemetadata
+: An array of DiscoJuice JSON Metadata entities to be merged with the external feeds.
 
 discoPath
 : The path for the DiscoJuice installation relative to the current page. In example, it could be set to `discojuice/`.
