@@ -1,4 +1,4 @@
-# DicoJuice Getting Started
+# Getting Started with DiscoJuice 
 
 DiscoJuice is an embedded IdP Discovery Service written in javascript, that allows users to select where they would like to login.
 
