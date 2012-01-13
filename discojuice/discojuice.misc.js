@@ -528,7 +528,7 @@ DiscoJuice.Utils = {
 	//			DiscoJuice.log(options);
 	//			DiscoJuice.log('Getting [' + key + '] default [' + def + '] val [' + options[key] + ']');
 				if (!options) return def;
-				if (!options[key]) return def;
+				if (typeof options[key] === 'undefined') return def;
 				return options[key];
 			},
 			"set": function(opts) {
@@ -539,6 +539,13 @@ DiscoJuice.Utils = {
 			}
 		}
 	}(),
+	
+	"escapeHTML": function(input) {
+		return(
+			input.replace(/&/g,'&amp;').replace(/>/g,'&gt;').replace(/</g,'&lt;').replace(/"/g,'&quot;')
+        );
+	},
+	
 	
 	"addQueryParam": function (url, key, value) {
 		var delimiter = ((url.indexOf('?') != -1) ? '&' : '?');
@@ -707,7 +714,12 @@ DiscoJuice.Utils = {
 	*/
 (function($) {
 	$.fn.DiscoJuice = function(options) {
-		return this.each(function() {
+		return this.each(function(i, target) {
+			
+			console.log('Target is');
+			console.log(target);
+			
+			options.target = target;
 			DiscoJuice.Utils.options.set(options);
 			
 			DiscoJuice.Control.ui = DiscoJuice.UI;

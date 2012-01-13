@@ -230,7 +230,7 @@ DiscoJuice.UI = {
 
 		
 		// Wrap in A element
-		textLink = '<a href="" class="' + classes + '" rel="' + escape(relID) + '" title="' + escape(item.title) + '">' + 
+		textLink = '<a href="" class="' + classes + '" rel="' + escape(relID) + '" title="' + DiscoJuice.Utils.escapeHTML(item.title) + '">' + 
 			textLink + '</a>';
 
 
@@ -394,16 +394,26 @@ DiscoJuice.UI = {
 		'</div>';
 		var that = this;
 		
+		var htarget = $("body");
+		if (this.parent.Utils.options.get('useTarget', false)) {
+			htarget = this.parent.Utils.options.get('target', htarget);				
+		}
+		console.log('Target is');
+		console.log(htarget);
+		
 		//console.log('Overlay=?');
 		//console.log(this.parent.Utils.options.get('overlay', true));
 		
-		if (this.parent.Utils.options.get('overlay', true) === true) {
+		if (this.parent.Utils.options.get('overlay', true)) {
 			console.log('DiscoJuice Enable: adding overlay');
 			var overlay = '<div id="discojuice_overlay" style="display: none"></div>';
+			
+
+			
 			$(overlay).appendTo($("body"));
 		}
 		
-		this.popup = $(html).appendTo($("body"));
+		this.popup = $(html).appendTo(htarget);
 
 
 		if (this.parent.Utils.options.get('always', false) === true) {
