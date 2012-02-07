@@ -714,6 +714,8 @@ DiscoJuice.Control = {
 		var spentityid = settings.spentityid;
 		var writableStore = settings.writableStore;
 		
+		var idpentityid = entityID;
+		
 		this.parent.Utils.log('DiscoJuice.Control discoWrite()');
 		
 		if (subID) {
@@ -732,27 +734,20 @@ DiscoJuice.Control = {
 				return true;
 				
 			
-			} else {
-				return false;
 			}
+			
+			idpentityid += "#" + subID;
 			
 		}
 		
-		this.parent.Utils.log('DiscoJuice.Control discoWrite(' + entityID + ') to ' + writableStore);
-			
-		// iframeurl = writableStore + '?entityID=' + escape(spentityid) + '&IdPentityID=' + 
-		// 	escape(entityID) + '&isPassive=true&returnIDParam=bogus&return=' + escape(returnurl);
-		
+		this.parent.Utils.log('DiscoJuice.Control discoWrite(' + idpentityid + ') to ' + writableStore);
+
 		iframeurl = DiscoJuice.Utils.addQueryParam(writableStore, 'origin', spentityid);
-		iframeurl = DiscoJuice.Utils.addQueryParam(iframeurl, 'IdPentityID', entityID);
+		iframeurl = DiscoJuice.Utils.addQueryParam(iframeurl, 'IdPentityID', idpentityid);
 		iframeurl = DiscoJuice.Utils.addQueryParam(iframeurl, 'isPassive', 'true');
 		iframeurl = DiscoJuice.Utils.addQueryParam(iframeurl, 'returnIDParam', 'bogus');
 		iframeurl = DiscoJuice.Utils.addQueryParam(iframeurl, 'return', returnurl);
 		
-		// iframeurl = writableStore + '&entityID=' + escape(spentityid) + '&origin=' + 
-		// 	escape(entityID) + '&isPassive=true&returnIDParam=bogus&return=' + escape(returnurl);
-
-			
 		this.parent.Utils.log('DiscoJuice.Control discoWrite iframeURL (2)(' + iframeurl + ') ');
 			
 		html = '<iframe src="' + iframeurl + '" style="display: none"></iframe>';
