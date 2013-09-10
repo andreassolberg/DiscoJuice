@@ -382,12 +382,13 @@ DiscoJuice.UI = {
 			
 			'<div class="bottom">' +
 //				'<p style="margin 0px; color: #ccc; font-size: 75%; float: left">Settings</p>' +
-				'<div class="filters" style="padding: 0px; margin: 0px"></div>' +
-				'<p id="dj_help" style="margin 0px; text-align: right; color: #ccc; font-size: 75%">' + 
-				'DiscoJuice &copy; UNINETT ' + 
-				'<img class="" style="position: relative; bottom: -4px; right: -5px" alt="Information" src="' + imgpath + 'info.png" />'
-				'</p>' +
+//				
 
+				'<p id="dj_help" style="margin 0px; float: right; color: #ccc; font-size: 75%">' + 
+					'DiscoJuice &copy; UNINETT ' + 
+					'<img class="" style="position: relative; bottom: -4px; right: -5px" alt="Information" src="' + imgpath + 'info.png" />' +
+				'</p>' +
+				'<div class="filters" style="padding: 0px; margin: 0px"></div>' +
 			'</div>' +
 	
 
