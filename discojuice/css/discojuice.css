@@ -271,12 +271,12 @@ div.discojuice div.scroller a {
 	margin: 4px 2px 0px 0px;
 	display:  block;
 
-	border: 1px solid #bbb;
+	border: 1px solid #c6c6c6;
 	border-radius: 4px;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
 	
-	background-color: #fafafa;
+	background-color: #f3f3f3;
 	
 	background-image: -webkit-gradient(
 		linear,
@@ -312,8 +312,8 @@ div.discojuice div.scroller a  {
 
 /* Item that is hovered. */
 div.discojuice div.scroller a:hover, div.discojuice div.scroller a.hothit:hover {
-	background-color: #fafafa;
-	border: 1px solid #666! important;
+	background-color: #eee;
+	border: 1px solid #aaa! important;
 }
 div.discojuice div.scroller a:hover {
 	background-color: #fafafa;
