@@ -1,11 +1,19 @@
 #!/usr/bin/env php
 <?php
 
+$basename = dirname(dirname(__FILE__));
+$configraw = file_get_contents($basename . '/etc/config.js');
+$config = json_decode($configraw, true);
+
+$credentials = $config['transifex-credentials'];
+
+
 function getData($path) {
+	global $credentials;
 	$opts = array(
 	    'http' => array(
 		    'method' =>'GET',
-		    'header' => sprintf('Authorization: Basic %s', base64_encode('erlang:42rVM8VjiyHE6s') )
+		    'header' => sprintf('Authorization: Basic %s', base64_encode($credentials) )
 		)
 	);
 	$ctx = stream_context_create($opts);
