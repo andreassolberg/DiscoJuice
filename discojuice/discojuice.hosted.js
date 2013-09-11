@@ -30,7 +30,7 @@ function getConfig (title, spentityid, responseurl, feeds, redirectURL) {
 	};
 	
 	for(i = 0; i < feeds.length; i++) {
-		options.metadata.push("https://static.discojuice.org/feeds/" + feeds[i]);
+		options.metadata.push("http://cdn.discojuice.org/feeds/" + feeds[i]);
 	}
 	return options;
 }
