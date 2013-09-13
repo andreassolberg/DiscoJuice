@@ -1,9 +1,70 @@
 ---
-layout: default
-title: Demo
+layout: fullpage
+title: DiscoJuice Demo
 slug: demo
 lead: "Test how DiscoJuice works."
 base_url: "../"
 ---
 
-<h1>Demo</h1>
+
+	<div class="bs-docs-section">
+		<div class="page-header">
+			<h1>DiscoJuice Demo</h1>
+
+		</div>
+		<p class="lead">Here you can experience the DiscoJuice user interface without .</p>
+
+
+		<p>This demo of DiscoJuice loads metadata from three feeds: feide, kalmar and edugain.</p>
+
+
+
+
+<script type="text/javascript" language="javascript" src="http://cdn.discojuice.org/engine/discojuice-dev.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.discojuice.org/dev/css/discojuice.css" />
+
+<style type="text/css">
+	body {
+		
+	}
+	div.discojuice {
+		text-align: left;
+		position: absolute;
+
+		left: 100px;
+		top: 100px;
+		width: 600px;
+
+		margin-right: auto;
+		margin-left: auto;
+	}
+</style>
+
+<script type="text/javascript">
+
+
+$("document").ready(function() {
+	var djc = DiscoJuice.Hosted.getConfig(
+		"Example Showcase service",
+		"https://service.org/saml2/entityid",
+		"http://service.org/response.html", 
+		["edugain", "kalmar", "feide"], 
+		"http://service.org/login?idp="
+	);
+	delete djc.disco;
+	djc.callback = function(data) {
+		alert("you selected " + data.entityID);
+	}
+	// djc.always = true;
+	console.log(djc);
+	$("a.signin").DiscoJuice(djc);
+
+});
+
+
+
+</script>
+
+
+	<a href="" class="signin btn btn-primary">Login</a>
+</div>
