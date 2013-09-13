@@ -26,7 +26,7 @@ $(target).DiscoJuice(options);
 	<p>All these options are well documented here:</p>
 
 	<ul>
-	<li><a href="configuration-reference">Reference on DiscoJuice options object</a></li>
+		<li><a href="#config_reference">Reference on DiscoJuice options object</a></li>
 	</ul>
 
 	<p>When you are using the hosted version of DiscoJuice from <code>discojuice.org</code>, you probably want to use the <code>DiscoJuice.Hosted</code> helper functions to automatically create the options object.</p>
@@ -63,6 +63,9 @@ DiscoJuice.Hosted.setup(
 	<li>A list of metadata feeds that you would like to use. A metadata feed is basically a list of providers with additional metadata, like keywords and logos.</li>
 	<li>A URL prefix that the user will be redirected to after the user has selected a provider. The user will then be redirected to this URL but with the identifier of the provider added as a suffix.</li>
 	</ul>
+
+
+
 
 
 <h2 id="hosted_getconfig" >DiscoJuice.Hosted.getConfig()</h2>
@@ -137,12 +140,15 @@ console.log(djc);
 	<p>to output the options object as provider to DiscoJuice.</p>
 
 
+
+
+
 <h2 id="other_sources">Adding entities from other sources</h2>
 	
 
-	<p>If you would like to combined the metadata feeds from <a href="https://static.discojuice.org/feeds/">https://static.discojuice.org/feeds/</a> with some additional entries, such as in example Feide OpenIdP, you may do that in a few alternative ways.</p>
+	<p>If you would like to combined the metadata feeds from <a href="http://cdn.discojuice.org/feeds/">http://cdn.discojuice.org/feeds/</a> with some additional entries, such as in example Feide OpenIdP, you may do that in a few alternative ways.</p>
 
-	<p>If you have only a few entries, the simplest approach is to include the metadata inline in the configuration of DiscoJuice. You may then use the <strong>inlinemetadata</strong> options from the <a href="configuration-reference">DiscoJuice Configuration Reference</a>.</p>
+	<p>If you have only a few entries, the simplest approach is to include the metadata inline in the configuration of DiscoJuice. You may then use the <strong>inlinemetadata</strong> options from the <a href="#config_reference">DiscoJuice Configuration Reference</a>.</p>
 
 
 {% highlight javascript %}
