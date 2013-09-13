@@ -1,0 +1,154 @@
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>CAS Login</title>
+        <link rel="stylesheet" href="css/cas_custom.css" type="text/css" media="screen" />
+            <script type="text/javascript" src="js/cas.js"></script>
+            <script type="text/javascript">
+                <!--
+                var a_fRC = 1;
+                var g_fFcs = 1;
+                var a_fLOff = 0;
+                var a_fCAC = 1
+                /// <summary>
+                /// Is Mime Control installed?
+                /// </summary>
+                function IsMimeCtlInst(progid)
+                {
+                    var oMimeVer = null;
+
+                    try
+                    {
+                        oMimeVer = new ActiveXObject(progid);
+                    }
+                    catch (e)
+                    {
+                    }
+
+                    if (oMimeVer != null)
+                        return true;
+                    else
+                        return false;
+                }
+
+                /// <summary>
+                /// Render out the S-MIME control if it is installed.
+                /// </summary>
+                function RndMimeCtl()
+                {
+                    if (IsMimeCtlInst("MimeBhvr.MimeCtlVer"))
+                        RndMimeCtlHlpr("MimeNSe2k3", "D801B381-B81D-47a7-8EC4-EFC111666AC0", "MIMEe2k3", "mimeLogoffE2k3");
+
+                    if (IsMimeCtlInst("OwaSMime.MimeCtlVer"))
+                        RndMimeCtlHlpr("MimeNSe2k7sp1", "833aa5fb-7aca-4708-9d7b-c982bf57469a", "MIMEe2k7sp1", "mimeLogoffE2k7sp1");
+                }
+
+                /// <summary>
+                /// Helper function to factor out the rendering of the S/MIME control.
+                /// </summary>
+                function RndMimeCtlHlpr(objid, classid, ns, id)
+                {
+                    document.write("<OBJECT id='" + objid + "' classid='CLSID:" + classid + "'></OBJECT>");
+                    document.write("<?IMPORT namespace='" + ns + "' implementation=#" + objid + ">");
+                    document.write("<" + ns + ":Logoff id='" + id + "' style='display:none'/>");
+                }
+                -->
+            </script>
+            <!-- DEFAULT FAU STYLES -->
+
+
+
+            <link type="text/css" href="js/themes/base/jquery.ui.all.css" rel="stylesheet" />
+
+            <script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+            <script type="text/javascript" src="js/ui/jquery.ui.core.js"></script>
+            <script type="text/javascript" src="js/ui/jquery.ui.widget.js"></script>
+
+            <script type="text/javascript" src="js/ui/jquery.ui.tabs.js"></script>
+            <script src="js/external/jquery.dimensions.js" type="text/javascript"></script>
+            <script src="js/external/jquery.tooltip.js" type="text/javascript"></script>
+
+            <script src="js/fau.js" type="text/javascript"></script>
+            <style>
+    .info, .errors, .success {clear:both; margin:18px 0; padding:20px 20px 20px 100px; font-size:10px; line-height:1.5;}
+    .info {border:1px dotted 008;    background:#eff url(../images/info.gif) no-repeat 20px 18px; color:#008;}
+    .errors {border:1px dotted #d21033; background:#fed url(../images/error.gif) no-repeat 20px 18px; color:#d21033; padding-bottom: 40px;}
+    .success {border:1px dotted #390; background:#dfa url(../images/confirm.gif) no-repeat 20px 18px; color:#390;}
+    #content .errors h2, #content .success h2 {font-family:Georgia,"Times New Roman",Times,serif; font-size:18px; line-height:48px; font-weight:400; margin:0 18px 0 0; padding:0;}
+    #content .success h2 {color: #008 !important;}
+    #content .errors h2 {color:#b00 !important;}
+    #content .success h2 {color:#060 !important;}
+    .fau_errors { 
+        clear:both; padding: 5px;font-size:10px; line-height:1.5;
+        border:1px dotted #d21033; 
+        color:#d21033;
+    }
+            </style>
+    </head>
+    <body>
+        <div id="container">
+            <div id="header"><img src="images/fau.png" /><br />
+                <div class="headertitle">Central Authentication Service: <span id="title"></span></div>
+            </div>
+            <div id="content">
+
+
+<form id="fm1" class="casForm" action="/login;jsessionid=66F784B58A1D18FF212E613938F3B96D" method="post">
+
+    <div id="leftcol">
+        
+        
+        <div style="padding-top: 20px; padding-bottom: 20px;">&nbsp;</div>
+
+        <div id="leftcol_form">
+            <b>FAUNet ID:</b><br>
+            <b>Password:</b></div>
+        <div id="rightcol_form">
+            <input id="formuser" name="username" class="required" tabindex="1" type="text" value="" size="20" autocomplete="false"/>
+            <a onclick="return false;" onmouseover="showTooltip(event,'User Name: Enter your user name as in \'FAUNet ID\'.');return false" onmouseout="hideTooltip()" href="#"><img style="border: medium none;" alt="Question" src="images/question.png"></a><br>
+            <input id="formpass" name="password" class="required" tabindex="2" accesskey="p" type="password" value="" size="20" autocomplete="off"/>
+            <a onclick="return false;" onmouseover="showTooltip(event,'All passwords automatically synchronize. Your password is same one used to log in to your FAU desktop machine, the FAU network, Blackboard and MyFAU.');return false" onmouseout="hideTooltip()" href="#"><img style="border: medium none;" alt="Question" src="images/question.png"></a></div><br />
+        <div class="warning">
+            <input id="warn" name="warn" value="true" tabindex="3" accesskey="w" type="checkbox" /><span class="accesskey">W</span>arn me before logging me into other sites.
+        </div>
+        <br />
+        <div align="center">
+            <input type="hidden" name="_eventId" value="submit" />
+            <input class="signbutton" name="submit" accesskey="l" value="LOGIN" tabindex="4" type="submit" />
+                   <input class="signbutton" name="reset" accesskey="c" value="CLEAR" tabindex="5" type="reset" />
+
+                   <br />
+            <br />
+            <input type="hidden" name="lt" value="e1s1" />
+
+            <a href="http://www.fau.edu/irm/accounts/" class="helplink" target="_blank">What is my FAUNet ID?</a><br />
+            <a href="https://myfau.fau.edu/cp/myqa/answer/start" class="helplink" target="_blank">Forgot your password?</a>
+        </div>
+
+
+    </div>
+
+    <div id="rightcol">
+
+        <script type="text/javascript">random_imglink();</script>
+        <noscript><img src="images/rotate/owl.png" /></noscript>
+    </div>
+</form>
+
+    
+  </div>
+  <div id="footer"><a href="http://www.fau.edu/helpdesk" target="_blank">Contact the Service Desk</a> <a href="http://www.fau.edu/irm" target="_blank">System Status</a></div>
+</div>
+</body>
+</html>
+
+

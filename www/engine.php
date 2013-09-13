@@ -92,7 +92,7 @@ if (empty($fullURI) ) {
 	<div class="data">
 	<h1>DiscoJuice Engine</h1>
 	
-		<p>Visit <a href="http://discojuice.org">discojuice.org</a> for more information about DiscoJuice. <a href="http://static.discojuice.org/feeds/">DiscoJuice data feeds</a></p>
+		<p>Visit <a href="http://discojuice.org">discojuice.org</a> for more information about DiscoJuice. <a href="/feeds/">DiscoJuice data feeds</a></p>
 			
 		<p>These are automatic links that detects language and selects the most updated version.</p>
 
