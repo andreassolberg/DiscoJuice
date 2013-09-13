@@ -1,0 +1,42 @@
+# DiscoPoints
+
+When entities are listed in DiscoJuice the order of the entities is very important. DiscoJuice is using an sophisticated algoritm, that based upon proper configuration, should make the most probable choices on top of the list.
+
+Before the list is presented to the user, DiscoJuice calculates *DiscoPoints* for all entities, and sort the list based on *DiscoPoints*. The less *DiscoPoint* the higher on the list an entity is shown.
+
+The default weight of an entity is 0 *DiscoPoints*. The weight is usually in the range [-100 to 100].
+
+## Preferred entities
+
+If an entity is selected earlier, either in a local cookie or in a remote Discovery storage, the entity is **substracted 100 DiscoPoints**.
+
+
+## Idplist API
+
+If the IdPList API is used, all entities that have never been used to login, will receive **2 additional DiscoPoints**.
+
+
+## Distance
+
+DiscoJuice calculates the distance between the user and the entity (if it has an estimate on both the locations).
+
+The DiscoJuice weight given based upon distance mostly falls within the range -10 to +10.
+
+If an entity is approx 150 km from the user, the weight is 0 DiscoPoints. If the distance is longer DiscoPoints are added, and if the distance is shorted DistoPoints are subtracted.
+
+The exact fomulate for DiscoPoints based upon distance is: `(2 * ln(distance + 1)) - 10`
+
+
+
+
+
+## Presentation of very good and very bad entities.
+
+Entities with more than **50 DiscoPoints** is hidden from the UI.
+
+Entities with less than **-50 DiscoPoints** is enchanced on top.
+
+
+
+
+

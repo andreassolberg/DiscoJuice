@@ -1,0 +1,10 @@
+# Installing DiscoJuice hosted locally
+
+
+Currently DiscoJuice is focused towards being hosted on `discojuice.org`. That said, you can easily setup DiscoJuice on your own.
+
+Setting up DiscoJuice from scratch is currently not yet documented, because the flexibility allows so many different ways to deploy it. 
+
+You should start by grabbing the source here:
+
+* <https://github.com/andreassolberg/DiscoJuice>

@@ -1,0 +1,169 @@
+# Getting Started with DiscoJuice 
+
+DiscoJuice is an embedded IdP Discovery Service written in javascript, that allows users to select where they would like to login.
+
+The most common way to setup DiscoJuice would be to integrate DiscoJuice into the Service as a popup box that is activated when the user clicks on a login button. The use then selects which provider to login with. DiscoJuice is configured to run a callback function when the user selects a provider, which allows you to configure how to start the real login process, depending on how the authentication software works. The most common callback will be to redirect the user to a specific URL with the identifier of the provider as a parameter.
+
+
+**This Getting Started Guide helps you through setting up DiscoJuice making use of the `discojuice.org` hosted environment. This means you do not need to host DiscoJuice yourself, but can instead just point to hosted version. You may also host DiscoJuice locally, but it is reccomended that you start with getting things work with the hosted version first**
+
+
+## Include the DiscoJuice code
+
+To get started, you would need to add a login button (when the user is not already logged in). DiscoJuice does not care how the login button is, as long as it is a HTML element. Here is an example:
+
+	<a href="/traditional/discovery" class="signon">Login</a>
+
+The reccomended fallback mechanism when javascript is not supported in the client would be for the login button to link to a traditional IdP Discovery service.
+
+
+
+Now, we need to add some code in the HTML `<head>` section:
+
+	<!-- JQuery hosted by Google -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+
+	<!-- DiscoJuice hosted by UNINETT at discojuice.org -->
+	<script type="text/javascript" src="https://engine.discojuice.org/discojuice-stable.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://static.discojuice.org/css/discojuice.css" />
+	<script type="text/javascript">
+		DiscoJuice.Hosted.setup(
+			"a.signon", "Example Showcase service",
+			"https://service.org/saml2/entityid",
+			"http://service.org/response.html", ["edugain", "kalmar", "feide"], "http://service.org/login?idp="
+		);
+	</script>
+
+The `DiscoJuice.Hosted.setup()` function takes the following parameters:
+
+* The [JQuery selector](http://api.jquery.com/category/selectors/), pointing to the login button discussed above. In example `a.signon` will refer to a login link like this: `<a href="..." class="signon">...</a>`
+* The name of the service. Using the header of the DiscoJuice popup.
+* The Service Provider EntityID, used in the IdP Discovery Protocol.
+* The *IdP Discovery Response URL*, point to a special HTML page that you need to host on your site; more on this below.
+* A list of metadata feeds that you would like to use. A metadata feed is basically a list of providers with additional metadata, like keywords and logos.
+* A URL prefix that the user will be redirected to after the user has selected a provider. The user will then be redirected to this URL but with the identifier of the provider added as a suffix.
+
+## Installing the IdP Discovery Response HTML page
+
+The *IdP Discovery Response page* is a simple HTML page that you should install on your service provider. You can [download this file here](https://raw.github.com/andreassolberg/DiscoJuice/master/discojuice/discojuiceDiscoveryResponse.html).
+
+The URL to this response page is required in the configuration above. It must be hosted on your own server, to fulfil the same-origin policy.
+
+DiscoJuice.org also hosts a *passice central discovery service*, and to get this to work, your hostname needs to be accepted by DiscoJuice. If your metadata cotains a DiscoveryResponse element, and is present in eduGAIN, InCommon, Kalmar or UK Access Federation, it should be trusted already. If you want to add additional hosts without joining these federations, ask on the [DiscoJuice mailinglist](/lists).
+
+## Advanced Configuration of DiscoJuice
+
+The instructions above on setting up DiscoJuice includes the most basic required options, but DiscoJuice have a lot of configuration options to meet your requirements.
+
+* [Advanced Configuration of DiscoJuice](advanced-configuration)
+
+There is a specific guide on how to setup a local authentication inside DiscoJuice:
+
+* [Combining DiscoJuice with local authentication](localauth)
+
+
+## Choosing Metadata Feeds
+
+DiscoJuice.org is hosting a set of automatically generated metadata feeds from the metadata of various Identity Federations.
+
+Here you can see a list of the provided feeds here:
+
+* [DiscoJuice.org Data Feeds](https://static.discojuice.org/feeds/)
+
+You may also setup your own metadata feeds.
+
+
+
+## Configuring the redirect 
+
+If your Service Provider supports that you go to a specific URL with the entityID of the Identity PRovider as a parameter, you can make use of that.
+
+TODO: Document in more detail on how this can be setup with Shibboleth and SimpleSAMLphp.
+
+
+
+## Testing that it works
+
+Go to a page containing the login button, and click on it. The DiscoJuice popup should then appear, and you may choose a provider.
+
+
+
+## Setting up a standalone IdP Discovery Service using DiscoJuice
+
+Instead of having an embedded version of DiscoJuice, you may setup a separate page implementing the IdP Discovery Protocol, and using DiscoJuice as a user interface.
+
+* [Setting up a standalone IdP Discovery Service](standalone)
+
+
+## About using DiscoJuice hosted at discojuice.org
+
+DiscoJuice is a [GÉANT3 project](http://www.geant.net), developed by UNINETT. Currently the focus is on providing a centralized hosted version of DiscoJuice, at `discojuice.org`. 
+
+DiscoJuice is currently hosted by UNINETT, providing a best effort uptime. If DiscoJuice becomes used a lot in our federations, there probably should be a more formal agreement on the `discojuice.org` hosting, with a Service Level Agreement, and funding from the biggest players. One solution could be that the GÉANT projects funds and hosts the service in the future.
+
+Comments or questions regarding this may [be sent on the mailinglist](/lists).
+
+
+## Translation of DiscoJuice
+
+The DiscoJuice UI is now translated into 15 different languages. We wish more translations welcome, if you're interested in translating DiscoJuice, please visit this page:
+
+* <https://www.transifex.net/projects/p/DiscoJuice/>
+
+and request a new translation team for your language, and after I have accepted the team, you'll be granted access. When your translation is complete, notice us through the [DiscoJuice mailinglist](/lists), and we'll include the new translation in the DiscoJuice hosted at `discojuice.org`.
+
+The metadata feeds at `discojuice.org` will interpret multi-lingual names of providers from SAML metadata, and will serve the user the preferred translation based upon the Accept language header sent from tbe browser. Currently, it fallbacks to the english translation if the preferred language was not available.
+
+
+## Guide to Federations
+
+If you operate a Identity Federation, you may contact <andreas.solberg@uninett.no> about offering a automatically generated feed at `discojuice.org`.
+
+To improve the quality of your generated metadata feed, please read this guide to improve the metadata:
+
+* [Guide for Federations](guide-federations)
+
+You may also choose to offer your own `DiscoJuiceJSON` feed and host that yourself. Or you may want to add support for `DiscoJuiceJSON` format in your software exporting metadata.
+
+* [Reference on DiscoJuiceJSON](discojuicejson)
+
+If you would like to setup your own passive discovery storage, to store preferences of the user (and not use `Discojuice.org`) you may implement support for the *DiscoReadWrite* protocol:
+
+* [Specification on DiscoReadWrite protocol](discoreadwrite)
+
+
+
+
+
+
+## Using simpleSAMLphp
+
+If you are using simpleSAMLphp, you can enable the `discojuice` module to get started very quickly. This module makes use of the hosted DiscoJuice script on `discojuice.org`.
+
+* [Guide for SimpleSAMLphp as Service Provider](guide-sp-simplesamlphp)
+
+DiscoJuice is completely independent from SimpleSAMLphp, and there is no need to install SimpleSAMLphp just to use DiscoJuice.
+
+
+
+
+## Useful References
+
+* [DiscoJuice Changelog](changelog)
+* [Reference on DiscoJuice options object](configuration-reference)
+* [Guide for Federations](guide-federations)
+* [Guide for SimpleSAMLphp as Service Provider](guide-sp-simplesamlphp)
+* [DiscoPoints and Weighting Login Providers](discopoints)
+* [Reference on DiscoJuiceJSON](discojuicejson)
+* [Specification on DiscoReadWrite protocol](discoreadwrite)
+
+
+
+## Support
+
+If you have questions about using DiscoJuice, please join the [mailinglist](/lists).
+
+
+
+
+

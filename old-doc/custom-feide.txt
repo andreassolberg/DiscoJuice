@@ -1,0 +1,4 @@
+Using DiscoJuice with Feide
+===========================
+
+Information will be added later. Currently Foodle is deployed with DiscoJuice connected to Feide.

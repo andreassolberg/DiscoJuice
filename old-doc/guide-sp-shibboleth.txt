@@ -1,0 +1,16 @@
+# DiscoJuice with Shibboleth
+
+More information will be added on using Shibboleth with DiscoJuice. Send a notification on the [mailinglist](/lists) to signal your interest in the topic.
+
+<!--
+	
+
+Shibboleth should support offering a metadata feed that is more or less compatible with DiscoJuice.
+
+
+
+* [Installing DiscoJuice Standalone](install)
+* [Configure DiscoJuice](configuration-reference) and point to the metadata feed offered by Shibboleth SP.
+
+
+-->

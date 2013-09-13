@@ -1,0 +1,75 @@
+DiscoJuice Guide for Federations
+================================
+
+
+Some topics that affects you as a federation operator:
+
+* Generation of DiscoJuiceJSON at discojuice.org
+* Offering DiscoJuice friendly metadata
+* Offering a central discovery service
+
+
+## Generation of DiscoJuiceJSON at discojuice.org
+
+If you operate an Identity Federation, you may contact <andreas.solberg@uninett.no> about offering an automatically generated feed at `discojuice.org`.
+
+Here is a list of feeds already available:
+
+* <https://static.discojuice.org/feeds/>
+
+
+
+## Offering DiscoJuice friendly metadata
+
+
+If you already have your federation metadata generated here: <https://static.discojuice.org/feeds/> – what can you do to improve the data quality, and then also the DiscoJuice user experience?
+
+
+You probably already offer SAML 2.0 Metadata to your Federation members. This metadata probably contains technical details about the SAML entities and in addition a *Organization name*.
+
+There is a lot more information that you can (and should) include in your metadata.
+
+The most important reference here is the metadata extension for UI:
+
+* [Metadata Extensions for Login and Discovery User Interface](http://wiki.oasis-open.org/security/SAML2MetadataUI)
+
+The following information will be used by DiscoJuice:
+
+* DisplayName
+* Description
+* Keywords
+* Logo
+* GeolocationHint
+
+The following information is not supported yet, but will be soon:
+
+* IPHint
+* DomainHint
+
+
+The following information will not be used:
+
+* InformationURL
+* PrivacyStatementURL
+
+
+DiscoJuice does not support SAML 2.0 Metadata, but instead interprets it's own more compact format, [DiscoJuiceJSON](discojuicejson). `discojuice.org` performs automated generated of DiscoJuiceJSON from SAML 2.0 Metadata.
+
+
+
+## Offering a central discovery service
+
+If the Federation already has a decent DiscoJuiceJSON feed in place (see above), the next step may be to setup a central Discovery Service (or Storage) using DiscoJuice. It is off course not neccessary to operate a central Discovery Service in a Federation, but many Federations already does this, and would like to contiue doing so.
+
+To setup a standalone central discovery service using DiscoJuice:
+
+* [Setting up a standalone IdP Discovery Service](standalone)
+
+
+
+
+
+
+
+
+

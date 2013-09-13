@@ -1,0 +1,318 @@
+---
+layout: default
+title: Advanced topics
+slug: advanced
+lead: "Documentation on some more advanced topics. Even though DiscoJuice is simple, it is flexible."
+base_url: "../"
+---
+
+
+
+
+<div class="bs-docs-section">
+	<div class="page-header">
+		<h1 id="advanced">Advanced Configuration of DiscoJuice</h1>
+	</div>
+
+	<p>The main DiscoJuice script is invoked like this:</p>
+
+
+{% highlight javascript %}
+$(target).DiscoJuice(options);
+{% endhighlight %}
+
+	<p>Here <code>options</code> are a javascript object including several options related to how DiscoJuice looks and behaves.</p>
+
+	<p>All these options are well documented here:</p>
+
+	<ul>
+	<li><a href="configuration-reference">Reference on DiscoJuice options object</a></li>
+	</ul>
+
+	<p>When you are using the hosted version of DiscoJuice from <code>discojuice.org</code>, you probably want to use the <code>DiscoJuice.Hosted</code> helper functions to automatically create the options object.</p>
+
+	<p>The <code>DiscoJuice.Hosted</code> object contains two helper functions:</p>
+
+	<ul>
+	<li><code>DiscoJuice.Hosted.getConfig()</code> - that automatically generates a options object and returns it.</li>
+	<li><code>DiscoJuice.Hosted.setup()</code> - that automatically generates a options object, and then invokes DiscoJuice automatically with it.</li>
+	</ul>
+
+
+
+
+<h2 id="hosted_setup" >DiscoJuice.Hosted.setup()</h2>
+	
+
+{% highlight javascript %}
+DiscoJuice.Hosted.setup(
+	"a.signon", "Example Showcase service",
+	"https://service.org/saml2/entityid",
+	"http://service.org/response.html", ["edugain", "kalmar", "feide"], 
+	"http://service.org/login?idp="
+);
+{% endhighlight %}
+
+	<p>This function takes 5 parameters:</p>
+
+	<ul>
+	<li>The <a href="http://api.jquery.com/category/selectors/">JQuery selector</a>, pointing to the login button discussed above. In example <code>a.signon</code> will refer to a login link like this: <code>&lt;a href="..." class="signon"&gt;...&lt;/a&gt;</code></li>
+	<li>The name of the service. Using the header of the DiscoJuice popup.</li>
+	<li>The Service Provider EntityID, used in the IdP Discovery Protocol.</li>
+	<li>The <em>IdP Discovery Response URL</em>, point to a special HTML page that you need to host on your site; more on this below.</li>
+	<li>A list of metadata feeds that you would like to use. A metadata feed is basically a list of providers with additional metadata, like keywords and logos.</li>
+	<li>A URL prefix that the user will be redirected to after the user has selected a provider. The user will then be redirected to this URL but with the identifier of the provider added as a suffix.</li>
+	</ul>
+
+
+<h2 id="hosted_getconfig" >DiscoJuice.Hosted.getConfig()</h2>
+
+
+	<p>This function takes 4 parameters. They are identical to the parameters of <code>DiscoJuice.Hosted.setup()</code> except the first parameter <em>target</em> that is omitted.</p>
+
+	<p>Here is an example of a generated options object:</p>
+
+
+{% highlight javascript %}
+{
+	"title": "Sign in to &lt;strong&gt;Example Showcase Service&lt;/strong&gt;",
+	"subtitle": "Select your Provider",
+	"disco": {
+		"spentityid": "https://service.org/saml2/entityid",
+		"url": "http://service.org/response.html",
+		"stores": ["https://store.discojuice.org/"],
+		"writableStore": "https://store.discojuice.org/"
+	},
+	"cookie": true,
+	"country": true,
+	"location": true,
+	"countryAPI": "https://store.discojuice.org/country",
+	"discoPath": "https://static.discojuice.org/",
+	"callback": function (e, djc) {
+		var returnto = window.location.href;
+		window.location = "http://service.org/login?idp=" + escape(e.entityID);
+	},
+	"metadata": 
+		[
+			"https://static.discojuice.org/feeds/edugain",
+			"https://static.discojuice.org/feeds/kalmar",
+			"https://static.discojuice.org/feeds/feide"
+		]
+}
+{% endhighlight %}
+
+	<pre><code>
+	</code></pre>
+
+
+
+
+<h2 id="overriding_options">Overriding the generated options object</h2>
+
+
+	<p>A good approach to add more advanced options, would be to first generate the options object using <code>DiscoJuice.Hosted.getConfig</code>, and then perform adjustments to the options, before invoking DiscoJuice.</p>
+
+	<p>Here is an example of disabling communication with DiscoJuice.org for setting preferences on selected providers, as well as turning on the <code>always</code> option to always popup the DiscoJuice window:</p>
+
+{% highlight javascript %}
+var djc = DiscoJuice.Hosted.getConfig(
+	 "Example Showcase service",
+	 "https://service.org/saml2/entityid",
+	 "http://service.org/response.html", ["edugain", "kalmar", "feide"], "http://service.org/login?idp="
+);
+delete djc.disco;
+djc.always = true;
+$("a.signin").DiscoJuice(djc);
+{% endhighlight %}
+
+
+	<p>To debug the options, open the Javascript console / web developer inspector in your browser, and add this line:</p>
+
+
+{% highlight javascript %}
+console.log(djc);
+{% endhighlight %}
+
+
+	<p>to output the options object as provider to DiscoJuice.</p>
+
+
+<h2 id="other_sources">Adding entities from other sources</h2>
+	
+
+	<p>If you would like to combined the metadata feeds from <a href="https://static.discojuice.org/feeds/">https://static.discojuice.org/feeds/</a> with some additional entries, such as in example Feide OpenIdP, you may do that in a few alternative ways.</p>
+
+	<p>If you have only a few entries, the simplest approach is to include the metadata inline in the configuration of DiscoJuice. You may then use the <strong>inlinemetadata</strong> options from the <a href="configuration-reference">DiscoJuice Configuration Reference</a>.</p>
+
+
+{% highlight javascript %}
+var djc = DiscoJuice.Hosted.getConfig(
+	 "Example Showcase service",
+	 "https://service.org/saml2/entityid",
+	 "http://service.org/response.html", ["edugain", "kalmar", "feide"], "http://service.org/login?idp="
+);
+djc.inlinemetadata = [
+	 {
+		  'entityID': 'https://openidp.feide.no',
+		  'title': 'OpenIdP',
+		  'icon': 'openidp.png',
+		  'descr':'If you do not have an institutional account, register here.',
+		  'country':'_all_',
+		  'geo':null,
+		  'weight':-5,
+		  'keywords': ['Guest', 'OpenIdP', 'Orphanage', 'Homeless', 'Create Account', 'Register']
+	 }
+];
+$(document).ready(function() {
+	 $("a.signon").DiscoJuice(djc);      
+});
+{% endhighlight %}
+
+
+
+	<p>You may also provide your own feed of metadata, and refer to that. Add the url of your own feed to the metadata array like this:</p>
+
+
+{% highlight javascript %}
+var djc = DiscoJuice.Hosted.getConfig(
+	 "Example Showcase service",
+	 "https://service.org/saml2/entityid",
+	 "http://service.org/response.html", ["edugain", "kalmar", "feide"], "http://service.org/login?idp="
+);
+djc.metadata.push('https://example.org/additional-metadata.js');
+$(document).ready(function() {
+	 $("a.signon").DiscoJuice(djc);      
+});
+{% endhighlight %}
+
+
+	<p>In the current version of DiscoJuice the feed URL MUST support the <a href="http://json-p.org/">JSONP protocol</a>, even if it is served on the same domain. (We'll remove this requirement, follow <a href="https://github.com/andreassolberg/DiscoJuice/issues/42">issue 42</a>).</p>
+
+
+</div>
+
+
+
+
+<div class="bs-docs-section">
+	<div class="page-header">
+		<h1 id="config_reference">DiscoJuice Configuration Object Reference</h1>
+	</div>
+
+
+
+
+	<p>When invoking DiscoJuice you provide a configuration object as a parameter, allowing for several options for customizing DiscoJuice.</p>
+
+	<h2>Basic configuration</h2>
+
+	<dl class="dl-horizontal">
+	<dt><code>title</code></dt>
+	<dd>The title bar in DiscoJuice contains two rows, including a title and subtitle.</dd>
+
+	<dt><code>subtitle</code></dt>
+	<dd>The title bar in DiscoJuice contains two rows, including a title and subtitle.</dd>
+	</dl>
+
+	<h2>Navigation</h2>
+
+	<dl class="dl-horizontal">
+	<dt><code>cookie</code></dt>
+	<dd>When the user has made his/her choice on a provider, should DiscoJuice store the result in a persistent local cookie? Then DiscoJuice will remember the choice until next</dd>
+
+	<dt><code>country</code></dt>
+	<dd>
+	<p>Boolean value. Default: <code>true</code></p>
+
+	<p>Enable UI widget for selecting country.</p>
+	</dd>
+
+	<dt><code>countryAPI</code></dt>
+	<dd>If you enter an URL supporting the DiscoJuice country lookup API, DiscoJuice will automatically discovery the country of the current user based upon IP address lookup, and then preselect the current country based upon that.</dd>
+
+	<dt><code>location</code></dt>
+	<dd>
+	<p>Boolean value. Default: <code>false</code></p>
+
+	<p>Enables a widget for supporting HTML5 Geo-location</p>
+	</dd>
+	</dl>
+
+	<h2>Metadata</h2>
+
+	<dl class="dl-horizontal">
+	<dt><code>metadata</code></dt>
+	<dd>The URLs of the JSON metadata feeds. This could be a string of a single URL, or an array of multiple URLs.</dd>
+
+	<dt><code>inlinemetadata</code></dt>
+	<dd>An array of DiscoJuice JSON Metadata entities to be merged with the external feeds.</dd>
+
+	<dt><code>discoPath</code></dt>
+	<dd>The path for the DiscoJuice installation relative to the current page. In example, it could be set to <code>discojuice/</code>.</dd>
+	</dl>
+
+	<h2>User interface customization</h2>
+
+	<dl class="dl-horizontal">
+	<dt><code>always</code></dt>
+	<dd>
+	<p>Boolean value. Default: <code>false</code></p>
+
+	<p>Should the DiscoJuice be shown by default, not requiring the user to invoke the UI by clicking on some button? Enable this if running DiscoJuice standalone and not embedded popup.</p>
+	</dd>
+
+	<dt><code>overlay</code></dt>
+	<dd>
+	<p>Boolean value. Default: <code>true</code></p>
+
+	<p>Enable this if you run DiscoJuice embedded, and want to fadeout the background when DiscoJuice is enabled.</p>
+	</dd>
+	</dl>
+
+	<h2>Callback</h2>
+
+	<dl class="dl-horizontal">
+	<dt><code>callback</code></dt>
+	<dd>A javascript function callback that will be called when the user has made his/her choice on a provider. The callback functions may take one parameter, which will be the entity configuration object of the selected entity. The entityID may be fetched through the <code>entityID</code> property.</dd>
+	</dl>
+
+	<h2>Communicating with remote Discovery Services</h2>
+
+	<p>Here is an example configuration of the <code>disco</code> option as deployed on the Foodle service:</p>
+
+{% highlight javascript %}
+"disco": {
+	"spentityid": "https://foodl.org/simplesaml/module.php/saml/sp/metadata.php/saml",
+	"url": "https://foodl.org/res/discojuice/discojuiceDiscoveryResponse.html?",
+	"stores": [
+		'https://disco.uninett.no/',
+		'https://foodle.feide.no/simplesaml/module.php/discopower/disco.php',
+		'https://kalmar2.org/simplesaml/module.php/discopower/disco.php'
+	],
+	'writableStore': 'https://disco.uninett.no/'
+},
+{% endhighlight %}
+
+	<p>DiscoJuice supports to be configured to read from a number of external IdP Discovery Services. The protocol that DiscoJuice is using to communicate with these services is the <em>IdP Discovery Protocol</em>. The request will be sent using a hidden iFrame, with the <code>IsPassive</code> parameter set to <code>true</code>.</p>
+
+	<dl class="dl-horizontal">
+	<dt><code>spentityid</code></dt>
+	<dd>The IdP Discovery Protocol requires that the request is including the Service Provider EntityID of the service that the Discovery service represents.</dd>
+
+	<dt><code>url</code></dt>
+	<dd>The URL that the response will be sent to. This must be the full URL of the <code>discojuiceDiscoveryResponse.html</code> file contained in the DiscoJuice package.</dd>
+
+	<dt><code>stores</code></dt>
+	<dd>An array of IdP Discovery Service endpoints to contact. You may safely include a short list of services, but you are reccomended to limit the number, because all these services are contacted by all users when DiscoJuice is used.</dd>
+
+	<dt><code>writableStore</code></dt>
+	<dd>You may configure one IdP Discovery Service endpoint that supports <strong>DiscoJuiceReadWrite</strong>, which is an extension to the IdP Discovery Protocol, that allows you to write the result of the user selection to a central discovery service. DiscoJuice deployed standalone supports this protocol.</dd>
+	</dl>
+
+
+
+</div>
+
+
+
+

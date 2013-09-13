@@ -1,0 +1,32 @@
+<header class="navbar navbar-inverse navbar-fixed-top " role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="/" class="navbar-brand">DiscoJuice</a>
+    </div>
+    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav">
+        <li{% if page.slug == "getting-started" %} class="active"{% endif %}>
+          <a href="/getting-started/">Getting started</a>
+        </li>
+        <li{% if page.slug == "advanced" %} class="active"{% endif %}>
+          <a href="/advanced/">Advanced</a>
+        </li>
+        <li{% if page.slug == "data" %} class="active"{% endif %}>
+          <a href="/data/">Data</a>
+        </li>
+        <li{% if page.slug == "community" %} class="active"{% endif %}>
+          <a href="/community/">Community</a>
+        </li>
+        <li{% if page.slug == "demo" %} class="active"{% endif %}>
+          <a href="/demo/">Demo</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

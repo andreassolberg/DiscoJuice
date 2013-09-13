@@ -1,0 +1,99 @@
+# DiscoJuice Configuration Reference
+
+
+When invoking DiscoJuice you provide a configuration object as a parameter, allowing for several options for customizing DiscoJuice.
+
+
+
+## Basic configuration 
+
+title
+: The title bar in DiscoJuice contains two rows, including a title and subtitle.
+
+subtitle
+: The title bar in DiscoJuice contains two rows, including a title and subtitle.
+
+
+## Navigation
+
+cookie
+: When the user has made his/her choice on a provider, should DiscoJuice store the result in a persistent local cookie? Then DiscoJuice will remember the choice until next 
+
+country
+: Boolean value. Default: `true`
+	
+	Enable UI widget for selecting country.
+
+countryAPI
+: If you enter an URL supporting the DiscoJuice country lookup API, DiscoJuice will automatically discovery the country of the current user based upon IP address lookup, and then preselect the current country based upon that.
+
+location
+: Boolean value. Default: `false`
+	
+	Enables a widget for supporting HTML5 Geo-location
+
+## Metadata
+
+metadata
+: The URLs of the JSON metadata feeds. This could be a string of a single URL, or an array of multiple URLs.
+
+inlinemetadata
+: An array of DiscoJuice JSON Metadata entities to be merged with the external feeds.
+
+discoPath
+: The path for the DiscoJuice installation relative to the current page. In example, it could be set to `discojuice/`.
+
+
+
+## User interface customization
+
+always
+: Boolean value. Default: `false`
+
+	Should the DiscoJuice be shown by default, not requiring the user to invoke the UI by clicking on some button? Enable this if running DiscoJuice standalone and not embedded popup.
+
+
+overlay
+: Boolean value. Default: `true`
+	
+	Enable this if you run DiscoJuice embedded, and want to fadeout the background when DiscoJuice is enabled.
+
+
+## Callback
+
+callback
+: A javascript function callback that will be called when the user has made his/her choice on a provider. The callback functions may take one parameter, which will be the entity configuration object of the selected entity. The entityID may be fetched through the `entityID` property.
+
+
+## Communicating with remote Discovery Services
+
+Here is an example configuration of the `disco` option as deployed on the Foodle service:
+
+	"disco": {
+		"spentityid": "https://foodl.org/simplesaml/module.php/saml/sp/metadata.php/saml",
+		"url": "https://foodl.org/res/discojuice/discojuiceDiscoveryResponse.html?",
+		"stores": [
+			'https://disco.uninett.no/',
+			'https://foodle.feide.no/simplesaml/module.php/discopower/disco.php',
+			'https://kalmar2.org/simplesaml/module.php/discopower/disco.php'
+		],
+		'writableStore': 'https://disco.uninett.no/'
+	},
+
+DiscoJuice supports to be configured to read from a number of external IdP Discovery Services. The protocol that DiscoJuice is using to communicate with these services is the *IdP Discovery Protocol*. The request will be sent using a hidden iFrame, with the `IsPassive` parameter set to `true`.
+
+spentityid
+: The IdP Discovery Protocol requires that the request is including the Service Provider EntityID of the service that the Discovery service represents.
+
+url
+: The URL that the response will be sent to. This must be the full URL of the `discojuiceDiscoveryResponse.html` file contained in the DiscoJuice package.
+
+stores
+: An array of IdP Discovery Service endpoints to contact. You may safely include a short list of services, but you are reccomended to limit the number, because all these services are contacted by all users when DiscoJuice is used.
+
+writableStore
+: You may configure one IdP Discovery Service endpoint that supports **DiscoJuiceReadWrite**, which is an extension to the IdP Discovery Protocol, that allows you to write the result of the user selection to a central discovery service. DiscoJuice deployed standalone supports this protocol.
+
+
+
+

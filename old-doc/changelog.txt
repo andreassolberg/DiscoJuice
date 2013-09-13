@@ -1,0 +1,39 @@
+# DiscoJuice Change log
+
+
+
+
+## Version 2.0 beta (November 2nd 2011)
+
+*This release is considered a beta.*
+
+Large changes under the hood. Few changes that affects the UI.
+
+* Hosted version available at discojuice.org
+* Added support for parallell processing of metadata retrieval, and IdP Discovery protocol requests. Control functions that does not refresh the UI more than neccessary.
+* Support for getting metadata from multiple sources
+* Support showing error messages from IdP Discovery Service for diagnostics
+* Added support for client-side caching of both DiscoJuice and the metadata feeds.
+* Dynamic country list (thanks for the patch)
+* Partial support for local authentication with username and password within DiscoJuice.
+* Enabled search on description (in addition to keywords and name)
+* Option to leave out part of the header (UI)
+* Support for hitting enter to go to first entry on the list
+* Supports MDUI information in the DiscoJuice JSON feed at `discojuice.org`
+
+
+## Version 1.0 (May 17th 2011)
+
+Initial stable release, includes:
+
+* Local Memory (cookie)
+* Remote Memory (DiscoReadWrite protocol + IdP Discovery)
+* Javascript only, super simple to deploy
+* DiscoJuiceJSON compact UI-focused Metadata format (MDUI friendly)
+* Presents logos, searchable keywords, name, descr, country...
+* Automatically discovery of country
+* HTML5 Geo-location API
+* Gracefull non-javascript fallback
+* Inline incremental search
+* Flexible integration API using JS callbacks.
+* Protocol agnostics, demoed with alternative protocols.

@@ -1,0 +1,143 @@
+# Advanced Configuration of DiscoJuice
+
+The main DiscoJuice script is invoked like this:
+
+	$(target).DiscoJuice(options);
+
+Here `options` are a javascript object including several options related to how DiscoJuice looks and behaves.
+
+All these options are well documented here:
+
+* [Reference on DiscoJuice options object](configuration-reference)
+
+When you are using the hosted version of DiscoJuice from `discojuice.org`, you probably want to use the `DiscoJuice.Hosted` helper functions to automatically create the options object.
+
+The `DiscoJuice.Hosted` object contains two helper functions:
+
+* `DiscoJuice.Hosted.getConfig()` - that automatically generates a options object and returns it.
+* `DiscoJuice.Hosted.setup()` - that automatically generates a options object, and then invokes DiscoJuice automatically with it.
+
+
+## DiscoJuice.Hosted.setup()
+
+	DiscoJuice.Hosted.setup(
+		"a.signon", "Example Showcase service",
+		"https://service.org/saml2/entityid",
+		"http://service.org/response.html", ["edugain", "kalmar", "feide"], "http://service.org/login?idp="
+	);
+
+
+This function takes 5 parameters:
+
+* The [JQuery selector](http://api.jquery.com/category/selectors/), pointing to the login button discussed above. In example `a.signon` will refer to a login link like this: `<a href="..." class="signon">...</a>`
+* The name of the service. Using the header of the DiscoJuice popup.
+* The Service Provider EntityID, used in the IdP Discovery Protocol.
+* The *IdP Discovery Response URL*, point to a special HTML page that you need to host on your site; more on this below.
+* A list of metadata feeds that you would like to use. A metadata feed is basically a list of providers with additional metadata, like keywords and logos.
+* A URL prefix that the user will be redirected to after the user has selected a provider. The user will then be redirected to this URL but with the identifier of the provider added as a suffix.
+
+
+## DiscoJuice.Hosted.getConfig()
+
+This function takes 4 parameters. They are identical to the parameters of `DiscoJuice.Hosted.setup()` except the first parameter *target* that is omitted.
+
+Here is an example of a generated options object:
+
+	{
+		"title": "Sign in to <strong>Example Showcase Service</strong>",
+		"subtitle": "Select your Provider",
+		"disco": {
+			"spentityid": "https://service.org/saml2/entityid",
+			"url": "http://service.org/response.html",
+			"stores": ["https://store.discojuice.org/"],
+			"writableStore": "https://store.discojuice.org/"
+		},
+		"cookie": true,
+		"country": true,
+		"location": true,
+		"countryAPI": "https://store.discojuice.org/country",
+		"discoPath": "https://static.discojuice.org/",
+		"callback": function (e, djc) {
+	        var returnto = window.location.href;
+			window.location = "http://service.org/login?idp=" + escape(e.entityID);
+		},
+		"metadata": ["https://static.discojuice.org/feeds/edugain","https://static.discojuice.org/feeds/kalmar","https://static.discojuice.org/feeds/feide"]
+	}
+
+## Overriding the generated options object
+
+A good approach to add more advanced options, would be to first generate the options object using `DiscoJuice.Hosted.getConfig`, and then perform adjustments to the options, before invoking DiscoJuice.
+
+Here is an example of disabling communication with DiscoJuice.org for setting preferences on selected providers, as well as turning on the `always` option to always popup the DiscoJuice window:
+
+
+	var djc = DiscoJuice.Hosted.getConfig(
+	    "Example Showcase service",
+		"https://service.org/saml2/entityid",
+		"http://service.org/response.html", ["edugain", "kalmar", "feide"], "http://service.org/login?idp="
+	);
+	delete djc.disco;
+	djc.always = true;
+	$("a.signin").DiscoJuice(djc);
+
+To debug the options, open the Javascript console / web developer inspector in your browser, and add this line:
+
+	console.log(djc);
+
+to output the options object as provider to DiscoJuice.
+
+
+
+## Adding entities from other sources
+
+If you would like to combined the metadata feeds from <https://static.discojuice.org/feeds/> with some additional entries, such as in example Feide OpenIdP, you may do that in a few alternative ways.
+
+If you have only a few entries, the simplest approach is to include the metadata inline in the configuration of DiscoJuice. You may then use the **inlinemetadata** options from the [DiscoJuice Configuration Reference](configuration-reference).
+
+	var djc = DiscoJuice.Hosted.getConfig(
+	    "Example Showcase service",
+		"https://service.org/saml2/entityid",
+		"http://service.org/response.html", ["edugain", "kalmar", "feide"], "http://service.org/login?idp="
+	);
+	djc.inlinemetadata = [
+		{
+			'entityID': 'https://openidp.feide.no',
+			'title': 'OpenIdP',
+			'icon': 'openidp.png',
+			'descr':'If you do not have an institutional account, register here.',
+			'country':'_all_',
+			'geo':null,
+			'weight':-5,
+			'keywords': ['Guest', 'OpenIdP', 'Orphanage', 'Homeless', 'Create Account', 'Register']
+		}
+	];
+	$(document).ready(function() {
+    	$("a.signon").DiscoJuice(djc);		
+	});
+
+
+You may also provide your own feed of metadata, and refer to that. Add the url of your own feed to the metadata array like this:
+
+	var djc = DiscoJuice.Hosted.getConfig(
+	    "Example Showcase service",
+		"https://service.org/saml2/entityid",
+		"http://service.org/response.html", ["edugain", "kalmar", "feide"], "http://service.org/login?idp="
+	);
+	djc.metadata.push('https://example.org/additional-metadata.js');
+	$(document).ready(function() {
+    	$("a.signon").DiscoJuice(djc);		
+	});
+
+In the current version of DiscoJuice the feed URL MUST support the [JSONP protocol](http://json-p.org/), even if it is served on the same domain. (We'll remove this requirement, follow [issue 42](https://github.com/andreassolberg/DiscoJuice/issues/42)).
+
+
+
+
+
+
+
+
+
+
+
+

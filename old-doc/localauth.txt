@@ -1,0 +1,77 @@
+# Combining DiscoJuice with local authentication
+
+The typical configuration of DiscoJuice is to use it as a way of selecting which of a number of external login providers to use.
+
+Sometimes a service would like to combine this with local user/password dialog authentication for some of the users.
+
+Let's walk through the configuration of a such setup:
+
+
+
+Let's start by getting a configuration object for the DiscoJuice hosted at `discojuice.org`. (see [Advanced Configuration](advanced-configuration)).
+
+	var djc = DiscoJuice.Hosted.getConfig(
+	    "Demo of local auth",
+	    "https://example.org/saml2/entityid",
+	    "http://dev.discojuice.org/discojuice/discojuiceDiscoveryResponse.html", ["edugain"], "http://example.org/login?idp="
+	);
+
+Let's use the `inlinemetadata` entry to add a entry for the option of authenticating locally. The `entityID` does not really matter, but MUST be set to something unique. We also need to set the `auth` value to something that we can catch in the callback later on. We use the value `local`.
+
+	djc.inlinemetadata = [
+		{
+			'entityID': 'local://',
+			'auth': 'local',
+			'title': 'Local authentication',
+			'country':'_all_',
+			'geo':null,
+			'weight':-8
+		}
+	];
+
+Next, we create a HTML form for local authentication: 
+
+	var localauth = 
+		'<form method="post" action="https://example.org/loginlocal"> '+
+		'<p>Sign in using account at <strong>example.org</strong>.</p>' +
+		'<p style="margin: 5px; color: #888" ><input type="text" name="Name" style="font-size: 160%; width: 100%" id="lu" /> <label for="lu">Username</label></p>' +
+		'<p style="margin: 5px; color: #888" ><input type="password" name="Name" style="font-size: 160%; width: 100%" id="lp" /> <label for="lp">Password</label></p>' +
+		'<p  style="" ><input type="submit" style="margin: 20px 2px" name="smt"value="Login »" /></p>' +
+		'</form>';
+
+Now, the important part, we define the callback to do a special catch on the `local` authentication type, and to present the local login form in DiscoJuice:
+
+	djc.callback = function(e) {
+		console.log(e);
+		
+		var auth = e.auth || null;
+		var returnto = window.location.href || 'https://foodl.org';
+		switch(auth) {
+			
+			case 'local':
+				DiscoJuice.UI.setScreen(localauth);
+				$("input#lu").focus();
+			break;
+			
+			case 'saml':
+			default:
+				window.location = 'https://foodl.org/simplesaml/module.php/core/as_login.php?AuthId=saml&ReturnTo=' + escape(returnto) + '&saml:idp=' + escape(e.entityID);
+			break;							
+			
+		}
+	}
+
+And we run DiscoJuice with the configuration above.
+	
+	$("a.signin").DiscoJuice(djc);
+
+
+Now, local authentication will show up together with the other alternatives:
+
+![](http://clippings.erlang.no/ZZ50F12244.jpg)
+
+When the user selects this, the login form is shown inline in DiscoJuice.
+
+![](http://clippings.erlang.no/ZZ611E8B4A.jpg)
+
+
