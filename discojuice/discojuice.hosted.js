@@ -14,14 +14,14 @@ function getConfig (title, spentityid, responseurl, feeds, redirectURL) {
 		"disco": {
 			"spentityid": spentityid,
 			"url": responseurl,
-			"stores": ["http://data.discojuice.org/store"],
-			"writableStore": "http://data.discojuice.org/store"
+			"stores": ["https://data.discojuice.org/store"],
+			"writableStore": "https://data.discojuice.org/store"
 		},
 		"cookie": true,
 		"country": true,
 		"location": true,
-		"countryAPI": "http://data.discojuice.org/country",
-		"discoPath": "http://cdn.discojuice.org/",
+		"countryAPI": "https://data.discojuice.org/country",
+		"discoPath": "https://cdn.discojuice.org/",
 		"callback": function (e, djc) {
 			var returnto = window.location.href;
 			window.location = redirectURL + escape(e.entityID);
@@ -31,7 +31,7 @@ function getConfig (title, spentityid, responseurl, feeds, redirectURL) {
 
 	
 	for(i = 0; i < feeds.length; i++) {
-		options.metadata.push("http://cdn.discojuice.org/feeds/" + feeds[i]);
+		options.metadata.push("https://cdn.discojuice.org/feeds/" + feeds[i]);
 	}
 	return options;
 }
