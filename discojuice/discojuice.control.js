@@ -115,7 +115,11 @@ DiscoJuice.Control = {
 					$.ajax({
 						url: curmdurl,
 						dataType: 'jsonp',
-						jsonpCallback: function() { return 'dj_md_' + j; },
+						jsonpCallback: function() { 
+							// Important to use a reliable hash function for caching purposes
+							// same URL will always result in same callback function.
+							return '_' + (that.parent.Utils.murmurhash3_32_gc(curmdurl, 0)).toString(36);
+						},
 						cache: true,
 						data: parameters,
 						success: function(data) {
