@@ -5,34 +5,46 @@
  */
 if (typeof DiscoJuice == "undefined") var DiscoJuice = {};
 
-function getConfig (title, spentityid, responseurl, feeds, redirectURL) {
+function getConfig (config) {
 	var options, i;
 	
 	options = {
-		"title": "Sign in to <strong>" + title + "</strong>",
-		"subtitle": "Select your Provider",
-		"disco": {
-			"spentityid": spentityid,
-			"url": responseurl,
-			"stores": ["https://cdn.discojuice.org/store"],
-			"writableStore": "https://cdn.discojuice.org/store"
-		},
+		"title": "Select provider",
 		"cookie": true,
 		"country": true,
 		"location": true,
 		"countryAPI": "https://cdn.discojuice.org/country",
 		"discoPath": "https://cdn.discojuice.org/",
 		"callback": function (e, djc) {
-			var returnto = window.location.href;
-			window.location = redirectURL + escape(e.entityID);
+			alert("DiscoJuice is misconfigured. You need to provide a redirectURL to send the user when a provider is selected.");
 		},
 		"metadata": []
 	};
 
-	
-	for(i = 0; i < feeds.length; i++) {
-		options.metadata.push("https://cdn.discojuice.org/feeds/" + feeds[i]);
+	if (config.hasOwnProperty("title")) {
+		options.title = "Sign in to <strong>" + config.title + "</strong>";
+		options.subtitle = "Select your Provider";
 	}
+	if (config.hasOwnProperty("spentityid")) {
+		options.disco = {
+			"spentityid": config.spentityid,
+			"url": config.responseurl,
+			"stores": ["https://cdn.discojuice.org/store"],
+			"writableStore": "https://cdn.discojuice.org/store"
+		};
+	}
+	if (config.hasOwnProperty("redirectURL")) {
+		options.callback = function (e, djc) {
+			var returnto = window.location.href;
+			window.location = config.redirectURL + escape(e.entityID);
+		};
+	}
+	if (config.hasOwnProperty("feeds")) {
+		for(i = 0; i < config.feeds.length; i++) {
+			options.metadata.push("https://cdn.discojuice.org/feeds/" + config.feeds[i]);
+		}
+	}
+
 	return options;
 }
 
@@ -40,10 +52,10 @@ function getConfig (title, spentityid, responseurl, feeds, redirectURL) {
 DiscoJuice.Hosted = {
 	
 	"getConfig": getConfig,
-	"setup": function (target, title, spentityid, responseurl, feeds, redirectURL) {
+	"setup": function (target, config) {
 		var options;
 
-		options = getConfig(title, spentityid, responseurl, feeds, redirectURL);
+		options = getConfig(config);
 		
 		$(document).ready(function() {
 			$(target).DiscoJuice(options);
