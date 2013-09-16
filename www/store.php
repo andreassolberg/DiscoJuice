@@ -2,6 +2,8 @@
 
 require_once('../lib/lib.php');
 
+header('Pragma: no-cache');
+header('Cache-Control: no-cache, must-revalidate');
 
 function fatal($err) {
 	echo $err; exit;

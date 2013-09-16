@@ -1,7 +1,8 @@
 <?php
 
 
-
+header('Pragma: no-cache');
+header('Cache-Control: no-cache, must-revalidate');
 
 $basename = dirname(dirname(__FILE__));
 $feedpath = $basename . '/feeds/';

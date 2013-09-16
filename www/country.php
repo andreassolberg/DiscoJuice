@@ -191,6 +191,9 @@ $demo = array(
 
 try {
 	
+	header('Pragma: no-cache');
+	header('Cache-Control: no-cache, must-revalidate');
+
 	$result = array('status' => 'ok');
 
 	$c = new CountryLookup();
