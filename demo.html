@@ -44,20 +44,14 @@ base_url: "../"
 
 
 $("document").ready(function() {
-	var djc = DiscoJuice.Hosted.getConfig(
-		"Example Showcase service",
-		"https://service.org/saml2/entityid",
-		"http://service.org/response.html", 
-		["edugain", "kalmar", "feide"], 
-		"http://service.org/login?idp="
-	);
-	delete djc.disco;
-	djc.callback = function(data) {
-		alert("you selected " + data.entityID);
-	}
-	// djc.always = true;
-	console.log(djc);
-	$("a.signin").DiscoJuice(djc);
+
+
+	DiscoJuice.Hosted.setup({
+		"target": "a.signin",
+		"title": "DiscoJuice Demo",
+		"feeds": ["edugain", "kalmar", "feide"]
+	});
+
 
 });
 
