@@ -102,9 +102,14 @@ base_url: "../"
 <link rel="stylesheet" type="text/css" href="https://cdn.discojuice.org/css/discojuice.css" />
 <script type="text/javascript">
 	DiscoJuice.Hosted.setup(
-		"a.login-btn", "Example Showcase service",
-		"https://service.org/saml2/entityid",
-		"https://service.org/response.html", ["edugain", "kalmar", "feide"], "http://service.org/login?idp="
+		"a.login-btn",
+		{
+			"title": "Example showcase service",
+			"spentityid": "https://bridge.uninett.no/saml2/entityid",
+			"responseurl": "http://bridge.uninett.no/response.html",
+			"redirectURL": "http://bridge.uninett.no/login?idp=",
+			"feeds": ["edugain", "kalmar", "feide"]
+		}
 	);
 </script>
 {% endhighlight %}
@@ -112,16 +117,44 @@ base_url: "../"
 		<p>Notice that if you already have jQuery referenced on your site, DiscoJuice may reuse this jQuery, and you should not refer jQuery twice. DiscoJuice does not require any specific version of jQuery.</p>
 
 
-		<p>The <code>DiscoJuice.Hosted.setup()</code> function takes the following parameters:</p>
+		<p>The <code>DiscoJuice.Hosted.setup()</code> function takes two parameters:</p>
 
 		<ul>
 			<li>The <a href="http://api.jquery.com/category/selectors/">JQuery selector</a>, pointing to the login button discussed above. In example <code>a.login-btn</code> will refer to a login link like this: <code>&lt;a href="" class="login-btn"&gt;Login&lt;/a&gt;</code></li>
-			<li>The name of the service. Using the header of the DiscoJuice popup.</li>
-			<li>The Service Provider EntityID, used in the IdP Discovery Protocol.</li>
-			<li>The <em>IdP Discovery Response URL</em>, point to <a href="#settingup-responsepage">a special HTML page that you need to host on your site; more on this below</a>.</li>
-			<li>A list of metadata feeds that you would like to use. A metadata feed is basically a list of providers with additional metadata, like keywords and logos. <a href="http://cdn.discojuice.org/feeds/">See a list of available metadata feeds</a></li>
-			<li>A URL prefix that the user will be redirected to after the user has selected a provider. The user will then be redirected to this URL but with the identifier of the provider added as a suffix.</li>
+			<li>The configuration object. See below:</li>
 		</ul>
+
+
+		<p>The configuration object, may contain the following properties:</p>
+
+
+		<dl class="dl-horizontal">
+
+			<dt><code>title</code> </dt>
+			<dd><span class="label label-primary">Optional</span> The name of the service. Using the header of the DiscoJuice popup.</dd>
+
+			<dt><code>feeds</code></dt>
+			<dd><span class="label label-danger">Required</span> A list of metadata feeds that you would like to use. A metadata feed is basically a list of providers with additional metadata, like keywords and logos. <a target="_blank" href="http://cdn.discojuice.org/feeds/">See a list of available metadata feeds</a></dd>
+
+
+			<dt><code>redirectURL</code></dt>
+			<dd><span class="label label-danger">Required</span> A URL prefix that the user will be redirected to after the user has selected a provider. The user will then be redirected to this URL but with the identifier of the provider added as a suffix.</dd>
+			
+
+			<dt><code>spentityid</code></dt>
+			<dd><span class="label label-warning">Reccomended</span> 
+				The Service Provider EntityID, used in the IdP Discovery Protocol.</dd>
+
+
+			<dt><code>responseurl</code></dt>
+			<dd><span class="label label-warning">Reccomended</span> The <em>IdP Discovery Response URL</em>, point to <a href="#settingup-responsepage">a special HTML page that you need to host on your site; more on this below</a>.</dd>
+
+		</dl>
+
+		<p>The two properties <code>spentityid</code> and <code>responseurl</code> is required in order to enable the central IdP Discovery protocol that allows users of the </p>
+
+
+
 
 
 		<div class="bs-callout bs-callout-warning" id="callout-less-compilation">
