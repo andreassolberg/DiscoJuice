@@ -25,7 +25,7 @@ function getConfig (config) {
 		options.title = "Sign in to <strong>" + config.title + "</strong>";
 		options.subtitle = "Select your Provider";
 	}
-	if (config.hasOwnProperty("spentityid")) {
+	if (config.hasOwnProperty("spentityid") && config.hasOwnProperty("responseurl")) {
 		options.disco = {
 			"spentityid": config.spentityid,
 			"url": config.responseurl,
@@ -44,7 +44,6 @@ function getConfig (config) {
 			options.metadata.push("https://cdn.discojuice.org/feeds/" + config.feeds[i]);
 		}
 	}
-
 	return options;
 }
 
@@ -52,13 +51,22 @@ function getConfig (config) {
 DiscoJuice.Hosted = {
 	
 	"getConfig": getConfig,
-	"setup": function (target, config) {
+	"setup": function (config) {
 		var options;
+		var t = "body";
 
 		options = getConfig(config);
+
+		if (config.hasOwnProperty("target")) {
+			t = config.target;
+		} else {
+			options.always = true;
+		}
+
+
 		
 		$(document).ready(function() {
-			$(target).DiscoJuice(options);
+			$(t).DiscoJuice(options);
 			// console.log("SETUP completed");
 			// console.log(options);
 		});

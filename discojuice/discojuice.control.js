@@ -107,6 +107,8 @@ DiscoJuice.Control = {
 			that.postLoad();
 		}, 10000);
 		
+		// console.log("METADATAURLS", metadataurls);
+
 		for (i = 0; i < metadataurls.length; i++) {
 			curmdurl = metadataurls[i];
 			waiter.runAction(

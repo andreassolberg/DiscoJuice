@@ -725,7 +725,7 @@ DiscoJuice.Utils = {
 				thisAction = {completed: false};
 				
 			parallellActions.push(thisAction);
-			console.log('Running action ' + parallellActions.length);
+			console.log(' ===] Running action ' + parallellActions.length, act);
 			act(function () {
 				var i;
 				thisAction.completed = true;
@@ -752,6 +752,7 @@ DiscoJuice.Utils = {
 		}
 		
 		function startTimer() {
+			console.log("-----] STARTTIMER ", parallellActions);
 			if (parallellActions.length === 0) {
 				console.log('Executing because no action is scheduled....');
 				if (!executed) execute();
