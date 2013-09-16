@@ -14,13 +14,13 @@ function getConfig (title, spentityid, responseurl, feeds, redirectURL) {
 		"disco": {
 			"spentityid": spentityid,
 			"url": responseurl,
-			"stores": ["https://data.discojuice.org/store"],
-			"writableStore": "https://data.discojuice.org/store"
+			"stores": ["https://cdn.discojuice.org/store"],
+			"writableStore": "https://cdn.discojuice.org/store"
 		},
 		"cookie": true,
 		"country": true,
 		"location": true,
-		"countryAPI": "https://data.discojuice.org/country",
+		"countryAPI": "https://cdn.discojuice.org/country",
 		"discoPath": "https://cdn.discojuice.org/",
 		"callback": function (e, djc) {
 			var returnto = window.location.href;
