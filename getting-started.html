@@ -104,6 +104,7 @@ base_url: "../"
 	DiscoJuice.Hosted.setup(
 		"a.login-btn",
 		{
+			"target": "a.signin",
 			"title": "Example showcase service",
 			"spentityid": "https://bridge.uninett.no/saml2/entityid",
 			"responseurl": "http://bridge.uninett.no/response.html",
@@ -117,18 +118,18 @@ base_url: "../"
 		<p>Notice that if you already have jQuery referenced on your site, DiscoJuice may reuse this jQuery, and you should not refer jQuery twice. DiscoJuice does not require any specific version of jQuery.</p>
 
 
-		<p>The <code>DiscoJuice.Hosted.setup()</code> function takes two parameters:</p>
+		<p>The <code>DiscoJuice.Hosted.setup()</code> function takes a configuration object as a parameter. The configuration object, may contain the following properties:</p>
 
-		<ul>
-			<li>The <a href="http://api.jquery.com/category/selectors/">JQuery selector</a>, pointing to the login button discussed above. In example <code>a.login-btn</code> will refer to a login link like this: <code>&lt;a href="" class="login-btn"&gt;Login&lt;/a&gt;</code></li>
-			<li>The configuration object. See below:</li>
-		</ul>
-
-
-		<p>The configuration object, may contain the following properties:</p>
 
 
 		<dl class="dl-horizontal">
+
+			<dt><code>target</code> </dt>
+			<dd>
+				<p><span class="label label-primary">Optional</span> The <a href="http://api.jquery.com/category/selectors/">JQuery selector</a>, pointing to the login button discussed above. In example <code>a.login-btn</code> will refer to a login link like this: <code>&lt;a href="" class="login-btn"&gt;Login&lt;/a&gt;</code>.</p>
+				<p>If you leave out this parameter, it does attach to "body" instead, and will open on page load instead of being invoked by a button click.</p>
+			</dd>
+
 
 			<dt><code>title</code> </dt>
 			<dd><span class="label label-primary">Optional</span> The name of the service. Using the header of the DiscoJuice popup.</dd>
