@@ -1,0 +1,43 @@
+
+<div>
+	{{#if title}}
+		<h4 class="">{{title}}</h4>
+	{{else}}
+		<h4 class="">{{id}}</h4>
+	{{/if}}
+
+	{{#if descr}}
+		<p class="">{{descr}}</p>
+	{{/if}}
+
+	<p>{{feed.length}} providers</p>
+
+</div>
+
+<div class="list-group">
+	{{#each feed}}
+		<a href="#" 
+
+			{{#if entityID}} data-entityid="{{entityID}}" {{/if}}
+			{{#if subID}} data-entityid="{{subID}}" {{/if}}
+
+			class="list-group-item clearfix">
+			
+			{{#if icon}}
+				<img alt="Logo for {{title}}" style="max-width: 100px" 
+				src="https://cdn.discojuice.org/logos/{{icon}}" class="img-thumbnail pull-right" />
+			{{/if}}
+
+			{{#if title}}
+				{{title}}
+			{{else}}
+				{{entityID}}
+			{{/if}}
+
+			{{#if descr}}
+				<p class="list-group-item-text">{{descr}}</p>
+			{{/if}}
+		</a>
+	{{/each}}
+</div>
+

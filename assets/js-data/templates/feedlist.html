@@ -1,0 +1,17 @@
+<div class="list-group">
+	{{#each .}}
+
+		<a href="#" data-feedid="{{@key}}" class="list-group-item">
+			{{#if title}}
+				<h4 class="list-group-item-heading">{{title}}</h4>
+			{{else}}
+				<h4 class="list-group-item-heading">{{@key}}</h4>
+			{{/if}}
+
+			{{#if descr}}
+				<p class="list-group-item-text">{{descr}}</p>
+			{{/if}}
+		</a>
+
+	{{/each}}
+</div>
