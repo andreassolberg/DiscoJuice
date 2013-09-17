@@ -79,8 +79,8 @@ DJMap.prototype.addItem = function(item) {
 		lat = item.geo[0].lat;
 		lon = item.geo[0].lon;
 	} else if(item.geo.lat) {
-		lat = item.lat;
-		lon = item.lon;
+		lat = item.geo.lat;
+		lon = item.geo.lon;
 	}
 	if (!lat) return;
 
