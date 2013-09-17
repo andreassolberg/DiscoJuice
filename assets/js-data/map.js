@@ -65,6 +65,10 @@ DJMap.prototype.center = function(c) {
 	this.map.setCenter(nc);
 }
 
+DJMap.prototype.setZoom = function(z) {
+	this.map.setZoom(z);
+}
+
 DJMap.prototype.addItem = function(item) {
 	if (!item.geo) return;
 

@@ -57,6 +57,8 @@ App.prototype.selectFeed = function(e) {
 		var c = that.center(f.feed);
 		console.log("Center is", c);
 		that.map.center(c);
+		var z = f.zoom || 5;
+		that.map.setZoom(z);
 
 	});
 
