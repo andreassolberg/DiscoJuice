@@ -72,7 +72,20 @@ DJMap.prototype.setZoom = function(z) {
 DJMap.prototype.addItem = function(item) {
 	if (!item.geo) return;
 
-	var myLatlng = new google.maps.LatLng(item.geo.lat,item.geo.lon);
+
+	var lat = null, lon = null;
+
+	if (item.geo && item.geo.length) {
+		lat = item.geo[0].lat;
+		lon = item.geo[0].lon;
+	} else if(item.geo.lat) {
+		lat = item.lat;
+		lon = item.lon;
+	}
+	if (!lat) return;
+
+
+	var myLatlng = new google.maps.LatLng(lat, lon);
 	var contentString = '<div id="content">';
 
 	if (item.icon) {
@@ -96,8 +109,8 @@ DJMap.prototype.addItem = function(item) {
 		'</div>';
 
 	var infowindow = new google.maps.InfoWindow({
-		content: contentString,
-		maxWidth: 200
+		content: contentString
+		// ,maxWidth: 200
 	});
 
 	var markerOpts = {
