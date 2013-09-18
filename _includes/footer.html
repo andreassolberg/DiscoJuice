@@ -2,29 +2,35 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 
-<script src="{{ page.base_url }}dist/js/bootstrap.js"></script>
-
 <script src="http://platform.twitter.com/widgets.js"></script>
-<script src="{{ page.base_url }}assets/js/holder.js"></script>
 
+<script src="{{ page.base_url }}dist/js/bootstrap.js"></script>
+<script src="{{ page.base_url }}assets/js/holder.js"></script>
 <script src="{{ page.base_url }}assets/js/application.js"></script>
 
+
 {% if page.slug == "customize" %}
+<script src="{{ page.base_url }}assets/js/handlebars.runtime.js"></script>
+
+<script src="{{ page.base_url }}assets/js-customize/main.js"></script>
+{% endif %}
+
+{% if page.slug == "federation" %}
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
+<script src="{{ page.base_url }}assets/js/handlebars.runtime.js"></script>
+<script src="{{ page.base_url }}assets/js-data/map.js"></script>
+<script src="{{ page.base_url }}assets/js-data/main.js"></script>
+{% endif %}
+
+
+
+{% if page.slug == "customizez" %}
 <script src="{{ page.base_url }}assets/js/less.js"></script>
 <script src="{{ page.base_url }}assets/js/jszip.js"></script>
 <script src="{{ page.base_url }}assets/js/uglify.js"></script>
 <script src="{{ page.base_url }}assets/js/filesaver.js"></script>
 <script src="{{ page.base_url }}assets/js/raw-files.js"></script>
 <script src="{{ page.base_url }}assets/js/customizer.js"></script>
-{% endif %}
-
-{% if page.slug == "federation" %}
-
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
-<script src="{{ page.base_url }}assets/js/handlebars.runtime.js"></script>
-<script src="{{ page.base_url }}assets/js-data/map.js"></script>
-<script src="{{ page.base_url }}assets/js-data/main.js"></script>
-
 {% endif %}
 
 
@@ -41,3 +47,4 @@
   })();
 
 </script>
+

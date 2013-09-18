@@ -1,0 +1,162 @@
+---
+layout: fullpage
+title: Customize
+slug: customize
+lead: "Get started with DiscoJuice"
+base_url: "../"
+---
+
+
+<div id="customize" style="margin-top: 5px; padding-left: 5px">
+
+
+	<div id="controller">
+
+		<form role="form">
+
+			<div class="row">
+
+				<div class="col-md-6">
+
+					<h3>Types of DiscoJuice integration</h3>
+
+
+					<div class="radio">
+						<label>
+							<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+							Embedded in application with popup
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+							Standalone discovery page in Service Provider
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+							A central discovery service for your federation
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+							Use global IdP Discovery page
+						</label>
+					</div>
+
+
+					<h3>Federation feeds</h3>
+					<p>DiscoJuice supports a set of metadata feeds. You may combine these to represent the set of providers that the user may select from when using your service.</p>
+
+					<div id="feedlist"></div>
+
+
+					<div id="additionalfeeds">
+
+						<h3>Additional feeds</h3>
+
+					</div>
+
+					<div id="additionalentities">
+
+						<h3>Additional entities</h3>
+
+					</div>
+
+
+				</div>
+
+				<div class="col-md-6">
+
+						<h3>Which SP software do you run?</h3>
+
+
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" name="discoenable" value="1" checked="checked"> 
+									Use DiscoJuice.org for memory of user selection (Reccomended)
+							</label>
+						</div>
+
+
+						<div class="radio">
+							<label>
+								<input type="radio" name="spsoftware" id="optionsRadios1" value="option1" checked>
+								SimpleSAMLphp SP
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="spsoftware" id="optionsRadios2" value="option2">
+								Shibboleth SP
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="spsoftware" id="optionsRadios2" value="option2">
+								Other
+							</label>
+						</div>
+
+						<h3>Endpoints</h3>
+						<div class="form-group">
+							<label for="exampleInputEmail1">Hostname of SP</label>
+							<input type="email" class="form-control" id="exampleInputEmail1" placeholder="sp.example.org">
+						</div>
+						<div class="form-group">
+							<label for="exampleInputEmail1">EntityID</label>
+							<input type="email" class="form-control" id="exampleInputEmail1" placeholder="https://sp.example.org">
+						</div>
+						<div class="form-group">
+							<label for="exampleInputEmail1">Response HTML URL</label>
+							<input type="email" class="form-control" id="exampleInputEmail1" placeholder="https://sp.example.org">
+							<p class="help-block">This will be a static HTML page on your server where you need to upload a HTML page.</p>
+						</div>
+						<div class="form-group">
+							<label for="exampleInputEmail1">Redirect when selected</label>
+							<input type="email" class="form-control" id="exampleInputEmail1" placeholder="https://sp.example.org">
+							<p class="help-block">To which URL do you want the user to be redirected after choosing a provider. The provider ID will be added to the end of this URL.</p>
+						</div>
+
+
+						<h4>Advanced features</h4>
+
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" name="discoenable" value="1" > 
+									Combine federated login with local user/pass
+							</label>
+						</div>
+
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" name="discoenable2" value="1" > 
+									Also support login with social providers; i.e. Facebook and Twitter.
+							</label>
+						</div>
+
+
+				</div>
+
+
+<!-- 
+				<div class="col-md-4">
+
+				</div> -->
+
+				
+
+			</div>
+
+			<button type="submit" class="btn btn-default">Submit</button>
+
+
+		</form>
+
+	</div>
+
+	<div id="docout"></div>
+
+</div>
