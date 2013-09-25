@@ -1,0 +1,32 @@
+
+<h2>Finding a redirectURL for SimpleSAMLphp</h2>
+
+<p>May be inside your application, you have a login page that initates login, then it would be appropriate to redirect to this page.</p>
+
+<p>SimpleSAMLphp also has a built in URL that initates login. </p>
+
+<pre>https://{{ep_host}}/simplesaml/module.php/core/as_login.php?
+	AuthId=saml&amp;ReturnTo=[URL]&amp;idp=[IdP]</pre>
+
+<p>If you want to redirect back to the current page, you may do something like this:</p>
+
+<pre>
+// Change if you use another authentication source for SAML
+var authenticationSource = 'saml'; 
+var redirectURL = 'https://{{ep_host}}/simplesaml/module.php/core/as_login.php?' +
+	'AuthID=' + authenticationSource + '&amp;' +
+	'ReturnTo=' + encodeURIComponent(window.location.href) +
+	'&amp;idp=';
+
+DiscoJuice.Hosted.setup(
+	{
+		....
+		"redirectURL": redirectURL,
+		....
+	}
+);
+
+</pre>
+
+
+

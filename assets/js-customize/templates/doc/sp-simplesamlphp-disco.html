@@ -1,0 +1,22 @@
+
+<h2>Setting up SimpleSAMLphp with an IdP Discovery Service</h2>
+
+<p>In the <code>config/authsources.php</code> configuration file, configure the SAML authenciation source with the correct discovery endpoint (<code>discoURL</code>).</p>
+
+<pre>
+	/*
+	 * This is the default SAML SP, used in examples.
+	 */
+	'saml' => array(
+		'saml:SP',
+
+		/*
+		 * The entity ID of the IdP this should SP should contact.
+		 * Can be NULL/unset, in which case the user will be shown a list of available IdPs.
+		 */
+		'idp' => NULL,
+		'discoURL' => '{{globalURL}}',
+	),
+</pre>
+
+

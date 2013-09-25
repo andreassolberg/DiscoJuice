@@ -195,8 +195,110 @@ base_url: "../"
 		<div class="page-header">
 			<h1 id="deploy-sp">Service Provider Discovery</h1>
 		</div>
-		<p class="lead">Within the download you'll find the following directories and files, logically grouping common assets and providing both compiled and minified variations.</p>
-		<p>Once downloaded, unzip the compressed folder to see the structure of (the compiled) Bootstrap. You'll see something like this:</p>
+		<p class="lead">Setup a preconfigured discovery service for your local Service Provider that implements the IdP Discovery Protocol.</p>
+
+		<p>Setting up a discovery service using DiscoJuice typically involves two main steps:</p>
+		<ol>
+			<li>Configure an ACL list of hostnames that are allowed to communicate and get respones from the Discovery Service</li>
+			<li>Setup the discovery page it self containing static HTML</li>
+		</ol>
+
+
+		<h2>Setting up the HTML Discovery page</h2>
+
+		<p>The page will be presented on a URL of your choice. This URL will be the endpoint where you point the service provider to send IdP Discovery requsts.</p>
+
+		<p>Below is an example of such a page.</p>
+
+
+{% highlight html %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Select your login provider – DiscoJuice</title>
+	
+	<script type="text/javascript" 
+		src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+	<script type="text/javascript" language="javascript" 
+		src="//cdn.discojuice.org/engine/discojuice-stable.min.js"></script>
+	<script type="text/javascript" language="javascript" 
+		src="//cdn.discojuice.org/engine/idpdiscovery.js"></script>
+
+	<link rel="stylesheet" type="text/css" 
+		href="//cdn.discojuice.org/css/discojuice.css" />
+
+
+	<style type="text/css">
+		body {
+			text-align: center;
+		}
+		div.discojuice {
+			text-align: left;
+			position: relative;
+			width: 600px;
+			margin-right: auto;
+			margin-left: auto;
+		}
+	</style>
+
+	
+	<script type="text/javascript">
+
+
+		$("document").ready(function() {
+
+			$.getJSON('/data/acl.json', function(acl) {
+
+				var options = {
+					"title": "DiscoJuice",
+					"feeds": ["edugain", "kalmar", "feide"]
+				};
+				var djc = DiscoJuice.Hosted.getConfig(options);
+
+				djc.always = true;
+				djc.callback = IdPDiscovery.setup(djc, acl);
+
+				$("body").DiscoJuice(djc);
+			});
+
+		});
+
+
+	</script>
+	
+	
+	
+</head>
+<body style="background: #e8e8e8">
+</body>
+</html>
+{% endhighlight %}
+
+	<p>The code above will load a JSON file with an ACL list of hostnames from the location <code>/data/acl.json</code>.</p>
+
+	<p>Alternatively, you may configure a list of hosts without any separate JSON request, like this:</p>
+
+{% highlight javascript %}
+var acl = ['sp.example.org', 'sp2.example.org'];
+var options = {
+	"title": "DiscoJuice",
+	"feeds": ["edugain", "kalmar", "feide"]
+};
+
+var djc = DiscoJuice.Hosted.getConfig(options);
+djc.always = true;
+djc.callback = IdPDiscovery.setup(djc, acl);
+
+$("body").DiscoJuice(djc);
+
+{% endhighlight %}
+
+
+
+
+
 	</div>
 
 
@@ -206,8 +308,90 @@ base_url: "../"
 		<div class="page-header">
 			<h1 id="deploy-federation">Identity Federation Discovery</h1>
 		</div>
-		<p class="lead">.</p>
-		<p></p>
+		<p class="lead">Setup a preconfigured discovery service for your local federation that implements the IdP Discovery Protocol.</p>
+
+
+		<p>Setting up a discovery service using DiscoJuice typically involves two main steps:</p>
+		<ol>
+			<li>Configure an ACL list of hostnames that are allowed to communicate and get respones from the Discovery Service</li>
+			<li>Setup the discovery page it self containing static HTML</li>
+		</ol>
+
+
+		<h2>Setting up the HTML Discovery page</h2>
+
+		<p>The page will be presented on a URL of your choice. This URL will be the endpoint where you point the service provider to send IdP Discovery requsts.</p>
+
+		<p>Below is an example of such a page.</p>
+
+
+
+{% highlight html %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Select your login provider – DiscoJuice</title>
+	
+	<script type="text/javascript" 
+		src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+	<script type="text/javascript" language="javascript" 
+		src="//cdn.discojuice.org/engine/discojuice-stable.min.js"></script>
+	<script type="text/javascript" language="javascript" 
+		src="//cdn.discojuice.org/engine/idpdiscovery.js"></script>
+
+	<link rel="stylesheet" type="text/css" 
+		href="//cdn.discojuice.org/css/discojuice.css" />
+
+
+
+	<style type="text/css">
+		body {
+			text-align: center;
+		}
+		div.discojuice {
+			text-align: left;
+			position: relative;
+			width: 600px;
+			margin-right: auto;
+			margin-left: auto;
+		}
+	</style>
+
+	
+	<script type="text/javascript">
+
+		$("document").ready(function() {
+
+			$.getJSON('/data/acl.json', function(acl) {
+
+				var options = {
+					"title": "DiscoJuice",
+					"feeds": ["edugain", "kalmar", "feide"]
+				};
+				var djc = DiscoJuice.Hosted.getConfig(options);
+
+				djc.always = true;
+				djc.callback = IdPDiscovery.setup(djc, acl);
+
+				$("body").DiscoJuice(djc);
+			});
+
+		});
+
+	</script>
+	
+	
+	
+</head>
+<body style="background: #e8e8e8">
+</body>
+</html>
+{% endhighlight %}
+
+
+
 	</div>
 
 
@@ -218,8 +402,33 @@ base_url: "../"
 		<div class="page-header">
 			<h1 id="deploy-global">Global IdP Discovery Service</h1>
 		</div>
-		<p class="lead">Within the download you'll find the following directories and files, logically grouping common assets and providing both compiled and minified variations.</p>
-		<p>Once downloaded, unzip the compressed folder to see the structure of (the compiled) Bootstrap. You'll see something like this:</p>
+		<p class="lead">The simplest choice of them all.</p>
+		<p>There is a central DiscoJuice discovery page running at</p>
+
+<pre>http://cdn.discojuice.org/discovery</pre>
+
+		<p>This discovery page accepts to return responses to all Service Provieders registered properly in all member metadata feeds.</p>
+
+		<p>You may perform a limited configuration of the Discovery service, that will be part of the URL. You may create a configuration JSON object containing two properties, title and feeds, like this:</p>
+
+<pre>
+{
+	"title": "Feide Discovery",
+	"feeds": ["feide"]
+}
+</pre>
+		
+		<p>This configuration object may be JSON encoded, and URLencoded, and added to the query string of the discovery endpoint as a parameter <code>b</code>.
+
+		<p>The resulting URL may be something like:</p>
+
+<pre>https://cdn.discojuice.org/discovery?b=%7B%22title%22%3A%22Feide%20Discovery%22%2C%22feeds%22%3A%5B%22feide%22%5D%7D</pre>
+
+
+		<p>The <a href="../customize/">customize page</a> will aid you in creating a URL containing a configuration object.</p>
+
+
+
 	</div>
 
 

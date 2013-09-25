@@ -56,12 +56,14 @@ base_url: "../"
 					<div id="additionalfeeds">
 
 						<h3>Additional feeds</h3>
+						<p>Will be added later. Until then, look at the documentation.</p>
 
 					</div>
 
 					<div id="additionalentities">
 
 						<h3>Additional entities</h3>
+						<p>Will be added later. Until then, look at the documentation.</p>
 
 					</div>
 
@@ -71,95 +73,95 @@ base_url: "../"
 				<div class="col-md-6">
 
 
-						<div id="spsoftwareselection">
+					<div id="spsoftwareselection">
 
-							<h3>Which SP software do you run?</h3>
-
-
+						<h3>Which SP software do you run?</h3>
 
 
-							<div class="radio">
-								<label>
-									<input type="radio" name="spsoftware" id="optionsRadios1" value="option1" checked>
-									SimpleSAMLphp SP
-								</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="spsoftware" id="optionsRadios2" value="option2">
-									Shibboleth SP
-								</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="spsoftware" id="optionsRadios2" value="option2">
-									Other
-								</label>
-							</div>
+
+
+						<div class="radio">
+							<label>
+								<input type="radio" name="spsoftware" id="optionsRadios1" value="simplesamlphp" checked>
+								SimpleSAMLphp SP
+							</label>
 						</div>
-
-						<div id="discostorage">
-
-							<h3>Options</h3>
-
-							<div class="checkbox">
-								<label>
-									<input type="checkbox" 
-										id="discoenable" name="discoenable" value="1" checked="checked"> 
-										Use DiscoJuice.org for memory of user selection (Reccomended)
-								</label>
-							</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="spsoftware" id="optionsRadios2" value="shibboleth">
+								Shibboleth SP
+							</label>
 						</div>
-
-
-						<div id="titlediv">
-							<h3>Title</h3>
-
-							<div class="form-group">
-								<label for="title">Title of the service provider (used in UI)</label>
-								<input type="email" class="form-control" id="title" 
-									value="My service provider">
-							</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="spsoftware" id="optionsRadios2" value="other">
+								Other
+							</label>
 						</div>
+					</div>
 
-						<h3>Endpoints</h3>
+					<div id="discostorage">
 
-
-						<div id="ep_host" class="form-group">
-							<label for="exampleInputEmail1">Hostname of SP</label>
-							<input type="email" class="form-control" id="exampleInputEmail1" placeholder="sp.example.org">
-						</div>
-						<div id="ep_entityid" class="form-group">
-							<label for="exampleInputEmail1">EntityID</label>
-							<input type="email" class="form-control" id="exampleInputEmail1" placeholder="https://sp.example.org">
-						</div>
-						<div id="ep_response" class="form-group">
-							<label for="exampleInputEmail1">Response HTML URL</label>
-							<input type="email" class="form-control" id="exampleInputEmail1" placeholder="https://sp.example.org">
-							<p class="help-block">This will be a static HTML page on your server where you need to upload a HTML page.</p>
-						</div>
-						<div id="ep_redirect" class="form-group">
-							<label for="exampleInputEmail1">Redirect when selected</label>
-							<input type="email" class="form-control" id="exampleInputEmail1" placeholder="https://sp.example.org">
-							<p class="help-block">To which URL do you want the user to be redirected after choosing a provider. The provider ID will be added to the end of this URL.</p>
-						</div>
-
-
-						<h4>Advanced features</h4>
+						<h3>Options</h3>
 
 						<div class="checkbox">
 							<label>
-								<input type="checkbox" name="discoenable" value="1" > 
-									Combine federated login with local user/pass
+								<input type="checkbox" 
+									id="discoenable" name="discoenable" value="1" checked="checked"> 
+									Use DiscoJuice.org for memory of user selection (Reccomended)
 							</label>
 						</div>
+					</div>
 
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" name="discoenable2" value="1" > 
-									Also support login with social providers; i.e. Facebook and Twitter.
-							</label>
+
+					<div id="titlediv">
+						<h3>Title</h3>
+
+						<div class="form-group">
+							<label for="title">Title of the service provider (used in UI)</label>
+							<input type="email" class="form-control" id="title" 
+								value="My service provider">
 						</div>
+					</div>
+
+					<h3>Endpoints</h3>
+
+
+					<div id="ep_host" class="form-group">
+						<label for="exampleInputEmail1">Hostname of SP</label>
+						<input type="email" class="form-control" id="exampleInputEmail1" placeholder="sp.example.org">
+					</div>
+					<div id="ep_entityid" class="form-group">
+						<label for="exampleInputEmail1">EntityID</label>
+						<input type="email" class="form-control" id="exampleInputEmail1" placeholder="https://sp.example.org">
+					</div>
+					<div id="ep_response" class="form-group">
+						<label for="exampleInputEmail1">Response HTML URL</label>
+						<input type="email" class="form-control" id="exampleInputEmail1" placeholder="https://sp.example.org">
+						<p class="help-block">This will be a static HTML page on your server where you need to upload a HTML page.</p>
+					</div>
+					<div id="ep_redirect" class="form-group">
+						<label for="exampleInputEmail1">Where to redirect when provider is selected</label>
+						<input type="email" class="form-control" id="exampleInputEmail1" placeholder="https://sp.example.org">
+						<p class="help-block">To which URL do you want the user to be redirected after choosing a provider. The provider ID will be added to the end of this URL.</p>
+					</div>
+
+
+					<h3>Advanced features</h3>
+
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="discoenable" value="1" > 
+								Combine federated login with local user/pass
+						</label>
+					</div>
+
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="discoenable2" value="1" > 
+								Also support login with social providers; i.e. Facebook and Twitter.
+						</label>
+					</div>
 
 
 				</div>

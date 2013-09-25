@@ -1,0 +1,88 @@
+<div class="bs-docs-section">
+	<div class="page-header">
+		<h1 id="deploy-sp">Service Provider Discovery</h1>
+	</div>
+	<p class="lead">Setup a preconfigured discovery service for your local Service Provider that implements the IdP Discovery Protocol.</p>
+
+	<p>Setting up a discovery service using DiscoJuice typically involves two main steps:</p>
+	<ol>
+		<li>Configure an ACL list of hostnames that are allowed to communicate and get respones from the Discovery Service</li>
+		<li>Setup the discovery page it self containing static HTML</li>
+	</ol>
+
+
+	<h2>Setting up the HTML Discovery page</h2>
+
+	<p>The page will be presented on a URL of your choice. This URL will be the endpoint where you point the service provider to send IdP Discovery requsts.</p>
+
+	<p>Below is an example of such a page.</p>
+
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+	&lt;meta charset=&quot;utf-8&quot; /&gt;
+	&lt;title&gt;Select your login provider – DiscoJuice&lt;/title&gt;
+	
+	&lt;script type=&quot;text/javascript&quot; 
+		src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js&quot;&gt;&lt;/script&gt;
+
+	&lt;script type=&quot;text/javascript&quot; language=&quot;javascript&quot; 
+		src=&quot;//cdn.discojuice.org/engine/discojuice-stable.min.js&quot;&gt;&lt;/script&gt;
+	&lt;script type=&quot;text/javascript&quot; language=&quot;javascript&quot; 
+		src=&quot;//cdn.discojuice.org/engine/idpdiscovery.js&quot;&gt;&lt;/script&gt;
+
+	&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; 
+		href=&quot;//cdn.discojuice.org/css/discojuice.css&quot; /&gt;
+
+
+	&lt;style type=&quot;text/css&quot;&gt;
+		body {
+			text-align: center;
+		}
+		div.discojuice {
+			text-align: left;
+			position: relative;
+			width: 600px;
+			margin-right: auto;
+			margin-left: auto;
+		}
+	&lt;/style&gt;
+
+	
+	&lt;script type=&quot;text/javascript&quot;&gt;
+
+
+		$(&quot;document&quot;).ready(function() {
+
+			var acl = ["{{ep_host}}"];
+			var options = {
+				&quot;title&quot;: "{{title}}",
+				&quot;feeds&quot;: {{feedsT}}
+			};
+			var djc = DiscoJuice.Hosted.getConfig(options);
+
+			djc.always = true;
+			djc.callback = IdPDiscovery.setup(djc, acl);
+
+			$(&quot;body&quot;).DiscoJuice(djc);
+
+
+		});
+
+
+	&lt;/script&gt;
+	
+	
+	
+&lt;/head&gt;
+&lt;body style=&quot;background: #e8e8e8&quot;&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+
+
+
+
+</div>

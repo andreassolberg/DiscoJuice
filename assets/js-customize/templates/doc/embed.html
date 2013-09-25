@@ -1,24 +1,20 @@
-	<div class="bs-docs-section">
-		<div class="page-header">
-			<h1 id="deploy-embedded">Embedded DiscoJuice</h1>
-		</div>
-		<p class="lead">If your application has a login-button, this button can be connected to the Embedded DiscoJuice Discovery Service.</p>
+<div class="bs-docs-section">
+	<div class="page-header">
+		<h1 id="deploy-embedded">Embedded DiscoJuice</h1>
+	</div>
+	<p class="lead">If your application has a login-button, this button can be connected to the Embedded DiscoJuice Discovery Service.</p>
 
-		<p><img class="img-responsive img-thumbnail" 
-			src="../assets/discojuice-screenshot-embed.png" 
-			alt="Screenshot of DiscoJuice embedded" /></p>
 
-		<p>By installing DiscoJuice, the login button will result in a DiscoJuice popup discovery service that allows the user to select Identity Provider, and then redirects the user in the correct way.</p>
 
-		<p>Prepare to add some HTML template of the pages where you would connect DiscoJuice to the login button. You probably will have a login link or button similar to this:</p>
+	<p>By installing DiscoJuice, the login button will result in a DiscoJuice popup discovery service that allows the user to select Identity Provider, and then redirects the user in the correct way.</p>
 
-{% highlight html %}
-<a href="/login" class="login-btn">Login</a>
-{% endhighlight %}
+	<p>Prepare to add some HTML template of the pages where you would connect DiscoJuice to the login button. You probably will have a login link or button similar to this:</p>
 
+<pre>
+&lt;a href="/login" class="login-btn">Login&lt;/a>
+</pre>
 
 		<p>Next, in the <code>&lt;head&gt;</code>-section of your HTML page you will need to setup DiscoJuice.</p>
-
 
 <pre>
 &lt;!-- JQuery hosted by Google --&gt;
@@ -31,9 +27,9 @@
 	DiscoJuice.Hosted.setup(
 		{
 			"target": "a.signin",
-			"title": "{{title}}",
+			"title": "{{title}}",{{#if enabled.disco}}
 			"spentityid": "{{ep_entityid}}",
-			"responseurl": "{{ep_response}}",
+			"responseurl": "{{ep_response}}",{{/if}}
 			"redirectURL": "{{ep_redirect}}",
 			"feeds": {{feedsT}}
 		}
@@ -41,77 +37,51 @@
 &lt;/script&gt;
 </pre>
 
-		<p>Notice that if you already have jQuery referenced on your site, DiscoJuice may reuse this jQuery, and you should not refer jQuery twice. DiscoJuice does not require any specific version of jQuery.</p>
+	<p>Notice that if you already have jQuery referenced on your site, DiscoJuice may reuse this jQuery, and you should not refer jQuery twice. DiscoJuice does not require any specific version of jQuery.</p>
 
 
-		<p>The <code>DiscoJuice.Hosted.setup()</code> function takes a configuration object as a parameter. The configuration object, may contain the following properties:</p>
+	<p>The <code>DiscoJuice.Hosted.setup()</code> function takes a configuration object as a parameter. <a href="../getting-started/#deploy-embedded">Documentation on configuration object</a></p>
 
-
-
-		<dl class="dl-horizontal">
-
-			<dt><code>target</code> </dt>
-			<dd>
-				<p><span class="label label-primary">Optional</span> The <a href="http://api.jquery.com/category/selectors/">JQuery selector</a>, pointing to the login button discussed above. In example <code>a.login-btn</code> will refer to a login link like this: <code>&lt;a href="" class="login-btn"&gt;Login&lt;/a&gt;</code>.</p>
-				<p>If you leave out this parameter, it does attach to "body" instead, and will open on page load instead of being invoked by a button click.</p>
-			</dd>
-
-
-			<dt><code>title</code> </dt>
-			<dd><span class="label label-primary">Optional</span> The name of the service. Using the header of the DiscoJuice popup.</dd>
-
-			<dt><code>feeds</code></dt>
-			<dd><span class="label label-danger">Required</span> A list of metadata feeds that you would like to use. A metadata feed is basically a list of providers with additional metadata, like keywords and logos. <a target="_blank" href="http://cdn.discojuice.org/feeds/">See a list of available metadata feeds</a></dd>
-
-
-			<dt><code>redirectURL</code></dt>
-			<dd><span class="label label-danger">Required</span> A URL prefix that the user will be redirected to after the user has selected a provider. The user will then be redirected to this URL but with the identifier of the provider added as a suffix.</dd>
-			
-
-			<dt><code>spentityid</code></dt>
-			<dd><span class="label label-warning">Reccomended</span> 
-				The Service Provider EntityID, used in the IdP Discovery Protocol.</dd>
-
-
-			<dt><code>responseurl</code></dt>
-			<dd><span class="label label-warning">Reccomended</span> The <em>IdP Discovery Response URL</em>, point to <a href="#settingup-responsepage">a special HTML page that you need to host on your site; more on this below</a>.</dd>
-
-		</dl>
-
-		<p>The two properties <code>spentityid</code> and <code>responseurl</code> is required in order to enable the central IdP Discovery protocol that allows users of the </p>
+{{#if enabled.disco}}
+	<p>The two properties <code>spentityid</code> and <code>responseurl</code> is required in order to enable the central IdP Discovery protocol that allows users of the </p>
+{{/if}}
 
 
 
+	<div class="bs-callout bs-callout-warning" id="callout-less-compilation">
+		<h4>Protected pages without a login button</h4>
+		<p>If your application includes pages that would require immediate redirect to the identity provider, there is no login button to connect to DiscoJuice. Instead you can combine these protected pages to any of the standalone DiscoJuice discovery options:
+		</p>
 
+		<ul>
+			<li><a href="#deploy-sp">Service Provider IdP Discovery Service</a></li>
+			<li><a href="#deploy-global">Global IdP Discovery Service</a></li>
+		</ul>
 
-		<div class="bs-callout bs-callout-warning" id="callout-less-compilation">
-			<h4>Protected pages without a login button</h4>
-			<p>If your application includes pages that would require immediate redirect to the identity provider, there is no login button to connect to DiscoJuice. Instead you can combine these protected pages to any of the standalone DiscoJuice discovery options:</p>
-
-			<ul>
-				<li><a href="#deploy-sp">Service Provider IdP Discovery Service</a></li>
-				<li><a href="#deploy-global">Global IdP Discovery Service</a></li>
-			</ul>
-
-		</div>
-
-
-		<h2 id="settingup-responsepage">Setting up the IdP Discovery Response HTML page</h2>
-
-		<p>There is a static HTML page that you need to setup on your own host, and you need to configure the URL of this page</p>
-
-
-		<p>The <em>IdP Discovery Response page</em> is a simple HTML page that you should install on your service provider. You can <a href="https://raw.github.com/andreassolberg/DiscoJuice/master/discojuice/discojuiceDiscoveryResponse.html">download this file here</a>.</p>
-
-		<p>The URL to this response page is required in the configuration above. It must be hosted on your own server, to fulfil the same-origin policy.</p>
-
-
-
-
-		<h3>Beeing a trusted client</h3>
-
-		<p>DiscoJuice.org hosts a <em>passice central discovery service</em>, and to get this to work, your hostname needs to be trusted by DiscoJuice.org. If your metadata cotains a <code>DiscoveryResponse</code> element, and is present in eduGAIN, InCommon, Kalmar or UK Access Federation, it should be trusted already. If you want to add additional hosts without joining these federations, ask on the <a href="{{ page.base_url }}community/">DiscoJuice mailinglist</a>.</p>
-
-
+		<p>Both these options may be selected in the selection on the top of this page for further details.</p>
 
 	</div>
+
+{{#if enabled.disco}}
+	<h2 id="settingup-responsepage">Setting up the IdP Discovery Response HTML page</h2>
+
+	<p>There is a static HTML page that you need to setup on your own host, and you need to configure the URL of this page. You have currently configured this URL:</p>
+
+	<pre>{{ep_response}}</pre>
+
+
+
+	<p>The <em>IdP Discovery Response page</em> is a simple HTML page that you should install on your service provider. You can <a href="https://raw.github.com/andreassolberg/DiscoJuice/master/discojuice/discojuiceDiscoveryResponse.html">download this file here</a>.</p>
+
+	<p>The URL to this response page is required in the configuration above. It must be hosted on your own server, to fulfil the same-origin policy.</p>
+
+
+
+
+	<h3>Beeing a trusted client</h3>
+
+	<p>DiscoJuice.org hosts a <em>passice central discovery service</em>, and to get this to work, your hostname needs to be trusted by DiscoJuice.org. If your metadata cotains a <code>DiscoveryResponse</code> element, and is present in eduGAIN, InCommon, Kalmar or UK Access Federation, it should be trusted already. If you want to add additional hosts without joining these federations, ask on the <a href="{{ page.base_url }}community/">DiscoJuice mailinglist</a>.</p>
+{{/if}}
+
+
+</div>

@@ -32,6 +32,7 @@ var App = function(el) {
 
 
 App.prototype.update = function(e) {
+	var that = this;
 	if (e) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -71,8 +72,8 @@ App.prototype.update = function(e) {
 
 	} else if (this.type === 'global') {
 
-		enable.title = false;
-		enable.software = false;
+		enable.title = true;
+		enable.software = true;
 		enable.addfeeds = false;
 		enable.disco = false;
 		enable.redirect = false;
@@ -163,13 +164,18 @@ App.prototype.update = function(e) {
 		"type": this.type,
 		"feeds": []
 	};
+	obj.enabled = enabled;
+	obj.enable = enable;
+
 	obj["title"] = this.el.find('#titlediv input').val();
 	obj.ep_host 	= this.el.find('#ep_host input').val();
 	obj.ep_entityid = this.el.find('#ep_entityid input').val();
 	obj.ep_response = this.el.find('#ep_response input').val();
 	obj.ep_redirect = this.el.find('#ep_redirect input').val();
 
-
+	if (enable.software) {
+		obj.sp = this.el.find('input[name=spsoftware]:checked').val();
+	}
 
 	$("input[name=feed]:checked").each(function() {
 		console.log("feed item ", this);
@@ -180,26 +186,88 @@ App.prototype.update = function(e) {
 
 
 	$("#docout").empty();
-	$("#docout").append('<pre>' + JSON.stringify(obj, undefined, 4) + '</pre>');
+	// $("#docout").append('<pre>' + JSON.stringify(obj, undefined, 4) + '</pre>');
 
 	if (this.type === 'embed') {
 
 		this.template('doc/embed', function(template) {
-			console.log("Applying template", template(obj));
-
 			$("#docout").append(template(obj));
+
+			if (enable.software && obj.sp === 'simplesamlphp') {
+				that.template('doc/sp-simplesamlphp-redirecturl', function(template) {
+					$("#docout").append(template(obj));
+				});
+			}
+			if (enable.software && obj.sp === 'shibboleth') {
+				that.template('doc/sp-shibboleth-redirecturl', function(template) {
+					$("#docout").append(template(obj));
+				});
+			}
 		});
-		
+
 
 	} else if (this.type === 'sp') {
 
 
+		this.template('doc/standalone', function(template) {
+			$("#docout").append(template(obj));
+
+			if (enable.software && obj.sp === 'simplesamlphp') {
+				that.template('doc/sp-simplesamlphp-disco', function(template) {
+					$("#docout").append(template(obj));
+				});
+			}
+			if (enable.software && obj.sp === 'shibboleth') {
+				that.template('doc/sp-shibboleth-disco', function(template) {
+					$("#docout").append(template(obj));
+				});
+			}
+		});
+
+
 	} else if (this.type === 'fed') {
+
+		this.template('doc/federation', function(template) {
+			$("#docout").append(template(obj));
+
+			if (enable.software && obj.sp === 'simplesamlphp') {
+				that.template('doc/sp-simplesamlphp-disco', function(template) {
+					$("#docout").append(template(obj));
+				});
+			}
+			if (enable.software && obj.sp === 'shibboleth') {
+				that.template('doc/sp-shibboleth-disco', function(template) {
+					$("#docout").append(template(obj));
+				});
+			}
+		});
 
 
 	} else if (this.type === 'global') {
 
+		var bootstrap = {
+			"title": obj["title"],
+			"feeds": obj['feeds']
+		};
 
+		obj.globalURL = 'https://cdn.discojuice.org/discovery?b=' + 
+			encodeURIComponent(JSON.stringify(bootstrap));
+
+
+		this.template('doc/global', function(template) {
+			$("#docout").append(template(obj));
+
+			if (enable.software && obj.sp === 'simplesamlphp') {
+				that.template('doc/sp-simplesamlphp-disco', function(template) {
+					$("#docout").append(template(obj));
+				});
+			}
+			if (enable.software && obj.sp === 'shibboleth') {
+				that.template('doc/sp-shibboleth-disco', function(template) {
+					$("#docout").append(template(obj));
+				});
+			}
+		});
 
 	} else {
 		console.log("UNKNOWN value of type")
