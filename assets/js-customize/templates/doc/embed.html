@@ -1,75 +1,3 @@
----
-layout: default
-title: Getting started
-slug: getting-started
-lead: "An overview of DiscoJuice, how to integrate with your Service Provider."
-base_url: "../"
----
-
-
-	<!-- Getting started
-	================================================== -->
-	<div class="bs-docs-section">
-		<div class="page-header">
-			<h1 id="whatis">Getting started with DiscoJuice</h1>
-		</div>
-		<p class="lead">DiscoJuice is a very flexible User Interface library for implementing an IdP Discovery Service.</p>
-
-
-
-		<div class="bs-callout bs-callout-danger" id="callout-less-compilation">
-			<h4>Important: Get ready for DiscoJuice 3.0!</h4>
-			<p>In September and October 2013 we are rolling out DiscoJuice 3.0 with a more reliable hosting than before. </p>
-			<p>The service will be somewhat unreliable in the testing process, before the setup is complete. Stay tuned, and join the mailinglist!</p>
-			
-		</div>
-
-
-		<h3>What is DiscoJuice</h3>
-
-		<p>As a service provider, connected to a large number of Identity Providers, you would need to ask the user in advance of the authentication process to select its Identity Provider.</p>
-
-		<p>DiscoJuice is super simple to deploy at a Service Provider. Is is as easy as copy and pasting a small javascript refernece into the HTML source of your application.</p>
-
-
-
-		<h3>Features</h3>
-
-		<p>Some of the features DiscoJuice supports includes:</p>
-
-		<ul>
-			<li>Local Memory (cookie)</li>
-			<li>Remote Memory (DiscoReadWrite protocol + IdP Discovery)</li>
-			<li>Javascript only, super simple to deploy</li>
-			<li>DiscoJuiceJSON compact UI-focused Metadata format (MDUI friendly)</li>
-			<li>Presents logos, searchable keywords, name, descr, country...</li>
-			<li>Automatically discovery of country </li>
-			<li>HTML5 Geo-location API</li>
-			<li>Gracefull non-javascript fallback</li>
-			<li>Inline incremental search </li>
-			<li>Flexible integration API using JS callbacks.</li>
-			<li>Protocol agnostics, demoed with alternative protocols.</li>
-			<li>Multi-lingual both provider list (from metadata) and UI is translated into 15 languages</li>
-		</ul>
-
-
-
-		<h3>Deployment options</h3>
-
-		<p>There are at least three ways to deploy DiscoJuice that you should be aware of.</p>
-
-		<ol>
-			<li><a href="#deploy-embedded">DiscoJuice embedded IdP Selector Popup in Application</a></li>
-			<li><a href="#deploy-sp">Service Provider IdP Discovery Service</a></li>
-			<li><a href="#deploy-federation">Identity Federation Central IdP Discovery Service</a></li>
-			<li><a href="#deploy-global">Global IdP Discovery Service</a></li>
-		</ol>
-
-
-	</div>
-
-
-
 	<div class="bs-docs-section">
 		<div class="page-header">
 			<h1 id="deploy-embedded">Embedded DiscoJuice</h1>
@@ -77,7 +5,7 @@ base_url: "../"
 		<p class="lead">If your application has a login-button, this button can be connected to the Embedded DiscoJuice Discovery Service.</p>
 
 		<p><img class="img-responsive img-thumbnail" 
-			src="{{ page.base_url }}assets/discojuice-screenshot-embed.png" 
+			src="../assets/discojuice-screenshot-embed.png" 
 			alt="Screenshot of DiscoJuice embedded" /></p>
 
 		<p>By installing DiscoJuice, the login button will result in a DiscoJuice popup discovery service that allows the user to select Identity Provider, and then redirects the user in the correct way.</p>
@@ -92,26 +20,26 @@ base_url: "../"
 		<p>Next, in the <code>&lt;head&gt;</code>-section of your HTML page you will need to setup DiscoJuice.</p>
 
 
-{% highlight html %}
-<!-- JQuery hosted by Google -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+<pre>
+&lt;!-- JQuery hosted by Google --&gt;
+&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript">&lt;/script>
 
-<!-- DiscoJuice hosted by UNINETT at discojuice.org -->
-<script type="text/javascript" src="https://cdn.discojuice.org/discojuice-stable.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.discojuice.org/css/discojuice.css" />
-<script type="text/javascript">
+&lt;!-- DiscoJuice hosted by UNINETT at discojuice.org --&gt;
+&lt;script type="text/javascript" src="https://cdn.discojuice.org/discojuice-stable.min.js">&lt;/script>
+&lt;link rel="stylesheet" type="text/css" href="https://cdn.discojuice.org/css/discojuice.css" />
+&lt;script type="text/javascript"&gt;
 	DiscoJuice.Hosted.setup(
 		{
 			"target": "a.signin",
-			"title": "Example showcase service",
-			"spentityid": "https://bridge.uninett.no/saml2/entityid",
-			"responseurl": "http://bridge.uninett.no/response.html",
-			"redirectURL": "http://bridge.uninett.no/login?idp=",
-			"feeds": ["edugain", "kalmar", "feide"]
+			"title": "{{title}}",
+			"spentityid": "{{ep_entityid}}",
+			"responseurl": "{{ep_response}}",
+			"redirectURL": "{{ep_redirect}}",
+			"feeds": {{feedsT}}
 		}
 	);
-</script>
-{% endhighlight %}
+&lt;/script&gt;
+</pre>
 
 		<p>Notice that if you already have jQuery referenced on your site, DiscoJuice may reuse this jQuery, and you should not refer jQuery twice. DiscoJuice does not require any specific version of jQuery.</p>
 
@@ -187,41 +115,3 @@ base_url: "../"
 
 
 	</div>
-
-
-
-
-	<div class="bs-docs-section">
-		<div class="page-header">
-			<h1 id="deploy-sp">Service Provider Discovery</h1>
-		</div>
-		<p class="lead">Within the download you'll find the following directories and files, logically grouping common assets and providing both compiled and minified variations.</p>
-		<p>Once downloaded, unzip the compressed folder to see the structure of (the compiled) Bootstrap. You'll see something like this:</p>
-	</div>
-
-
-
-
-	<div class="bs-docs-section">
-		<div class="page-header">
-			<h1 id="deploy-federation">Identity Federation Discovery</h1>
-		</div>
-		<p class="lead">.</p>
-		<p></p>
-	</div>
-
-
-
-
-
-	<div class="bs-docs-section">
-		<div class="page-header">
-			<h1 id="deploy-global">Global IdP Discovery Service</h1>
-		</div>
-		<p class="lead">Within the download you'll find the following directories and files, logically grouping common assets and providing both compiled and minified variations.</p>
-		<p>Once downloaded, unzip the compressed folder to see the structure of (the compiled) Bootstrap. You'll see something like this:</p>
-	</div>
-
-
-
-

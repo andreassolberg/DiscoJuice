@@ -12,7 +12,7 @@ base_url: "../"
 
 	<div id="controller">
 
-		<form role="form">
+		<form id="customizeform" role="form">
 
 			<div class="row">
 
@@ -23,25 +23,25 @@ base_url: "../"
 
 					<div class="radio">
 						<label>
-							<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+							<input type="radio" name="integrationType" id="optionsRadios1" value="embed" checked>
 							Embedded in application with popup
 						</label>
 					</div>
 					<div class="radio">
 						<label>
-							<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+							<input type="radio" name="integrationType" id="optionsRadios2" value="sp">
 							Standalone discovery page in Service Provider
 						</label>
 					</div>
 					<div class="radio">
 						<label>
-							<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+							<input type="radio" name="integrationType" id="optionsRadios3" value="fed">
 							A central discovery service for your federation
 						</label>
 					</div>
 					<div class="radio">
 						<label>
-							<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+							<input type="radio" name="integrationType" id="optionsRadios4" value="global">
 							Use global IdP Discovery page
 						</label>
 					</div>
@@ -70,51 +70,75 @@ base_url: "../"
 
 				<div class="col-md-6">
 
-						<h3>Which SP software do you run?</h3>
+
+						<div id="spsoftwareselection">
+
+							<h3>Which SP software do you run?</h3>
 
 
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" name="discoenable" value="1" checked="checked"> 
-									Use DiscoJuice.org for memory of user selection (Reccomended)
-							</label>
+
+
+							<div class="radio">
+								<label>
+									<input type="radio" name="spsoftware" id="optionsRadios1" value="option1" checked>
+									SimpleSAMLphp SP
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="spsoftware" id="optionsRadios2" value="option2">
+									Shibboleth SP
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="spsoftware" id="optionsRadios2" value="option2">
+									Other
+								</label>
+							</div>
+						</div>
+
+						<div id="discostorage">
+
+							<h3>Options</h3>
+
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" 
+										id="discoenable" name="discoenable" value="1" checked="checked"> 
+										Use DiscoJuice.org for memory of user selection (Reccomended)
+								</label>
+							</div>
 						</div>
 
 
-						<div class="radio">
-							<label>
-								<input type="radio" name="spsoftware" id="optionsRadios1" value="option1" checked>
-								SimpleSAMLphp SP
-							</label>
-						</div>
-						<div class="radio">
-							<label>
-								<input type="radio" name="spsoftware" id="optionsRadios2" value="option2">
-								Shibboleth SP
-							</label>
-						</div>
-						<div class="radio">
-							<label>
-								<input type="radio" name="spsoftware" id="optionsRadios2" value="option2">
-								Other
-							</label>
+						<div id="titlediv">
+							<h3>Title</h3>
+
+							<div class="form-group">
+								<label for="title">Title of the service provider (used in UI)</label>
+								<input type="email" class="form-control" id="title" 
+									value="My service provider">
+							</div>
 						</div>
 
 						<h3>Endpoints</h3>
-						<div class="form-group">
+
+
+						<div id="ep_host" class="form-group">
 							<label for="exampleInputEmail1">Hostname of SP</label>
 							<input type="email" class="form-control" id="exampleInputEmail1" placeholder="sp.example.org">
 						</div>
-						<div class="form-group">
+						<div id="ep_entityid" class="form-group">
 							<label for="exampleInputEmail1">EntityID</label>
 							<input type="email" class="form-control" id="exampleInputEmail1" placeholder="https://sp.example.org">
 						</div>
-						<div class="form-group">
+						<div id="ep_response" class="form-group">
 							<label for="exampleInputEmail1">Response HTML URL</label>
 							<input type="email" class="form-control" id="exampleInputEmail1" placeholder="https://sp.example.org">
 							<p class="help-block">This will be a static HTML page on your server where you need to upload a HTML page.</p>
 						</div>
-						<div class="form-group">
+						<div id="ep_redirect" class="form-group">
 							<label for="exampleInputEmail1">Redirect when selected</label>
 							<input type="email" class="form-control" id="exampleInputEmail1" placeholder="https://sp.example.org">
 							<p class="help-block">To which URL do you want the user to be redirected after choosing a provider. The provider ID will be added to the end of this URL.</p>
@@ -150,13 +174,13 @@ base_url: "../"
 
 			</div>
 
-			<button type="submit" class="btn btn-default">Submit</button>
+			<!-- <button type="submit" class="btn btn-default">Submit</button> -->
 
 
 		</form>
 
 	</div>
 
-	<div id="docout"></div>
+	<div style="margin-top: 4em; border-top: 1px solid #aaa; padding-top: 1em" id="docout"></div>
 
 </div>
