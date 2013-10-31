@@ -78,7 +78,9 @@ div.discojuice > div.top {
 
 	background: #fff;
 	border-bottom: 1px solid #bbb;
-	
+}
+
+div.discojuice div.top:first-child {
 	-webkit-border-top-left-radius: 15px;
 	-webkit-border-top-right-radius: 15px;
 	-moz-border-radius-topleft: 15px;
@@ -253,8 +255,12 @@ div.discojuice input.discojuice_search {
 	width: 100%;
 }
 
-
-
+/*
+ * Section for jqvmap
+ */
+body .jqvmap-label {
+	z-index:160;
+}
 
 
 
