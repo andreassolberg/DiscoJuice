@@ -61,8 +61,8 @@ DiscoJuice.Control = {
     // Border Color to use to outline map objects
     "mapBorderColor": '#818181',
 
-    // Map div height
-    "mapHeight": '333px',
+    // Map div height. If null, map is automatically adjusted
+    "mapHeight": null,
 	
 	"registerCallback": function (callback) {
 		this.wncr.push(callback);
@@ -1072,23 +1072,27 @@ DiscoJuice.Control = {
 		return validCountry;
 	},
 	"mapSetup": function () {
-        var that = this;
+		var that = this;
 
-        // Get all jqvmap parameters
-        var map = this.parent.Utils.options.get('map', this.map);
-        var mapBackgroundColor = this.parent.Utils.options.get('mapBackgroundColor', this.mapBackgroundColor);
-        var mapBorderColor = this.parent.Utils.options.get('mapBorderColor', this.mapBorderColor);
-        var mapColor = this.parent.Utils.options.get('mapColor', this.mapColor);
-        var mapValidColor = this.parent.Utils.options.get('mapValidColor', this.mapValidColor);
-        var mapHoverColor = this.parent.Utils.options.get('mapHoverColor', this.mapHoverColor);
-        var mapSelectedColor = this.parent.Utils.options.get('mapSelectedColor', this.mapSelectedColor);
+		this.ui.popup.prepend('<div class="map"></div>');
+		var validCountryArr = this.getValidCountryArr();
+
+		// Get all jqvmap parameters
+		var map = this.parent.Utils.options.get('map', this.map);
+		var mapBackgroundColor = this.parent.Utils.options.get('mapBackgroundColor', this.mapBackgroundColor);
+		var mapBorderColor = this.parent.Utils.options.get('mapBorderColor', this.mapBorderColor);
+		var mapColor = this.parent.Utils.options.get('mapColor', this.mapColor);pre
+		var mapValidColor = this.parent.Utils.options.get('mapValidColor', this.mapValidColor);
+		var mapHoverColor = this.parent.Utils.options.get('mapHoverColor', this.mapHoverColor);
+		var mapSelectedColor = this.parent.Utils.options.get('mapSelectedColor', this.mapSelectedColor);
 		var mapTitle = this.parent.Utils.options.get('mapTitle', this.mapTitle);
 		var mapSubtitle = this.parent.Utils.options.get('mapSubtitle', this.mapSubtitle);
-		var mapHeight = this.parent.Utils.options.get('mapHeight', this.mapHeight);
-        var validCountryArr = this.getValidCountryArr();
-
-        this.ui.popup.prepend('<div class="map"></div>');
-        this.ui.popup.find('.map').html('<div class="vmap" style="width: 100%; height:' + mapHeight + '"></div>');
+		var defaultMapHeight = 0.66* this.ui.popup.find('.map').width()+'px';
+		if (this.mapHeight){
+			defaultMapHeight = this.mapHeight;
+		}
+		var mapHeight = this.parent.Utils.options.get('mapHeight', defaultMapHeight);
+		this.ui.popup.find('.map').html('<div class="vmap" style="width: 100%; height:' + mapHeight + '"></div>');
         var ftext ='<div class="top">' +
 				'<p class="discojuice_maintitle">' + mapTitle  +  '</p>' +
 				'<p class="discojuice_subtitle">'+ mapSubtitle + '</p>'+
@@ -1105,13 +1109,13 @@ DiscoJuice.Control = {
               selectedColor: mapSelectedColor,
               onRegionOver: function(e,code,region){
                     if (jQuery.inArray(code, validCountryArr)<0){
-                          e.preventDefault()
+                          e.preventDefault();
                     }
               },
               onRegionClick: function(e,code,region){
                     if (jQuery.inArray(code,validCountryArr)<0){
                         e.preventDefault();
-                        return false;
+						return false;
                     } else {
 						that.setCategories(code.toUpperCase());
 	                    that.ui.popup.find("select").trigger('change');
