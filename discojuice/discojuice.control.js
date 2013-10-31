@@ -32,7 +32,37 @@ DiscoJuice.Control = {
 
 	// Waiter Notification Callback Registry
 	"wncr": [],
-	
+
+	// Show world map
+	"mapEnabled": false,
+
+	// Map you want to load. Must include the javascript file
+	// with the name of the map you want.
+	"map": 'world_en',
+
+	"mapTitle": 'Select your country',
+	"mapSubtitle": 'to filter available providers',
+
+	// Color for valid countries in map
+    "mapValidColor" : '#3582AC',
+
+    // Color for selected country in map
+    "mapSelectedColor" : '#EF4F54',
+
+    // Color of the country when mouse pointer is over it
+    "mapHoverColor": '#006499',
+
+    // Background color of map container
+    "mapBackgroundColor":'#a5bfdd',
+
+    // Color of map countries
+    "mapColor":'#f4f3f0',
+
+    // Border Color to use to outline map objects
+    "mapBorderColor": '#818181',
+
+    // Map div height
+    "mapHeight": '333px',
 	
 	"registerCallback": function (callback) {
 		this.wncr.push(callback);
@@ -170,6 +200,11 @@ DiscoJuice.Control = {
 			that.filterCountrySetup();
 		}
 
+		var mapEnabled = that.parent.Utils.options.get('mapEnabled', that.mapEnabled);
+
+		if (mapEnabled) {
+			that.mapSetup();
+		}
 
 		that.readCookie(); // Syncronous
 		that.readExtensionResponse(); // Reading response set by the Browser extension
@@ -562,7 +597,8 @@ DiscoJuice.Control = {
 			}
 
 		}
-		
+
+		this.refreshMap();
 		this.ui.refreshData(someleft, this.maxhits, hits);
 	},
 	
@@ -991,6 +1027,9 @@ DiscoJuice.Control = {
 		this.ui.popup.find("select.discojuice_filterCountrySelect").val('all');
 	},
 	
+	"setCategories": function (code) {
+        this.ui.popup.find("select.discojuice_filterCountrySelect").val(code);
+    },
 		
 	"getCategories": function () {
 		var filters = {};
@@ -1017,7 +1056,100 @@ DiscoJuice.Control = {
 	"resetTerm": function() {
 		//this.ui.popup.find("select.discojuice_filterTypeSelect").val()
 		this.ui.popup.find("input.discojuice_search").val('');
-	}
+	},
 
+	"getValidCountry": function(){
+		var validCountry = {};
+		for (key in this.data) {
+			if (this.data[key].country && this.data[key].country !== '_all_') {
+				validCountry[this.data[key].country] = true;
+			}
+		}
+		var countries = 0;
+		for (key in validCountry) {
+			countries++;
+		}
+		return validCountry;
+	},
+	"mapSetup": function () {
+        var that = this;
 
+        // Get all jqvmap parameters
+        var map = this.parent.Utils.options.get('map', this.map);
+        var mapBackgroundColor = this.parent.Utils.options.get('mapBackgroundColor', this.mapBackgroundColor);
+        var mapBorderColor = this.parent.Utils.options.get('mapBorderColor', this.mapBorderColor);
+        var mapColor = this.parent.Utils.options.get('mapColor', this.mapColor);
+        var mapValidColor = this.parent.Utils.options.get('mapValidColor', this.mapValidColor);
+        var mapHoverColor = this.parent.Utils.options.get('mapHoverColor', this.mapHoverColor);
+        var mapSelectedColor = this.parent.Utils.options.get('mapSelectedColor', this.mapSelectedColor);
+		var mapTitle = this.parent.Utils.options.get('mapTitle', this.mapTitle);
+		var mapSubtitle = this.parent.Utils.options.get('mapSubtitle', this.mapSubtitle);
+		var mapHeight = this.parent.Utils.options.get('mapHeight', this.mapHeight);
+        var validCountryArr = this.getValidCountryArr();
+
+        this.ui.popup.prepend('<div class="map"></div>');
+        this.ui.popup.find('.map').html('<div class="vmap" style="width: 100%; height:' + mapHeight + '"></div>');
+        var ftext ='<div class="top">' +
+				'<p class="discojuice_maintitle">' + mapTitle  +  '</p>' +
+				'<p class="discojuice_subtitle">'+ mapSubtitle + '</p>'+
+			'</div>' ;
+		this.ui.popup.find('.map').before(ftext);
+
+        this.ui.popup.find('.vmap').vectorMap({
+              map: map,
+              backgroundColor: mapBackgroundColor,
+              borderColor: mapBorderColor,
+              color: mapColor,
+              colors: that.getCountriesColors(),
+              hoverColor: mapHoverColor,
+              selectedColor: mapSelectedColor,
+              onRegionOver: function(e,code,region){
+                    if (jQuery.inArray(code, validCountryArr)<0){
+                          e.preventDefault()
+                    }
+              },
+              onRegionClick: function(e,code,region){
+                    if (jQuery.inArray(code,validCountryArr)<0){
+                        e.preventDefault();
+                        return false;
+                    } else {
+						that.setCategories(code.toUpperCase());
+	                    that.ui.popup.find("select").trigger('change');
+                    }
+              }
+        });
+	},
+	"getValidCountryArr": function(){
+		// Returns an array of  valid countries codes in lowercase
+		var validCountry = this.getValidCountry();
+		var validCountryArr = $.map(validCountry, function(val,key) { return key.toLowerCase();});
+		return validCountryArr
+	},
+    "getCountriesColors": function(){
+		// Returns an object whose keys are the valid countries codes in
+		// lowercase and values are the valid map color
+        var validCountriesColors = {}
+        var mapValidColor = this.parent.Utils.options.get('mapValidColor', this.mapValidColor);
+        var mapSelectedColor = this.parent.Utils.options.get('mapSelectedColor', this.mapSelectedColor);
+
+        $.each(this.getValidCountryArr(), function(key, value) {
+			validCountriesColors[value] = mapValidColor;
+        });
+        return validCountriesColors
+    },
+    "colorSelectedCountry": function(code){
+      var selected = {}
+      var mapSelectedColor = this.parent.Utils.options.get('mapSelectedColor', this.mapSelectedColor);
+      selected[code.toLowerCase()] = mapSelectedColor;
+      this.ui.popup.find('.vmap').vectorMap('set', 'colors', selected);
+    },
+    "refreshMap": function () {
+		var that = this;
+		var mapEnabled = that.parent.Utils.options.get('mapEnabled', that.mapEnabled);
+		if (mapEnabled){
+			var colors = this.getCountriesColors();
+			this.ui.popup.find('.vmap').vectorMap('set', 'colors', colors);
+			this.colorSelectedCountry(that.ui.popup.find("select.discojuice_filterCountrySelect").val());
+		}
+	},
 };
