@@ -34,35 +34,24 @@ DiscoJuice.Control = {
 	"wncr": [],
 
 	// Show world map
-	"mapEnabled": false,
+	"map": false,
 
-	// Map you want to load. Must include the javascript file
-	// with the name of the map you want.
-	"map": 'world_en',
-
+	// These two settings form the section that appears above the map
 	"mapTitle": 'Select your country',
 	"mapSubtitle": 'to filter available providers',
 
-	// Color for valid countries in map
+	// Color fot the countries that feature available providers(s)
     "mapValidColor" : '#3582AC',
 
-    // Color for selected country in map
-    "mapSelectedColor" : '#EF4F54',
-
-    // Color of the country when mouse pointer is over it
-    "mapHoverColor": '#006499',
-
-    // Background color of map container
-    "mapBackgroundColor":'#a5bfdd',
-
-    // Color of map countries
-    "mapColor":'#f4f3f0',
-
-    // Border Color to use to outline map objects
-    "mapBorderColor": '#818181',
-
-    // Map div height. If null, map is automatically adjusted
+    // Map div height (in px). If null, map is automatically adjusted.
     "mapHeight": null,
+
+    // While initializing the map you can provide parameters to change
+    // its look (view JQVMap plugin documentation for available options)
+	"mapOptions": {
+		"hoverColor":'#006499',
+		"selectedColor":'#EF4F54',
+	},
 	
 	"registerCallback": function (callback) {
 		this.wncr.push(callback);
@@ -200,9 +189,9 @@ DiscoJuice.Control = {
 			that.filterCountrySetup();
 		}
 
-		var mapEnabled = that.parent.Utils.options.get('mapEnabled', that.mapEnabled);
+		var map = that.parent.Utils.options.get('map', that.map);
 
-		if (mapEnabled) {
+		if (map) {
 			that.mapSetup();
 		}
 
@@ -1075,82 +1064,73 @@ DiscoJuice.Control = {
 		var that = this;
 
 		this.ui.popup.prepend('<div class="map"></div>');
-		var validCountryArr = this.getValidCountryArr();
 
-		// Get all jqvmap parameters
-		var map = this.parent.Utils.options.get('map', this.map);
-		var mapBackgroundColor = this.parent.Utils.options.get('mapBackgroundColor', this.mapBackgroundColor);
-		var mapBorderColor = this.parent.Utils.options.get('mapBorderColor', this.mapBorderColor);
-		var mapColor = this.parent.Utils.options.get('mapColor', this.mapColor);pre
-		var mapValidColor = this.parent.Utils.options.get('mapValidColor', this.mapValidColor);
-		var mapHoverColor = this.parent.Utils.options.get('mapHoverColor', this.mapHoverColor);
-		var mapSelectedColor = this.parent.Utils.options.get('mapSelectedColor', this.mapSelectedColor);
 		var mapTitle = this.parent.Utils.options.get('mapTitle', this.mapTitle);
 		var mapSubtitle = this.parent.Utils.options.get('mapSubtitle', this.mapSubtitle);
-		var defaultMapHeight = 0.66* this.ui.popup.find('.map').width()+'px';
+		var defaultMapHeight = 0.66* this.ui.popup.find('.map').width() + 'px';
 		if (this.mapHeight){
 			defaultMapHeight = this.mapHeight;
 		}
 		var mapHeight = this.parent.Utils.options.get('mapHeight', defaultMapHeight);
+
 		this.ui.popup.find('.map').html('<div class="vmap" style="width: 100%; height:' + mapHeight + '"></div>');
-        var ftext ='<div class="top">' +
-				'<p class="discojuice_maintitle">' + mapTitle  +  '</p>' +
-				'<p class="discojuice_subtitle">'+ mapSubtitle + '</p>'+
+		var ftext ='<div class="top">' +
+			'<p class="discojuice_maintitle">' + mapTitle  +  '</p>' +
+			'<p class="discojuice_subtitle">'+ mapSubtitle + '</p>'+
 			'</div>' ;
 		this.ui.popup.find('.map').before(ftext);
 
-        this.ui.popup.find('.vmap').vectorMap({
-              map: map,
-              backgroundColor: mapBackgroundColor,
-              borderColor: mapBorderColor,
-              color: mapColor,
-              colors: that.getCountriesColors(),
-              hoverColor: mapHoverColor,
-              selectedColor: mapSelectedColor,
-              onRegionOver: function(e,code,region){
-                    if (jQuery.inArray(code, validCountryArr)<0){
-                          e.preventDefault();
-                    }
-              },
-              onRegionClick: function(e,code,region){
-                    if (jQuery.inArray(code,validCountryArr)<0){
-                        e.preventDefault();
-						return false;
-                    } else {
-						that.setCategories(code.toUpperCase());
-	                    that.ui.popup.find("select").trigger('change');
-                    }
-              }
-        });
-	},
+		var validCountryArr = this.getValidCountryArr();
+
+		var mapOptions = {
+			colors: that.getCountriesColors(),
+			onRegionOver: function(e,code,region){
+				if (jQuery.inArray(code, validCountryArr)<0){
+					e.preventDefault();
+ 					return false;
+				}
+			},
+			onRegionClick: function(e,code,region){
+				if (jQuery.inArray(code,validCountryArr)<0){
+					e.preventDefault();
+					return false;
+				} else {
+					that.setCategories(code.toUpperCase());
+					that.ui.popup.find("select").trigger('change');
+				}
+			}
+		};
+		$.extend( true, mapOptions, this.mapOptions, that.parent.Utils.options.get('mapOptions',{}));
+		this.ui.popup.find('.vmap').vectorMap(mapOptions);
+
+ 	},
 	"getValidCountryArr": function(){
 		// Returns an array of  valid countries codes in lowercase
 		var validCountry = this.getValidCountry();
 		var validCountryArr = $.map(validCountry, function(val,key) { return key.toLowerCase();});
 		return validCountryArr
 	},
-    "getCountriesColors": function(){
+	"getCountriesColors": function(){
 		// Returns an object whose keys are the valid countries codes in
 		// lowercase and values are the valid map color
-        var validCountriesColors = {}
-        var mapValidColor = this.parent.Utils.options.get('mapValidColor', this.mapValidColor);
-        var mapSelectedColor = this.parent.Utils.options.get('mapSelectedColor', this.mapSelectedColor);
+		var validCountriesColors = {}
+		var mapValidColor = this.parent.Utils.options.get('mapValidColor', this.mapValidColor);
 
-        $.each(this.getValidCountryArr(), function(key, value) {
+		$.each(this.getValidCountryArr(), function(key, value) {
 			validCountriesColors[value] = mapValidColor;
-        });
-        return validCountriesColors
+		});
+		return validCountriesColors
     },
-    "colorSelectedCountry": function(code){
-      var selected = {}
-      var mapSelectedColor = this.parent.Utils.options.get('mapSelectedColor', this.mapSelectedColor);
-      selected[code.toLowerCase()] = mapSelectedColor;
-      this.ui.popup.find('.vmap').vectorMap('set', 'colors', selected);
-    },
+	"colorSelectedCountry": function(code){
+		var selected = {}
+		var mapSelectedColor = this.parent.Utils.options.get('mapSelectedColor', this.mapOptions.selectedColor);
+		selected[code.toLowerCase()] = mapSelectedColor;
+		this.ui.popup.find('.vmap').vectorMap('set', 'colors', selected);
+	},
     "refreshMap": function () {
 		var that = this;
-		var mapEnabled = that.parent.Utils.options.get('mapEnabled', that.mapEnabled);
-		if (mapEnabled){
+		var map = that.parent.Utils.options.get('map', that.map);
+		if (map){
 			var colors = this.getCountriesColors();
 			this.ui.popup.find('.vmap').vectorMap('set', 'colors', colors);
 			this.colorSelectedCountry(that.ui.popup.find("select.discojuice_filterCountrySelect").val());
