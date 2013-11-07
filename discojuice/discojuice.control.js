@@ -40,7 +40,7 @@ DiscoJuice.Control = {
 	"mapTitle": 'Select your country',
 	"mapSubtitle": 'to filter available providers',
 
-	// Color fot the countries that feature available providers(s)
+	// Color for the countries that feature available providers(s)
     "mapValidColor" : '#3582AC',
 
     // Map div height (in px). If null, map is automatically adjusted.
@@ -1047,19 +1047,6 @@ DiscoJuice.Control = {
 		this.ui.popup.find("input.discojuice_search").val('');
 	},
 
-	"getValidCountry": function(){
-		var validCountry = {};
-		for (key in this.data) {
-			if (this.data[key].country && this.data[key].country !== '_all_') {
-				validCountry[this.data[key].country] = true;
-			}
-		}
-		var countries = 0;
-		for (key in validCountry) {
-			countries++;
-		}
-		return validCountry;
-	},
 	"mapSetup": function () {
 		var that = this;
 
@@ -1067,6 +1054,8 @@ DiscoJuice.Control = {
 
 		var mapTitle = this.parent.Utils.options.get('mapTitle', this.mapTitle);
 		var mapSubtitle = this.parent.Utils.options.get('mapSubtitle', this.mapSubtitle);
+
+		// optimized ration for world map
 		var defaultMapHeight = 0.66* this.ui.popup.find('.map').width() + 'px';
 		if (this.mapHeight){
 			defaultMapHeight = this.mapHeight;
@@ -1074,24 +1063,23 @@ DiscoJuice.Control = {
 		var mapHeight = this.parent.Utils.options.get('mapHeight', defaultMapHeight);
 
 		this.ui.popup.find('.map').html('<div class="vmap" style="width: 100%; height:' + mapHeight + '"></div>');
-		var ftext ='<div class="top">' +
+
+		var mtext ='<div class="top">' +
 			'<p class="discojuice_maintitle">' + mapTitle  +  '</p>' +
 			'<p class="discojuice_subtitle">'+ mapSubtitle + '</p>'+
 			'</div>' ;
-		this.ui.popup.find('.map').before(ftext);
-
-		var validCountryArr = this.getValidCountryArr();
+		this.ui.popup.find('.map').before(mtext);
 
 		var mapOptions = {
 			colors: that.getCountriesColors(),
 			onRegionOver: function(e,code,region){
-				if (jQuery.inArray(code, validCountryArr)<0){
+				if (jQuery.inArray(code, that.getValidCountries())<0){
 					e.preventDefault();
  					return false;
 				}
 			},
 			onRegionClick: function(e,code,region){
-				if (jQuery.inArray(code,validCountryArr)<0){
+				if (jQuery.inArray(code, that.getValidCountries())<0){
 					e.preventDefault();
 					return false;
 				} else {
@@ -1104,29 +1092,38 @@ DiscoJuice.Control = {
 		this.ui.popup.find('.vmap').vectorMap(mapOptions);
 
  	},
-	"getValidCountryArr": function(){
-		// Returns an array of  valid countries codes in lowercase
-		var validCountry = this.getValidCountry();
-		var validCountryArr = $.map(validCountry, function(val,key) { return key.toLowerCase();});
-		return validCountryArr
+
+	// Returns an array of  valid countries codes in lowercase
+	"getValidCountries": function(){
+		var validCountries = {};
+		for (key in this.data) {
+			if (this.data[key].country && this.data[key].country !== '_all_') {
+				validCountries[this.data[key].country] = true;
+			}
+		}
+		var validCountries = $.map(validCountries, function(val,key) { return key.toLowerCase();});
+		return validCountries
 	},
+
+	// Returns an object whose keys are the valid countries codes in
+	// lowercase and values are the valid map color
 	"getCountriesColors": function(){
-		// Returns an object whose keys are the valid countries codes in
-		// lowercase and values are the valid map color
-		var validCountriesColors = {}
+		var countriesColors = {}
 		var mapValidColor = this.parent.Utils.options.get('mapValidColor', this.mapValidColor);
 
-		$.each(this.getValidCountryArr(), function(key, value) {
-			validCountriesColors[value] = mapValidColor;
+		$.each(this.getValidCountries(), function(key, value) {
+			countriesColors[value] = mapValidColor;
 		});
-		return validCountriesColors
+		return countriesColors
     },
+
 	"colorSelectedCountry": function(code){
 		var selected = {}
 		var mapSelectedColor = this.parent.Utils.options.get('mapSelectedColor', this.mapOptions.selectedColor);
 		selected[code.toLowerCase()] = mapSelectedColor;
 		this.ui.popup.find('.vmap').vectorMap('set', 'colors', selected);
 	},
+
     "refreshMap": function () {
 		var that = this;
 		var map = that.parent.Utils.options.get('map', that.map);
