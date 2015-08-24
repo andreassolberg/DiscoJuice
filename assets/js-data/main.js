@@ -39,7 +39,7 @@ App.prototype.selectFeed = function(e) {
 
 	var f = this.feedlist[feedid];
 	f.id = feedid;
-	$.getJSON("https://cdn.discojuice.org/feeds/" + feedid, function(data) {
+	$.getJSON("https://cdn.discojuice.org/feed/" + feedid, function(data) {
 
 		f.feed = data;
 		console.log("Feed data", f);
