@@ -50,7 +50,7 @@ DiscoJuice.Control = {
     // its look (view JQVMap plugin documentation for available options)
 	"mapOptions": {
 		"hoverColor":'#006499',
-		"selectedColor":'#EF4F54',
+		"selectedColor":'#EF4F54'
 	},
 	
 	"registerCallback": function (callback) {
@@ -1132,5 +1132,5 @@ DiscoJuice.Control = {
 			this.ui.popup.find('.vmap').vectorMap('set', 'colors', colors);
 			this.colorSelectedCountry(that.ui.popup.find("select.discojuice_filterCountrySelect").val());
 		}
-	},
+	}
 };
