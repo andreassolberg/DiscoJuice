@@ -86,13 +86,16 @@ DiscoJuice.Control = {
 			metadataurls = metadataurl;
 		}
 		
+
+		// immediately set inlinemetadata
 		if (typeof inlinemetadata === 'object' && inlinemetadata) {
 			this.data = inlinemetadata;
 		}
 
 		
-		this.parent.Utils.log('metadataurl is ' + metadataurl);
-		if (!metadataurl) return;
+		//this.parent.Utils.log('metadataurl is ' + metadataurl);
+		console.log("METADATAURLS", metadataurls);
+		if (!metadataurls) return;
 
 		// If SP EntityID is set in configuration make sure it is sent as a parameter
 		// to the feed endpoint.
@@ -101,27 +104,29 @@ DiscoJuice.Control = {
 			parameters.entityID = discosettings.spentityid;
 		}
 		
+		// load metadata from urls
 		that.parent.Utils.log('Setting up load() waiter');
 		waiter = DiscoJuice.Utils.waiter(function() {
 			that.parent.Utils.log('load() waiter EXECUTE');
-			that.postLoad();
+			that.filterDiscoFeed();
 		}, 10000);
 		
-		// console.log("METADATAURLS", metadataurls);
 
 		for (i = 0; i < metadataurls.length; i++) {
 			curmdurl = metadataurls[i];
 			waiter.runAction(
 				function(notifyCompleted) {
 					var j = i+1;
+					var callback = '_' + (that.parent.Utils.murmurhash3_32_gc(curmdurl, 0)).toString(36);
 					$.ajax({
 						url: curmdurl,
 						dataType: 'jsonp',
-						jsonpCallback: function() { 
+						jasonp: callback,
+/*							jsonpCallback: function() { 
 							// Important to use a reliable hash function for caching purposes
 							// same URL will always result in same callback function.
 							return '_' + (that.parent.Utils.murmurhash3_32_gc(curmdurl, 0)).toString(36);
-						},
+						},*/
 						cache: true,
 						data: parameters,
 						success: function(data) {
@@ -144,19 +149,79 @@ DiscoJuice.Control = {
 		}
 		
 		waiter.startTimer();
-		
-
-		
-		
 	},
 	
+	"filterDiscoFeed": function() {
+		var that = this;
+
+		// load metadata from SP discoFeed url
+		var discofeedurl = this.parent.Utils.options.get('discofeed');
+		if (!discofeedurl) that.postLoad();
+		else {
+			that.parent.Utils.log('Setting up load() waiter');
+	                waiter = DiscoJuice.Utils.waiter(function() {
+                	        that.parent.Utils.log('load() waiter EXECUTE');
+                        	that.postLoad();
+        	        }, 5000);
+
+			console.log("DISCOFEEDURL", discofeedurl);
+			waiter.runAction(
+				function(notifyCompleted) {
+					$.ajax({
+						url: discofeedurl,
+						dataType: 'json',
+						cache: false,
+						success: function(data) {
+							var mappedData = [];
+							var filteredData = [];
+
+							for (i = 0; i < data.length; i++) {
+								var entry = data[i];
+								var mappedEntry = {
+									"title" 	: entry.DisplayNames[0].value,
+									"entityID"	: entry.entityID, 
+								};
+								//console.log(mappedEntry);
+								mappedData.push(mappedEntry);
+
+								// look for existing metadata entry and add all that are also found in discofeed
+								for (j = 0; j < that.data.length; j++) {
+									//console.log(that.data[j]);
+									//console.log(this.data[j].entityID + " vs " + mappedEntry.entityID);
+									if (that.data[j].entityID == mappedEntry.entityID) {
+										filteredData.push(that.data[j]);
+									}
+								}
+							}
+							//that.data = $.merge(that.data, mappedData);
+							console.log(filteredData);
+							that.data = filteredData;
+
+							that.parent.Utils.log('Successfully loaded JSON metadata from discofeed '+discofeedurl+' (' + mappedData.length + ')');
+							notifyCompleted();
+						}
+					});
+				},
+				// Callback function that will be executed if action completed after timeout.
+                                function () {
+                                        return function() {
+                                                that.ui.error("DiscoFeed retrieval from [" + discofeedurl + "] to slow. Ignoring response.");
+                                        }
+                                }()
+
+			);
+		}
+	},
+
 	"postLoad": function() {
 		var 
 			that = this,
 			waiter;
 		
 		if (!this.data) return;
+	
 		
+	
 		// Iterate through entities, and update title from DisplayNames to support Shibboleth integration.
 		for(i = 0; i < this.data.length; i++) {
 			if (!this.data[i].title) {
@@ -574,7 +639,7 @@ DiscoJuice.Control = {
 	
 	"selectProvider": function(entityID, subID) {
 	
-		// console.log('entityid: '  + entityID);
+		console.log('entityid: '  + entityID);
 	
 	
 		var callback;
