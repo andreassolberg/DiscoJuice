@@ -117,25 +117,38 @@ DiscoJuice.Control = {
 			waiter.runAction(
 				function(notifyCompleted) {
 					var j = i+1;
-					var callback = '_' + (that.parent.Utils.murmurhash3_32_gc(curmdurl, 0)).toString(36);
-					$.ajax({
-						url: curmdurl,
-						dataType: 'jsonp',
-						jasonp: callback,
-/*							jsonpCallback: function() { 
-							// Important to use a reliable hash function for caching purposes
-							// same URL will always result in same callback function.
-							return '_' + (that.parent.Utils.murmurhash3_32_gc(curmdurl, 0)).toString(36);
-						},*/
-						cache: true,
-						data: parameters,
-						success: function(data) {
-							that.data = $.merge(that.data, data);
-							//that.mergeData(data);
-							that.parent.Utils.log('Successfully loaded metadata (' + data.length + ') (' + j + ' of ' + metadataurls.length + ')');
-							notifyCompleted();
-						}
-					});
+					
+					function successCallback(data) {
+                                            that.data = $.merge(that.data, data);
+                                            that.parent.Utils.log('Successfully loaded metadata (' + data.length + ') (' + j + ' of ' + metadataurls.length + ')');
+                                            notifyCompleted();
+                                        }
+
+					var curmdDomain = curmdurl.match(/^http:\/\/[^/]+/)[0];
+                                        var curBrowserDomain = window.location.href.match(/^http:\/\/[^/]+/)[0]; 
+					if (curmdDomain == curBrowserDomain) {
+						console.log("Fetching metadata from local domain as JSON: " + curmdurl);
+						$.ajax({
+							url: curmdurl,
+							dataType: 'json',
+							cache: true,
+							data: parameters,
+							success: successCallback
+						});
+					
+					}					
+					else {
+						console.log("Fetching metadata from external domain as JSONP: " + curmdurl);
+						var callback = '_' + (that.parent.Utils.murmurhash3_32_gc(curmdurl, 0)).toString(36);
+						$.ajax({
+							url: curmdurl,
+							dataType: 'jsonp',
+							jasonp: callback,
+							cache: true,
+							data: parameters,
+							success: successCallback
+						});
+					}
 
 				}, 
 				// Callback function that will be executed if action completed after timeout.
