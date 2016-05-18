@@ -124,9 +124,16 @@ DiscoJuice.Control = {
                                             notifyCompleted();
                                         }
 
-					var curmdDomain = curmdurl.match(/^http:\/\/[^/]+/)[0];
-                                        var curBrowserDomain = window.location.href.match(/^http:\/\/[^/]+/)[0]; 
-					if (curmdDomain == curBrowserDomain) {
+		
+
+					var isLocalDomain = curmdurl.startsWith('/');
+					if (!isLocalDomain) {
+						var curmdDomain = curmdurl.match(/^http[s]?:\/\/[^/]+/)[0];
+        	                                var curBrowserDomain = window.location.href.match(/^http[s]?:\/\/[^/]+/)[0]; 
+						isLocalDomain = (curmdDomain == curBrowserDomain);
+					}
+
+					if (isLocalDomain) {
 						console.log("Fetching metadata from local domain as JSON: " + curmdurl);
 						$.ajax({
 							url: curmdurl,
