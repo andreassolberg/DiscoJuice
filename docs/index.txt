@@ -1,5 +1,8 @@
 # Getting Started with DiscoJuice 
 
+TEST
+
+
 DiscoJuice is an embedded IdP Discovery Service written in javascript, that allows users to select where they would like to login.
 
 The most common way to setup DiscoJuice would be to integrate DiscoJuice into the Service as a popup box that is activated when the user clicks on a login button. The use then selects which provider to login with. DiscoJuice is configured to run a callback function when the user selects a provider, which allows you to configure how to start the real login process, depending on how the authentication software works. The most common callback will be to redirect the user to a specific URL with the identifier of the provider as a parameter.
