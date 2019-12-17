@@ -150,7 +150,18 @@ DiscoJuice.UI = {
 		
 		// Add icon element first
 		if (item.icon && this.parent.Utils.options.get('showIcon', true)) {
-			textLink += '<img class="logo" src="' + iconpath + item.icon + '" />';
+			if (item.icon.indexOf("http") > -1) {
+                                // If the icon is a URL
+                                textLink += '<img class="logo" src="' + item.icon + '" />';
+                        }
+                        else if (item.icon.indexOf("data:image") > -1) {
+                                // If it is a embedded image
+                                textLink += '<img class="logo" src="' + item.icon + '" />';
+                        } else {
+                                // If neither assume the image is local to discojuice
+                                textLink += '<img class="logo" src="' + iconpath + item.icon + '" />';
+                        }
+
 			clear = true;
 		}
 		
