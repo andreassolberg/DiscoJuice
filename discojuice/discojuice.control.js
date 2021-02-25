@@ -32,7 +32,26 @@ DiscoJuice.Control = {
 
 	// Waiter Notification Callback Registry
 	"wncr": [],
-	
+
+	// Show world map
+	"map": false,
+
+	// These two settings form the section that appears above the map
+	"mapTitle": 'Select your country',
+	"mapSubtitle": 'to filter available providers',
+
+	// Color for the countries that feature available providers(s)
+    "mapValidColor" : '#3582AC',
+
+    // Map div height (in px). If null, map is automatically adjusted.
+    "mapHeight": null,
+
+    // While initializing the map you can provide parameters to change
+    // its look (view JQVMap plugin documentation for available options)
+	"mapOptions": {
+		"hoverColor":'#006499',
+		"selectedColor":'#EF4F54'
+	},
 	
 	"registerCallback": function (callback) {
 		this.wncr.push(callback);
@@ -170,6 +189,11 @@ DiscoJuice.Control = {
 			that.filterCountrySetup();
 		}
 
+		var map = that.parent.Utils.options.get('map', that.map);
+
+		if (map) {
+			that.mapSetup();
+		}
 
 		that.readCookie(); // Syncronous
 		that.readExtensionResponse(); // Reading response set by the Browser extension
@@ -562,7 +586,8 @@ DiscoJuice.Control = {
 			}
 
 		}
-		
+
+		this.refreshMap();
 		this.ui.refreshData(someleft, this.maxhits, hits);
 	},
 	
@@ -991,6 +1016,9 @@ DiscoJuice.Control = {
 		this.ui.popup.find("select.discojuice_filterCountrySelect").val('all');
 	},
 	
+	"setCategories": function (code) {
+        this.ui.popup.find("select.discojuice_filterCountrySelect").val(code);
+    },
 		
 	"getCategories": function () {
 		var filters = {};
@@ -1017,7 +1045,92 @@ DiscoJuice.Control = {
 	"resetTerm": function() {
 		//this.ui.popup.find("select.discojuice_filterTypeSelect").val()
 		this.ui.popup.find("input.discojuice_search").val('');
+	},
+
+	"mapSetup": function () {
+		var that = this;
+
+		this.ui.popup.prepend('<div class="map"></div>');
+
+		var mapTitle = this.parent.Utils.options.get('mapTitle', this.mapTitle);
+		var mapSubtitle = this.parent.Utils.options.get('mapSubtitle', this.mapSubtitle);
+
+		// optimized ration for world map
+		var defaultMapHeight = 0.66* this.ui.popup.find('.map').width() + 'px';
+		if (this.mapHeight){
+			defaultMapHeight = this.mapHeight;
+		}
+		var mapHeight = this.parent.Utils.options.get('mapHeight', defaultMapHeight);
+
+		this.ui.popup.find('.map').html('<div class="vmap" style="width: 100%; height:' + mapHeight + '"></div>');
+
+		var mtext ='<div class="top">' +
+			'<p class="discojuice_maintitle">' + mapTitle  +  '</p>' +
+			'<p class="discojuice_subtitle">'+ mapSubtitle + '</p>'+
+			'</div>' ;
+		this.ui.popup.find('.map').before(mtext);
+
+		var mapOptions = {
+			colors: that.getCountriesColors(),
+			onRegionOver: function(e,code,region){
+				if (jQuery.inArray(code, that.getValidCountries())<0){
+					e.preventDefault();
+ 					return false;
+				}
+			},
+			onRegionClick: function(e,code,region){
+				if (jQuery.inArray(code, that.getValidCountries())<0){
+					e.preventDefault();
+					return false;
+				} else {
+					that.setCategories(code.toUpperCase());
+					that.ui.popup.find("select").trigger('change');
+				}
+			}
+		};
+		$.extend( true, mapOptions, this.mapOptions, that.parent.Utils.options.get('mapOptions',{}));
+		this.ui.popup.find('.vmap').vectorMap(mapOptions);
+
+ 	},
+
+	// Returns an array of  valid countries codes in lowercase
+	"getValidCountries": function(){
+		var validCountries = {};
+		for (key in this.data) {
+			if (this.data[key].country && this.data[key].country !== '_all_') {
+				validCountries[this.data[key].country] = true;
+			}
+		}
+		var validCountries = $.map(validCountries, function(val,key) { return key.toLowerCase();});
+		return validCountries
+	},
+
+	// Returns an object whose keys are the valid countries codes in
+	// lowercase and values are the valid map color
+	"getCountriesColors": function(){
+		var countriesColors = {}
+		var mapValidColor = this.parent.Utils.options.get('mapValidColor', this.mapValidColor);
+
+		$.each(this.getValidCountries(), function(key, value) {
+			countriesColors[value] = mapValidColor;
+		});
+		return countriesColors
+    },
+
+	"colorSelectedCountry": function(code){
+		var selected = {}
+		var mapSelectedColor = this.parent.Utils.options.get('mapSelectedColor', this.mapOptions.selectedColor);
+		selected[code.toLowerCase()] = mapSelectedColor;
+		this.ui.popup.find('.vmap').vectorMap('set', 'colors', selected);
+	},
+
+    "refreshMap": function () {
+		var that = this;
+		var map = that.parent.Utils.options.get('map', that.map);
+		if (map){
+			var colors = this.getCountriesColors();
+			this.ui.popup.find('.vmap').vectorMap('set', 'colors', colors);
+			this.colorSelectedCountry(that.ui.popup.find("select.discojuice_filterCountrySelect").val());
+		}
 	}
-
-
 };

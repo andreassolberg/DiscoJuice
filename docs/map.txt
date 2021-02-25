@@ -1,0 +1,75 @@
+Using JQVMap with DiscoJuice
+============================
+
+You can add a map to your DiscoJuice standalone page. 
+
+The map uses the jquery plugin JQVMap https://github.com/manifestinteractive/jqvmap.
+Countries with available providers are highlighted for a visual overview and 
+act as a filter for the providers when they are clicked.
+
+The map is by default hidden.
+To activate it, you must set the map property of the djc object to  true 
+as shown:
+
+`djc.map = true`
+
+To make the plugin work properly, you need to include the JQVMap JavaScript and 
+CSS files to your html page.
+
+The prequisite files are:
+
+* jquery.vmap.js
+* jquery.world_en.js ( or other if you plan on using other area. For more info on 
+	available regions check  [JQvmap maps](https://github.com/manifestinteractive/jqvmap/tree/stable/jqvmap/maps) )
+* vmap.css
+
+and can be found inside the jqvmap/ folder of DiscoJuice or  downloaded from 
+[JQvmap] (https://github.com/manifestinteractive/jqvmap) 
+
+Note: The jquery.vmap.js used in DiscoJuice is the stable 1.0 version.
+
+User interface customization
+----------------------------
+
+After you have activated the map, you can choose to use the following settings 
+to configure the map and its area.
+
+These settings are available:
+
+mapTitle
+: String. Default : `Select your country`
+
+mapSubtitle
+: String. Default : `to filter available providers`
+
+	These two settings form the section that appears above the map.
+
+mapValidColor
+: Sting. Default : `#3582AC`
+
+	Color fot the countries that feature available providers(s).
+
+mapHeight
+: String. Default: null
+
+	Map div height. If null, map is automatically adjusted.
+    
+
+All these settings can be initialised as in the following example:
+
+`djc.mapHeight = "200px";`
+
+
+Once you have your map up and running you can further customize the looks of
+your map.
+
+You can check the JQVMap documentation section for available options.
+Bellow is an example of how you can use these options to style your map:
+
+`djc.mapOptions = {
+	'color': 'blue',
+	'backgroundColor': '#f00',
+}`
+
+
+
